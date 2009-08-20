@@ -17,6 +17,11 @@ module FlagShihTzu
         @flag_mapping[flag_name] = 2**(flag_key - 1)
 
         class_eval <<-EVAL
+          if respond_to?(:named_scope)
+            named_scope :flagged, lambda { |flag| {:conditions => sql_condition_for_flag(flag, true)}}
+            named_scope :not_flagged, lambda { |flag| {:conditions => sql_condition_for_flag(flag, false)}}
+          end
+
           def #{flag_name}
             flag_enabled?(:#{flag_name})
           end
