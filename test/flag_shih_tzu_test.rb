@@ -121,4 +121,18 @@ class FlagShihTzuTest < Test::Unit::TestCase
     assert_equal 2, Foo.flag_mapping[:organizer_edited_comment]
   end
 
+  def test_should_respect_value_as_string
+    @foo.deleted = "true"
+    assert @foo.deleted
+
+    @foo.deleted = "false"
+    assert !@foo.deleted
+
+    @foo.deleted = "1"
+    assert @foo.deleted
+
+    @foo.deleted = "0"
+    assert !@foo.deleted
+  end
+
 end
