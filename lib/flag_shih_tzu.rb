@@ -1,5 +1,6 @@
 module FlagShihTzu
-
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] #taken from ActiveRecord::ConnectionAdapters::Column
+  
   def self.included(base)
     base.extend(ClassMethods)
     unless base.columns.any? { |column| column.name == 'flags' && column.type == :integer }
@@ -33,7 +34,7 @@ module FlagShihTzu
           end
         
           def #{flag_name}=(value)
-            value ? enable_flag(:#{flag_name}) : disable_flag(:#{flag_name})
+            FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}) : disable_flag(:#{flag_name})
           end
           
           def self.#{flag_name}_condition
