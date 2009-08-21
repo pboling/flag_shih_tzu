@@ -11,17 +11,19 @@ module FlagShihTzu
     def has_flags(flag_hash)
       @flag_mapping = {}
       
+      class_eval <<-EVAL
+        if respond_to?(:named_scope)
+          named_scope :flagged, lambda { |flag| {:conditions => sql_condition_for_flag(flag, true)}}
+          named_scope :not_flagged, lambda { |flag| {:conditions => sql_condition_for_flag(flag, false)}}
+        end
+      EVAL
+            
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
 
         @flag_mapping[flag_name] = 2**(flag_key - 1)
 
         class_eval <<-EVAL
-          if respond_to?(:named_scope)
-            named_scope :flagged, lambda { |flag| {:conditions => sql_condition_for_flag(flag, true)}}
-            named_scope :not_flagged, lambda { |flag| {:conditions => sql_condition_for_flag(flag, false)}}
-          end
-
           def #{flag_name}
             flag_enabled?(:#{flag_name})
           end
@@ -43,6 +45,7 @@ module FlagShihTzu
           end
         EVAL
       end
+      
     end
 
     def flag_mapping

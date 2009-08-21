@@ -65,7 +65,7 @@ building ActiveRecord conditions:
     Spaceship.electrolytes_condition      # => "(spaceships.flags & 4 = 1)"
     Spaceship.not_electrolytes_condition  # => "(spaceships.flags & 4 = 0)"
   
-and provides you named routes `flagged` or `not_flagged` with the flag name as argument:
+and provides named routes `flagged` or `not_flagged` with the flag name as argument:
 
     Spaceship.flagged(:electrolytes).all
     Spaceship.not_flagged(:electrolytes).all
