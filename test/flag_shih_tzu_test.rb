@@ -10,6 +10,14 @@ class Spaceship < ActiveRecord::Base
             3 => :electrolytes
 end
 
+class SpaceshipWithoutNamedScopes < ActiveRecord::Base
+  set_table_name 'spaceships'
+  include FlagShihTzu
+
+  has_flags({ 1 => :warpdrive }, :named_scopes => false)
+end
+
+
 
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   
@@ -43,6 +51,10 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   def test_should_define_a_named_scope_for_flag_not_enabled
     expected_options = { :conditions => "(spaceships.flags & 1 = 0)" }
     assert_equal expected_options, Spaceship.not_warpdrive.proxy_options
+  end
+  
+  def test_should_not_define_named_scopes_if_not_wanted
+    assert !SpaceshipWithoutNamedScopes.respond_to?(:warpdrive)
   end
   
 end
