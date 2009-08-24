@@ -19,8 +19,9 @@ the new boolean flag.
 ## Prerequisites
 
 FlagShihTzu assumes that your ActiveRecord model already has an integer field 
-named flags, which should be defined to not allow NULL values and should have 
-a default value of 0 (which means all flags are initially set to false).
+to store the flags, which should be defined to not allow NULL values and 
+should have a default value of 0 (which means all flags are initially set to 
+false).
 
 The plugin has been tested with Rails versions from 2.1 to 2.3 and MySQL.
 
@@ -47,6 +48,12 @@ be changed once in use, as they represent the position of the bit being used
 to enable or disable a flag. The values are symbols for the flags
 being created.
 
+The default column name to store the flags is 'flags', but you can provide a 
+custom column name using the `:column` option:
+
+    has_flags({ 1 => :warpdrive }, :column => 'bits')
+
+
 Calling `has_flags` as shown above creates the following instance methods 
 on Spaceship:
 
@@ -60,7 +67,7 @@ on Spaceship:
     Spaceship#electrolytes?
     Spaceship#electrolytes=
 
-The following named scopes are available, too:
+The following named scopes become available, too:
 
     Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
     Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
