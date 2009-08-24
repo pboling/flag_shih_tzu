@@ -9,7 +9,9 @@ module FlagShihTzu
   end
 
   module ClassMethods
-    def has_flags(flag_hash)
+    def has_flags(flag_hash, options = {})
+      options = {:named_scopes => true}.update(options)
+      
       @flag_mapping = {}
       
       flag_hash.each do |flag_key, flag_name|
@@ -37,10 +39,14 @@ module FlagShihTzu
           def self.not_#{flag_name}_condition
             sql_condition_for_flag(:#{flag_name}, false)
           end
-          
-          named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } } 
-          named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } } 
         EVAL
+
+        if options[:named_scopes]
+          class_eval <<-EVAL
+            named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } } 
+            named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } } 
+          EVAL
+        end
       end
     end
 

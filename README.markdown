@@ -1,17 +1,18 @@
 # FlagShihTzu
 
-This plugin lets you use a single integer field in an ActiveRecord model 
+This plugin lets you use a single integer column in an ActiveRecord model 
 to store a collection of boolean flags. Each flag can be used almost in 
 the same way you would use any boolean attribute on an ActiveRecord object.
 
 The main benefit: 
-**No migrations needed for new boolean fields, which means no downtime!**
+**No migrations needed for new boolean attributes, which means no downtime!**
 
 This is very useful for large tables where adding new columns can take 
-a long time.
+a long time or if you just want to avoid adding new columns for every
+boolean attribute.
 
-Using FlagShihTzu, you can add new boolean fields whenever you want, 
-without needing any migration, just change the has_flags call to include 
+Using FlagShihTzu, you can add new boolean attributes whenever you want, 
+without needing any migration. Just change the has_flags call to include 
 the new boolean flag. 
 
 
@@ -43,8 +44,8 @@ The plugin has been tested with Rails versions from 2.1 to 2.3 and MySQL.
 
 `has_flags` takes a hash. The keys must be positive integers and should not 
 be changed once in use, as they represent the position of the bit being used 
-to enable or disable a flag. The values are symbols for the attributes 
-being created. 
+to enable or disable a flag. The values are symbols for the flags
+being created.
 
 Calling `has_flags` as shown above creates the following instance methods 
 on Spaceship:
@@ -61,14 +62,27 @@ on Spaceship:
 
 The following named scopes are available, too:
 
+    Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
+    Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
+    Spaceship.shields           # :conditions => "(spaceships.flags & 2 = 1)"
+    Spaceship.not_shields       # :conditions => "(spaceships.flags & 2 = 0)"
     Spaceship.electrolytes      # :conditions => "(spaceships.flags & 4 = 1)"
     Spaceship.not_electrolytes  # :conditions => "(spaceships.flags & 4 = 0)"
+    
+If you do not want the named scopes to be defined, set the
+`:named_scopes` option to false when calling has_flags:
+    
+    has_flags({ 1 => :warpdrive, 2 => :shields, 3 => :electrolytes }, :generate_named_scopes => false)
 
 Additionally, the following class methods may support you when
 manually building ActiveRecord conditions:
 
-    Spaceship.electrolytes_condition      # => "(spaceships.flags & 4 = 1)"
-    Spaceship.not_electrolytes_condition  # => "(spaceships.flags & 4 = 0)"
+    Spaceship.warpdrive                   # "(spaceships.flags & 1 = 1)"
+    Spaceship.not_warpdrive               # "(spaceships.flags & 1 = 0)"
+    Spaceship.shields                     # "(spaceships.flags & 2 = 1)"
+    Spaceship.not_shields                 # "(spaceships.flags & 2 = 0)"
+    Spaceship.electrolytes_condition      # "(spaceships.flags & 4 = 1)"
+    Spaceship.not_electrolytes_condition  # "(spaceships.flags & 4 = 0)"
   
 ### Example
 
