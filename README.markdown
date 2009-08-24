@@ -91,6 +91,7 @@ manually building ActiveRecord conditions:
     Spaceship.electrolytes_condition      # "(spaceships.flags & 4 = 1)"
     Spaceship.not_electrolytes_condition  # "(spaceships.flags & 4 = 0)"
   
+
 ### Example
 
     enterprise = Spaceship.new
@@ -108,11 +109,20 @@ manually building ActiveRecord conditions:
     ...
 
 
-## Testing
+## Running the plugin tests
 
-1. Modify test/database.yml to fit your test environment.
-2. If needed, create the test database you configured in database.yml.
-3. From your Rails root, run `DB=mysql|postgres|sqlite|sqlite3 rake test:plugins PLUGIN=flag_shih_tzu`
+1. Modify `test/database.yml` to fit your test environment.
+2. If needed, create the test database you configured in `database.yml`.
+
+Then you can run 
+    
+    DB=mysql|postgres|sqlite|sqlite3 rake test:plugins PLUGIN=flag_shih_tzu` 
+    
+from your Rails project root *or*
+    
+    DB=mysql|postgres|sqlite|sqlite3 rake 
+    
+from `vendor/plugins/flag_shih_tzu`.
 
 
 ## Authors
@@ -122,9 +132,11 @@ manually building ActiveRecord conditions:
 [David Anderson](http://github.com/alpinegizmo) 
 and [Tim Payton](http://github.com/dizzy42)
 
+
 ## Contributors
 
 [TobiTobes](http://github.com/rngtng)
+
 
 Copyright (c) 2009 [XING AG](http://www.xing.com/)
 Released under the MIT license
