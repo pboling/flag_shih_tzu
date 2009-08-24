@@ -1,40 +1,23 @@
-require 'test/unit'
-require File.expand_path(File.dirname(__FILE__) + '/../lib/flag_shih_tzu')
+require File.dirname(__FILE__) + '/test_helper.rb' 
+load_schema
 
-class FlagColumn
-  def name; 'flags'; end
-  def type; :integer; end
-end
 
-class FlagRecord < Hash
-  def self.columns
-    [FlagColumn.new]
-  end
-
-  def flags=(value)
-    self[:flags] = value
-  end
-end
-
-class Foo < FlagRecord
-  def self.table_name
-    "foos"
-  end
-  
+class Spaceship < ActiveRecord::Base
   include FlagShihTzu
 
-  has_flags 1 => :deleted,
-            2 => :organizer_edited_comment
+  has_flags 1 => :warpdrive,
+            2 => :shields,
+            3 => :electrolytes
 end
 
 
-
-
-class FlagShihTzuTest < Test::Unit::TestCase
-  def test_should_raise_an_exception_when_bit_position_is_negative
+class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
+  
+  def test_has_flags_should_raise_an_exception_when_bit_position_is_negative
     assert_raises ArgumentError do
       eval(<<-EOF
-        class Invalid < FlagRecord
+        class InvalidSpaceship < ActiveRecord::Base
+          set_table_name 'spaceships'
           include FlagShihTzu
   
           has_flags({ -1 => :error })
@@ -43,93 +26,72 @@ class FlagShihTzuTest < Test::Unit::TestCase
       )
     end 
   end
+  
+  def test_should_define_a_sql_condition_method_for_flag_enabled
+    assert_equal "(spaceships.flags & 1 = 1)", Spaceship.warpdrive_condition
+  end
 
+  def test_should_define_a_sql_condition_method_for_flag_not_enabled
+    assert_equal "(spaceships.flags & 1 = 0)", Spaceship.not_warpdrive_condition
+  end
+  
+end
+
+
+class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
+  
   def setup
-    @foo = Foo.new
+    @spaceship = Spaceship.new
   end
   
-  def test_should_enable_the_flag
-    @foo.enable_flag(:deleted)
-    assert @foo.flag_enabled?(:deleted)
+  def test_should_enable_flag
+    @spaceship.enable_flag(:warpdrive)
+    assert @spaceship.flag_enabled?(:warpdrive)
   end
 
-  def test_should_enable_multiple_flags
-    @foo.enable_flag(:deleted)
-    @foo.enable_flag(:organizer_edited_comment)
-    assert @foo.flag_enabled?(:deleted)
-    assert @foo.flag_enabled?(:organizer_edited_comment)
+  def test_should_disable_flag
+    @spaceship.enable_flag(:warpdrive)
+    assert @spaceship.flag_enabled?(:warpdrive)
+    @spaceship.disable_flag(:warpdrive)
+    assert @spaceship.flag_disabled?(:warpdrive)
   end
 
-  def test_should_leave_the_flag_enabled_when_called_twice
+  def test_enable_flag_should_leave_the_flag_enabled_when_called_twice
     2.times do 
-      @foo.enable_flag(:deleted)
-      assert @foo.flag_enabled?(:deleted)
+      @spaceship.enable_flag(:warpdrive)
+      assert @spaceship.flag_enabled?(:warpdrive)
     end
   end
-
-  def test_should_define_a_deleted_method
-    assert_equal false, @foo.deleted
-  end
-
-  def test_should_define_a_deleted_predicate
-    assert_equal false, @foo.deleted?
-  end
   
-  def test_should_define_a_deleted=_method
-    @foo.deleted = true
-    assert @foo.deleted
-  end
-
-  def test_should_define_a_deleted_condition_method
-    assert_equal "(#{Foo.table_name}.flags & #{Foo.flag_mapping[:deleted]} = 1)", Foo.deleted_condition
-  end
-
-  def test_should_define_a_not_deleted_condition_method
-    assert_equal "(#{Foo.table_name}.flags & #{Foo.flag_mapping[:deleted]} = 0)", Foo.not_deleted_condition
-  end
-  
-  def test_should_disable_the_flag
-    @foo.disable_flag(:deleted)
-    assert @foo.flag_disabled?(:deleted)
-  end
-
-  def test_should_disable_multiple_flags
-    @foo.disable_flag(:deleted)
-    @foo.disable_flag(:organizer_edited_comment)
-    assert @foo.flag_disabled?(:deleted)
-    assert @foo.flag_disabled?(:organizer_edited_comment)
-  end
-
-  def test_should_leave_the_flag_disabled_when_called_twice
+  def test_disable_flag_should_leave_the_flag_disabled_when_called_twice
     2.times do 
-      @foo.disable_flag(:deleted)
-      assert @foo.flag_disabled?(:deleted)
+      @spaceship.disable_flag(:warpdrive)
+      assert !@spaceship.flag_enabled?(:warpdrive)
     end
   end
-
-  def test_should_be_possible_to_query_a_foo_that_has_never_been_set
-    assert_equal false, Foo.new.deleted?
+  
+  def test_should_define_an_attribute_reader_method
+    assert_equal false, @spaceship.warpdrive
   end
 
-  def test_should_return_0_by_default
-    foo = Foo.new
-    assert foo.flags == 0
+  def test_should_define_an_attribute_reader_predicate_method
+    assert_equal false, @spaceship.warpdrive?
   end
-
-  def test_should_have_flag_mapping_for_each_flag
-    assert_equal 1, Foo.flag_mapping[:deleted]
-    assert_equal 2, Foo.flag_mapping[:organizer_edited_comment]
+  
+  def test_should_define_an_attribute_writer_method
+    @spaceship.warpdrive = true
+    assert @spaceship.warpdrive
   end
 
   def test_should_respect_true_values_like_active_record
     [true, 1, '1', 't', 'T', 'true', 'TRUE'].each do |true_value|
-      @foo.deleted = true_value
-      assert @foo.deleted
+      @spaceship.warpdrive = true_value
+      assert @spaceship.warpdrive
     end
 
     [false, 0, '0', 'f', 'F', 'false', 'FALSE'].each do |false_value|
-      @foo.deleted = false_value
-      assert !@foo.deleted
+      @spaceship.warpdrive = false_value
+      assert !@spaceship.warpdrive
     end
   end
 
