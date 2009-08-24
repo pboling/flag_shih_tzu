@@ -116,7 +116,7 @@ manually building ActiveRecord conditions:
 
 Then you can run 
     
-    DB=mysql|postgres|sqlite|sqlite3 rake test:plugins PLUGIN=flag_shih_tzu` 
+    DB=mysql|postgres|sqlite|sqlite3 rake test:plugins PLUGIN=flag_shih_tzu 
     
 from your Rails project root *or*
     
