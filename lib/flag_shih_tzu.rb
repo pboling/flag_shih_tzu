@@ -3,14 +3,14 @@ module FlagShihTzu
   
   def self.included(base)
     base.extend(ClassMethods)
-    unless base.columns.any? { |column| column.name == 'flags' && column.type == :integer }
-      raise "#{base} must have an integer column named 'flags' in order to use FlagShihTzu"
-    end
   end
 
   module ClassMethods
     def has_flags(flag_hash, options = {})
-      options = {:named_scopes => true}.update(options)
+      options = {:named_scopes => true, :column => 'flags'}.update(options)
+      
+      @flag_column = options[:column]
+      check_flag_column
       
       @flag_mapping = {}
       
@@ -55,15 +55,27 @@ module FlagShihTzu
       @flag_mapping
     end
     
+    def flag_column
+      @flag_column
+    end
+    
     def check_flag(flag)
       raise ArgumentError, "Invalid flag '#{flag}'" unless flag_mapping.include?(flag)
     end
-
+    
+    
     private 
+    
+      def check_flag_column
+        unless columns.any? { |column| column.name == flag_column && column.type == :integer }
+          raise "Table '#{table_name}' must have an integer column named '#{flag_column}' in order to use FlagShihTzu"
+        end
+      end
+
       def sql_condition_for_flag(flag, enabled = true)
         check_flag(flag)
 
-        "(#{table_name}.flags & #{flag_mapping[flag]} = #{enabled ? '1': '0'})"
+        "(#{table_name}.#{flag_column} & #{flag_mapping[flag]} = #{enabled ? '1': '0'})"
       end
 
       def is_valid_flag_key(flag_key)
@@ -100,8 +112,13 @@ module FlagShihTzu
   end
 
   def flags 
-    self[:flags] || 0
+    self[self.class.flag_column] || 0
   end
+
+  def flags=(value)
+    self[self.class.flag_column] = value
+  end
+
 
   private 
   

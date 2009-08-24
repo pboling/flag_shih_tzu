@@ -18,6 +18,13 @@ class SpaceshipWithoutNamedScopes < ActiveRecord::Base
   has_flags({ 1 => :warpdrive }, :named_scopes => false)
 end
 
+class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
+  set_table_name 'spaceships_with_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags({ 1 => :warpdrive }, :column => 'bits')
+end
+
 
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   
@@ -71,6 +78,17 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert !SpaceshipWithoutNamedScopes.respond_to?(:warpdrive)
   end
   
+  def test_should_work_with_a_custom_flags_column
+    spaceship = SpaceshipWithCustomFlagsColumn.new
+    spaceship.enable_flag(:warpdrive)
+    spaceship.save!
+    spaceship.reload
+    assert 1, spaceship.flags
+    assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 1)", SpaceshipWithCustomFlagsColumn.warpdrive_condition
+    assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 0)", SpaceshipWithCustomFlagsColumn.not_warpdrive_condition
+    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = 1)" }, SpaceshipWithCustomFlagsColumn.warpdrive.proxy_options)
+  end
+  
 end
 
 
@@ -88,8 +106,22 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   def test_should_disable_flag
     @spaceship.enable_flag(:warpdrive)
     assert @spaceship.flag_enabled?(:warpdrive)
+
     @spaceship.disable_flag(:warpdrive)
     assert @spaceship.flag_disabled?(:warpdrive)
+  end
+  
+  def should_store_the_flags_correctly
+    @spaceship.enable_flag(:warpdrive)
+    @spaceship.disable_flag(:shields)
+    @spaceship.enable_flag(:electrolytes)
+
+    @spaceship.save!
+    @spaceship.reload
+
+    assert @spaceship.flag_enabled?(:warpdrive)
+    assert !@spaceship.flag_enabled?(:shields)
+    assert @spaceship.flag_enabled?(:electrolytes)
   end
 
   def test_enable_flag_should_leave_the_flag_enabled_when_called_twice
