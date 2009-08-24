@@ -72,7 +72,7 @@ The following named scopes are available, too:
 If you do not want the named scopes to be defined, set the
 `:named_scopes` option to false when calling has_flags:
     
-    has_flags({ 1 => :warpdrive, 2 => :shields, 3 => :electrolytes }, :generate_named_scopes => false)
+    has_flags({ 1 => :warpdrive, 2 => :shields, 3 => :electrolytes }, :named_scopes => false)
 
 Additionally, the following class methods may support you when
 manually building ActiveRecord conditions:
