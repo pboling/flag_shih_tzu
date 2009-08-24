@@ -37,6 +37,9 @@ module FlagShihTzu
           def self.not_#{flag_name}_condition
             sql_condition_for_flag(:#{flag_name}, false)
           end
+          
+          named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } } 
+          named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } } 
         EVAL
       end
     end
