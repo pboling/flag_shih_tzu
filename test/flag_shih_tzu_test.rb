@@ -58,10 +58,14 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   
   def test_should_define_a_sql_condition_method_for_flag_enabled
     assert_equal "(spaceships.flags & 1 = 1)", Spaceship.warpdrive_condition
+    assert_equal "(spaceships.flags & 2 = 1)", Spaceship.shields_condition
+    assert_equal "(spaceships.flags & 4 = 1)", Spaceship.electrolytes_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_not_enabled
     assert_equal "(spaceships.flags & 1 = 0)", Spaceship.not_warpdrive_condition
+    assert_equal "(spaceships.flags & 2 = 0)", Spaceship.not_shields_condition
+    assert_equal "(spaceships.flags & 4 = 0)", Spaceship.not_electrolytes_condition
   end
   
   def test_should_define_a_named_scope_for_flag_enabled
@@ -87,6 +91,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 1)", SpaceshipWithCustomFlagsColumn.warpdrive_condition
     assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 0)", SpaceshipWithCustomFlagsColumn.not_warpdrive_condition
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = 1)" }, SpaceshipWithCustomFlagsColumn.warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = 0)" }, SpaceshipWithCustomFlagsColumn.not_warpdrive.proxy_options)
   end
   
 end
