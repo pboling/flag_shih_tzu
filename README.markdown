@@ -112,7 +112,7 @@ manually building ActiveRecord conditions:
 ## Running the plugin tests
 
 1. Modify `test/database.yml` to fit your test environment.
-2. If needed, create the test database you configured in `database.yml`.
+2. If needed, create the test database you configured in `test/database.yml`.
 
 Then you can run 
     
