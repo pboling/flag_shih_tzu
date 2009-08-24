@@ -84,10 +84,10 @@ If you do not want the named scopes to be defined, set the
 Additionally, the following class methods may support you when
 manually building ActiveRecord conditions:
 
-    Spaceship.warpdrive                   # "(spaceships.flags & 1 = 1)"
-    Spaceship.not_warpdrive               # "(spaceships.flags & 1 = 0)"
-    Spaceship.shields                     # "(spaceships.flags & 2 = 1)"
-    Spaceship.not_shields                 # "(spaceships.flags & 2 = 0)"
+    Spaceship.warpdrive_condition         # "(spaceships.flags & 1 = 1)"
+    Spaceship.not_warpdrive_condition     # "(spaceships.flags & 1 = 0)"
+    Spaceship.shields_condition           # "(spaceships.flags & 2 = 1)"
+    Spaceship.not_shields_condition       # "(spaceships.flags & 2 = 0)"
     Spaceship.electrolytes_condition      # "(spaceships.flags & 4 = 1)"
     Spaceship.not_electrolytes_condition  # "(spaceships.flags & 4 = 0)"
   
