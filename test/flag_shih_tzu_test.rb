@@ -3,6 +3,7 @@ load_schema
 
 
 class Spaceship < ActiveRecord::Base
+  set_table_name 'spaceships'
   include FlagShihTzu
 
   has_flags 1 => :warpdrive,
@@ -18,17 +19,30 @@ class SpaceshipWithoutNamedScopes < ActiveRecord::Base
 end
 
 
-
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   
-  def test_has_flags_should_raise_an_exception_when_bit_position_is_negative
+  def test_has_flags_should_raise_an_exception_when_flag_key_is_negative
     assert_raises ArgumentError do
       eval(<<-EOF
-        class InvalidSpaceship < ActiveRecord::Base
+        class SpaceshipWithInvalidFlagKey < ActiveRecord::Base
           set_table_name 'spaceships'
           include FlagShihTzu
   
           has_flags({ -1 => :error })
+        end
+      EOF
+      )
+    end 
+  end
+  
+  def test_has_flags_should_raise_an_exception_when_flag_name_is_not_a_symbol
+    assert_raises ArgumentError do
+      eval(<<-EOF
+        class SpaceshipWithInvalidFlagName < ActiveRecord::Base
+          set_table_name 'spaceships'
+          include FlagShihTzu
+  
+          has_flags({ 1 => 'error' })
         end
       EOF
       )

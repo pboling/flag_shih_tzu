@@ -15,7 +15,8 @@ module FlagShihTzu
       @flag_mapping = {}
       
       flag_hash.each do |flag_key, flag_name|
-        raise ArgumentError, "has_flags: keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
+        raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
+        raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
 
         @flag_mapping[flag_name] = 2**(flag_key - 1)
 
@@ -67,6 +68,10 @@ module FlagShihTzu
 
       def is_valid_flag_key(flag_key)
         flag_key > 0 && flag_key == flag_key.to_i
+      end
+
+      def is_valid_flag_name(flag_name)
+        flag_name.is_a?(Symbol)
       end
   end
   
