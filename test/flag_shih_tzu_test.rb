@@ -121,18 +121,16 @@ class FlagShihTzuTest < Test::Unit::TestCase
     assert_equal 2, Foo.flag_mapping[:organizer_edited_comment]
   end
 
-  def test_should_respect_value_as_string
-    @foo.deleted = "true"
-    assert @foo.deleted
+  def test_should_respect_true_values_like_active_record
+    [true, 1, '1', 't', 'T', 'true', 'TRUE'].each do |true_value|
+      @foo.deleted = true_value
+      assert @foo.deleted
+    end
 
-    @foo.deleted = "false"
-    assert !@foo.deleted
-
-    @foo.deleted = "1"
-    assert @foo.deleted
-
-    @foo.deleted = "0"
-    assert !@foo.deleted
+    [false, 0, '0', 'f', 'F', 'false', 'FALSE'].each do |false_value|
+      @foo.deleted = false_value
+      assert !@foo.deleted
+    end
   end
 
 end

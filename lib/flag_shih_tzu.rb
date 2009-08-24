@@ -1,5 +1,5 @@
 module FlagShihTzu
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] #taken from ActiveRecord::ConnectionAdapters::Column
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
   
   def self.included(base)
     base.extend(ClassMethods)
