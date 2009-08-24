@@ -3,6 +3,7 @@ ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..'
 
 require 'test/unit'
 require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb')) 
+require File.dirname(__FILE__) + '/../init.rb' 
 
 def load_schema
   config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
@@ -29,5 +30,4 @@ def load_schema
   
   ActiveRecord::Base.establish_connection(config[db_adapter])
   load(File.dirname(__FILE__) + "/schema.rb")
-  require File.dirname(__FILE__) + '/../init.rb' 
 end
