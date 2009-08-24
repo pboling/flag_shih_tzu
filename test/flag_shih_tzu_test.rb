@@ -35,6 +35,16 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags & 1 = 0)", Spaceship.not_warpdrive_condition
   end
   
+  def test_should_define_a_named_scope_for_flag_enabled
+    expected_options = { :conditions => "(spaceships.flags & 1 = 1)" }
+    assert_equal expected_options, Spaceship.warpdrive.proxy_options
+  end
+  
+  def test_should_define_a_named_scope_for_flag_not_enabled
+    expected_options = { :conditions => "(spaceships.flags & 1 = 0)" }
+    assert_equal expected_options, Spaceship.not_warpdrive.proxy_options
+  end
+  
 end
 
 

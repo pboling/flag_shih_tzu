@@ -59,8 +59,13 @@ on Spaceship:
     Spaceship#electrolytes?
     Spaceship#electrolytes=
 
-Additionally, the following class method on Spaceship will support you in 
-building ActiveRecord conditions:
+The following named scopes are available, too:
+
+    Spaceship.electrolytes      # :conditions => "(spaceships.flags & 4 = 1)"
+    Spaceship.not_electrolytes  # :conditions => "(spaceships.flags & 4 = 0)"
+
+Additionally, the following class methods may support you when
+manually building ActiveRecord conditions:
 
     Spaceship.electrolytes_condition      # => "(spaceships.flags & 4 = 1)"
     Spaceship.not_electrolytes_condition  # => "(spaceships.flags & 4 = 0)"
@@ -77,11 +82,9 @@ building ActiveRecord conditions:
       ...
     end
 
-    spaceships_with_electrolytes = Spaceship.find(:all, 
-      :conditions => Spaceship.electrolytes_condition)
-      
-    spaceships_without_electrolytes = Spaceship.find(:all, 
-      :conditions => Spaceship.not_electrolytes_condition)
+    Spaceship.warpdrive.find(:all)
+    Spaceship.not_electrolytes.count
+    ...
 
 
 ## Authors
@@ -90,6 +93,10 @@ building ActiveRecord conditions:
 [Sebastian Roebke](http://github.com/boosty), 
 [David Anderson](http://github.com/alpinegizmo) 
 and [Tim Payton](http://github.com/dizzy42)
+
+## Contributors
+
+[TobiTobes](http://github.com/rngtng)
 
 Copyright (c) 2009 [XING AG](http://www.xing.com/)
 Released under the MIT license
