@@ -1,0 +1,17 @@
+sqlite3:
+  adapter: sqlite3
+  dbfile: vendor/plugins/flag_shih_tzu/test/flag_shih_tzu_plugin.sqlite3.db
+
+mysql:
+  adapter: mysql
+  host: localhost
+  username: root
+  password: 
+  database: flag_shih_tzu_plugin_test
+
+postgresql:
+  adapter: postgresql
+  username: postgres
+  password: 
+  database: flag_shih_tzu_plugin_test
+  min_messages: ERROR
