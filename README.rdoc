@@ -65,24 +65,30 @@ The bit position of a flag corresponds to the given key.
 This way, we can use bit operators on the stored integer value to set, unset 
 and check individual flags.
 
-  +---+---+---+        +---+---+---+
-  | 3 | 2 | 1 |        | 3 | 2 | 1 |
-  +---+---+---+        +---+---+---+
-  | e | s | w |        | e | s | w |
-  | l | h | a |        | l | h | a |
-  | e | i | r |        | e | i | r |
-  | c | e | p |        | c | e | p |
-  | t | l | d |        | t | l | d |
-  | r | d | r |        | r | d | r |
-  | o | s | i |        | o | s | i |
-  | l |   | v |        | l |   | v |
-  | y |   | e |        | y |   | e |
-  | t |   |   |        | t |   |   |
-  | e |   |   |        | e |   |   |
-  | s |   |   |        | s |   |   |
-  +---+---+---+        +---+---+---+
-  | 0 | 0 | 0 | = 0    | 1 | 0 | 1 | = 3 + 1 = 4
-  +---+---+---+        +---+---+---+
+                +---+---+---+                +---+---+---+
+                |   |   |   |                |   |   |   |
+  Bit position  | 3 | 2 | 1 |                | 3 | 2 | 1 |
+  (flag key)    |   |   |   |                |   |   |   |
+                +---+---+---+                +---+---+---+
+                |   |   |   |                |   |   |   |
+  Bit value     | 4 | 2 | 1 |                | 4 | 2 | 1 |
+                |   |   |   |                |   |   |   |
+                +---+---+---+                +---+---+---+
+                | e | s | w |                | e | s | w |
+                | l | h | a |                | l | h | a |
+                | e | i | r |                | e | i | r |
+                | c | e | p |                | c | e | p |
+                | t | l | d |                | t | l | d |
+                | r | d | r |                | r | d | r |
+                | o | s | i |                | o | s | i |
+                | l |   | v |                | l |   | v |
+                | y |   | e |                | y |   | e |
+                | t |   |   |                | t |   |   |
+                | e |   |   |                | e |   |   |
+                | s |   |   |                | s |   |   |
+                +---+---+---+                +---+---+---+
+                | 1 | 1 | 0 | = 4 + 2 = 6    | 1 | 0 | 1 | = 4 + 1 = 5
+                +---+---+---+                +---+---+---+
     
 Read more about bit fields here: http://en.wikipedia.org/wiki/Bit_field
 
