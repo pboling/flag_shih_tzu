@@ -1,8 +1,12 @@
 # FlagShihTzu
 
-This plugin lets you use a single integer column in an ActiveRecord model 
-to store a collection of boolean flags. Each flag can be used almost in 
-the same way you would use any boolean attribute on an ActiveRecord object.
+A rails plugin to store a collection of boolean attributes in a single 
+ActiveRecord column as a bit field.
+
+This plugin lets you use a single integer column in an ActiveRecord model
+to store a collection of boolean attributes (flags). Each flag can be used 
+almost in the same way you would use any boolean attribute on an 
+ActiveRecord object.
 
 The main benefit: 
 **No migrations needed for new boolean attributes, which means no downtime!**
@@ -12,8 +16,7 @@ a long time or if you just want to avoid adding new columns for every
 boolean attribute.
 
 Using FlagShihTzu, you can add new boolean attributes whenever you want, 
-without needing any migration. Just change the has_flags call to include 
-the new boolean flag. 
+without needing any migration. Just add a new flag to the has_flags call.
 
 
 ## Prerequisites
@@ -34,6 +37,8 @@ The plugin has been tested with Rails versions from 2.1 to 2.3 and MySQL.
 
 ## Usage
 
+### Defining the flags
+
     class Spaceship < ActiveRecord::Base
       include FlagShihTzu
 
@@ -48,11 +53,49 @@ be changed once in use, as they represent the position of the bit being used
 to enable or disable a flag. The values are symbols for the flags
 being created.
 
+
+### How it stores the values
+
+As said, FlagShihTzu uses a single integer column to store the values for all
+the defined flags as a bit field.
+
+The flags in the bit field are arranged by their given key (bit position),
+starting at 1.
+
+This way, we can use bit operators on the stored integer value to set, unset 
+and check the flags.
+
+    +---+---+---+        +---+---+---+
+    | 3 | 2 | 1 |        | 3 | 2 | 1 |
+    +---+---+---+        +---+---+---+
+    | e | s | w |        | e | s | w |
+    | l | h | a |        | l | h | a |
+    | e | i | r |        | e | i | r |
+    | c | e | p |        | c | e | p |
+    | t | l | d |        | t | l | d |
+    | r | d | r |        | r | d | r |
+    | o | s | i |        | o | s | i |
+    | l |   | v |        | l |   | v |
+    | y |   | e |        | y |   | e |
+    | t |   |   |        | t |   |   |
+    | e |   |   |        | e |   |   |
+    | s |   |   |        | s |   |   |
+    +---+---+---+        +---+---+---+
+    | 0 | 0 | 0 | = 0    | 1 | 0 | 1 | = 4
+    +---+---+---+        +---+---+---+
+    
+Read more about bit fields here: <http://en.wikipedia.org/wiki/Bit_field>
+
+
+### Using a custom column name
+
 The default column name to store the flags is 'flags', but you can provide a 
 custom column name using the `:column` option:
 
     has_flags({ 1 => :warpdrive }, :column => 'bits')
 
+
+### Generated instance methods
 
 Calling `has_flags` as shown above creates the following instance methods 
 on Spaceship:
@@ -67,7 +110,10 @@ on Spaceship:
     Spaceship#electrolytes?
     Spaceship#electrolytes=
 
-The following named scopes become available, too:
+
+### Generated named scopes
+
+The following named scopes become available:
 
     Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
     Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
@@ -81,8 +127,11 @@ If you do not want the named scopes to be defined, set the
     
     has_flags({ 1 => :warpdrive, 2 => :shields, 3 => :electrolytes }, :named_scopes => false)
 
-Additionally, the following class methods may support you when
-manually building ActiveRecord conditions:
+
+### Support for manually building conditions
+
+The following class methods may support you when manually building 
+ActiveRecord conditions:
 
     Spaceship.warpdrive_condition         # "(spaceships.flags & 1 = 1)"
     Spaceship.not_warpdrive_condition     # "(spaceships.flags & 1 = 0)"
@@ -92,7 +141,7 @@ manually building ActiveRecord conditions:
     Spaceship.not_electrolytes_condition  # "(spaceships.flags & 4 = 0)"
   
 
-### Example
+### Example code
 
     enterprise = Spaceship.new
     enterprise.warpdrive = true
