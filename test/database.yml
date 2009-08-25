@@ -6,18 +6,12 @@ mysql:
   adapter: mysql
   host: localhost
   username: root
-  password: root
+  password: 
   database: flag_shih_tzu_plugin_test
 
 postgresql:
   adapter: postgresql
   username: postgres
-  password: postgres
+  password: 
   database: flag_shih_tzu_plugin_test
   min_messages: ERROR
-
-
-# sqlite:
-#   adapter: sqlite
-#   dbfile: vendor/plugins/flag_shih_tzu/test/flag_shih_tzu_plugin.sqlite.db
-
