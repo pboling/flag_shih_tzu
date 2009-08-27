@@ -3,7 +3,6 @@
 A rails plugin to store a collection of boolean attributes in a single 
 ActiveRecord column as a bit field.
 
-Code:
 http://github.com/xing/flag_shih_tzu
 
 This plugin lets you use a single integer column in an ActiveRecord model
@@ -11,12 +10,11 @@ to store a collection of boolean attributes (flags). Each flag can be used
 almost in the same way you would use any boolean attribute on an 
 ActiveRecord object.
 
-The main benefit:
-<b>No migrations needed for new boolean attributes, which means no downtime!</b>
-
-This is very useful for large tables where adding new columns can take 
-a long time or if you just want to avoid adding new columns for every
-boolean attribute.
+The benefits:
+* No migrations needed for new boolean attributes. This helps a lot 
+  if you have very large db-tables where you want to avoid ALTER TABLE whenever
+  possible.
+* Only the one integer column needs to be indexed.
 
 Using FlagShihTzu, you can add new boolean attributes whenever you want, 
 without needing any migration. Just add a new flag to the +has_flags+ call.
