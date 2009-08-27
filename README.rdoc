@@ -3,7 +3,8 @@
 A rails plugin to store a collection of boolean attributes in a single 
 ActiveRecord column as a bit field.
 
-Homepage: http://github.com/xing/flag_shih_tzu
+Code:
+http://github.com/xing/flag_shih_tzu
 
 This plugin lets you use a single integer column in an ActiveRecord model
 to store a collection of boolean attributes (flags). Each flag can be used 
@@ -19,6 +20,9 @@ boolean attribute.
 
 Using FlagShihTzu, you can add new boolean attributes whenever you want, 
 without needing any migration. Just add a new flag to the +has_flags+ call.
+
+And just in case you are wondering what "Shih Tzu" means:
+http://en.wikipedia.org/wiki/Shih_Tzu
 
 
 ==Prerequisites
@@ -158,7 +162,7 @@ ActiveRecord conditions:
   enterprise.electrolytes = false
   enterprise.save
 
-  if spaceship.shields?
+  if enterprise.shields?
     ...
   end
 
