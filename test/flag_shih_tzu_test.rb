@@ -144,10 +144,6 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
   
   def test_should_define_an_attribute_reader_method
-    assert_equal false, @spaceship.warpdrive
-  end
-
-  def test_should_define_an_attribute_reader_predicate_method
     assert_equal false, @spaceship.warpdrive?
   end
   
@@ -166,20 +162,6 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
       @spaceship.warpdrive = false_value
       assert !@spaceship.warpdrive
     end
-  end
-
-  def test_should_respect_value_as_string
-    @foo.deleted = "true"
-    assert @foo.deleted
-
-    @foo.deleted = "false"
-    assert !@foo.deleted
-
-    @foo.deleted = "1"
-    assert @foo.deleted
-
-    @foo.deleted = "0"
-    assert !@foo.deleted
   end
 
 end

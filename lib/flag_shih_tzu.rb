@@ -127,7 +127,6 @@ module FlagShihTzu
     self[self.class.flag_column] = value
   end
 
-
   private 
   
     def get_bit_for(flag)
