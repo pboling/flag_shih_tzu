@@ -57,24 +57,24 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled
-    assert_equal "(spaceships.flags & 1 = '1')", Spaceship.warpdrive_condition
-    assert_equal "(spaceships.flags & 2 = '2')", Spaceship.shields_condition
-    assert_equal "(spaceships.flags & 4 = '4')", Spaceship.electrolytes_condition
+    assert_equal "(spaceships.flags & 1 = 1)", Spaceship.warpdrive_condition
+    assert_equal "(spaceships.flags & 2 = 2)", Spaceship.shields_condition
+    assert_equal "(spaceships.flags & 4 = 4)", Spaceship.electrolytes_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_not_enabled
-    assert_equal "(spaceships.flags & 1 = '0')", Spaceship.not_warpdrive_condition
-    assert_equal "(spaceships.flags & 2 = '0')", Spaceship.not_shields_condition
-    assert_equal "(spaceships.flags & 4 = '0')", Spaceship.not_electrolytes_condition
+    assert_equal "(spaceships.flags & 1 = 0)", Spaceship.not_warpdrive_condition
+    assert_equal "(spaceships.flags & 2 = 0)", Spaceship.not_shields_condition
+    assert_equal "(spaceships.flags & 4 = 0)", Spaceship.not_electrolytes_condition
   end
 
   def test_should_define_a_named_scope_for_flag_enabled
-    expected_options = { :conditions => "(spaceships.flags & 1 = '1')" }
+    expected_options = { :conditions => "(spaceships.flags & 1 = 1)" }
     assert_equal expected_options, Spaceship.warpdrive.proxy_options
   end
 
   def test_should_define_a_named_scope_for_flag_not_enabled
-    expected_options = { :conditions => "(spaceships.flags & 1 = '0')" }
+    expected_options = { :conditions => "(spaceships.flags & 1 = 0)" }
     assert_equal expected_options, Spaceship.not_warpdrive.proxy_options
   end
 
@@ -89,14 +89,14 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     spaceship.save!
     spaceship.reload
     assert 2, spaceship.flags
-    assert_equal "(spaceships_with_custom_flags_column.bits & 1 = '1')", SpaceshipWithCustomFlagsColumn.warpdrive_condition
-    assert_equal "(spaceships_with_custom_flags_column.bits & 1 = '0')", SpaceshipWithCustomFlagsColumn.not_warpdrive_condition
-    assert_equal "(spaceships_with_custom_flags_column.bits & 2 = '2')", SpaceshipWithCustomFlagsColumn.hyperspace_condition
-    assert_equal "(spaceships_with_custom_flags_column.bits & 2 = '0')", SpaceshipWithCustomFlagsColumn.not_hyperspace_condition
-    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = '1')" }, SpaceshipWithCustomFlagsColumn.warpdrive.proxy_options)
-    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = '0')" }, SpaceshipWithCustomFlagsColumn.not_warpdrive.proxy_options)
-    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 2 = '2')" }, SpaceshipWithCustomFlagsColumn.hyperspace.proxy_options)
-    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 2 = '0')" }, SpaceshipWithCustomFlagsColumn.not_hyperspace.proxy_options)
+    assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 1)", SpaceshipWithCustomFlagsColumn.warpdrive_condition
+    assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 0)", SpaceshipWithCustomFlagsColumn.not_warpdrive_condition
+    assert_equal "(spaceships_with_custom_flags_column.bits & 2 = 2)", SpaceshipWithCustomFlagsColumn.hyperspace_condition
+    assert_equal "(spaceships_with_custom_flags_column.bits & 2 = 0)", SpaceshipWithCustomFlagsColumn.not_hyperspace_condition
+    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = 1)" }, SpaceshipWithCustomFlagsColumn.warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = 0)" }, SpaceshipWithCustomFlagsColumn.not_warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 2 = 2)" }, SpaceshipWithCustomFlagsColumn.hyperspace.proxy_options)
+    assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 2 = 0)" }, SpaceshipWithCustomFlagsColumn.not_hyperspace.proxy_options)
   end
 
   def test_should_return_the_correct_number_of_items_from_a_named_scope
