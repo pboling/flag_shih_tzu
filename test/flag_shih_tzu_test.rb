@@ -7,15 +7,15 @@ class Spaceship < ActiveRecord::Base
   include FlagShihTzu
 
   has_flags 1 => :warpdrive,
-    2 => :shields,
-    3 => :electrolytes
+            2 => :shields,
+            3 => :electrolytes
 end
 
 class SpaceshipWithoutNamedScopes < ActiveRecord::Base
   set_table_name 'spaceships'
   include FlagShihTzu
 
-  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :named_scopes => false)
+  has_flags({ 1 => :warpdrive }, :named_scopes => false)
 end
 
 class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
@@ -69,13 +69,37 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_define_a_named_scope_for_flag_enabled
-    expected_options = { :conditions => "(spaceships.flags & 1 = 1)" }
-    assert_equal expected_options, Spaceship.warpdrive.proxy_options
+    assert_equal({ :conditions => "(spaceships.flags & 1 = 1)" }, Spaceship.warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 2 = 2)" }, Spaceship.shields.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 4 = 4)" }, Spaceship.electrolytes.proxy_options)
   end
 
   def test_should_define_a_named_scope_for_flag_not_enabled
-    expected_options = { :conditions => "(spaceships.flags & 1 = 0)" }
-    assert_equal expected_options, Spaceship.not_warpdrive.proxy_options
+    assert_equal({ :conditions => "(spaceships.flags & 1 = 0)" }, Spaceship.not_warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 2 = 0)" }, Spaceship.not_shields.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 4 = 0)" }, Spaceship.not_electrolytes.proxy_options)
+  end
+  
+  def test_should_return_the_correct_number_of_items_from_a_named_scope
+    spaceship = Spaceship.new
+    spaceship.enable_flag(:warpdrive)
+    spaceship.enable_flag(:shields)
+    spaceship.save!
+    spaceship.reload
+    spaceship_2 = Spaceship.new
+    spaceship_2.enable_flag(:warpdrive)
+    spaceship_2.save!
+    spaceship_2.reload
+    spaceship_3 = Spaceship.new
+    spaceship_3.enable_flag(:shields)
+    spaceship_3.save!
+    spaceship_3.reload
+    assert_equal 1, Spaceship.not_warpdrive.count
+    assert_equal 2, Spaceship.warpdrive.count
+    assert_equal 1, Spaceship.not_shields.count
+    assert_equal 2, Spaceship.shields.count
+    assert_equal 1, Spaceship.warpdrive.shields.count
+    assert_equal 0, Spaceship.not_warpdrive.not_shields.count
   end
 
   def test_should_not_define_named_scopes_if_not_wanted
@@ -88,7 +112,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     spaceship.enable_flag(:hyperspace)
     spaceship.save!
     spaceship.reload
-    assert 2, spaceship.flags
+    assert_equal 3, spaceship.flags
     assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 1)", SpaceshipWithCustomFlagsColumn.warpdrive_condition
     assert_equal "(spaceships_with_custom_flags_column.bits & 1 = 0)", SpaceshipWithCustomFlagsColumn.not_warpdrive_condition
     assert_equal "(spaceships_with_custom_flags_column.bits & 2 = 2)", SpaceshipWithCustomFlagsColumn.hyperspace_condition
@@ -97,28 +121,6 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 1 = 0)" }, SpaceshipWithCustomFlagsColumn.not_warpdrive.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 2 = 2)" }, SpaceshipWithCustomFlagsColumn.hyperspace.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits & 2 = 0)" }, SpaceshipWithCustomFlagsColumn.not_hyperspace.proxy_options)
-  end
-
-  def test_should_return_the_correct_number_of_items_from_a_named_scope
-    spaceship = SpaceshipWithCustomFlagsColumn.new
-    spaceship.enable_flag(:warpdrive)
-    spaceship.enable_flag(:hyperspace)
-    spaceship.save!
-    spaceship.reload
-    spaceship_2 = SpaceshipWithCustomFlagsColumn.new
-    spaceship_2.enable_flag(:warpdrive)
-    spaceship_2.save!
-    spaceship_2.reload
-    spaceship_3 = SpaceshipWithCustomFlagsColumn.new
-    spaceship_3.enable_flag(:hyperspace)
-    spaceship_3.save!
-    spaceship_3.reload
-    assert_equal 1, SpaceshipWithCustomFlagsColumn.not_warpdrive.count
-    assert_equal 2, SpaceshipWithCustomFlagsColumn.warpdrive.count
-    assert_equal 1, SpaceshipWithCustomFlagsColumn.not_hyperspace.count
-    assert_equal 2, SpaceshipWithCustomFlagsColumn.hyperspace.count
-    assert_equal 1, SpaceshipWithCustomFlagsColumn.warpdrive.hyperspace.count
-    assert_equal 0, SpaceshipWithCustomFlagsColumn.not_warpdrive.not_hyperspace.count
   end
 
 end
@@ -143,7 +145,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert @spaceship.flag_disabled?(:warpdrive)
   end
 
-  def should_store_the_flags_correctly
+  def test_should_store_the_flags_correctly
     @spaceship.enable_flag(:warpdrive)
     @spaceship.disable_flag(:shields)
     @spaceship.enable_flag(:electrolytes)
@@ -151,6 +153,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     @spaceship.save!
     @spaceship.reload
 
+    assert_equal 5, @spaceship.flags
     assert @spaceship.flag_enabled?(:warpdrive)
     assert !@spaceship.flag_enabled?(:shields)
     assert @spaceship.flag_enabled?(:electrolytes)
