@@ -68,6 +68,10 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags & 4 = 0)", Spaceship.not_electrolytes_condition
   end
   
+  def test_should_define_a_sql_condition_method_for_flag_enabled_with_custom_table_name
+    assert_equal "(custom_spaceships.flags & 1 = 1)", Spaceship.send( :sql_condition_for_flag, :warpdrive, true, 'custom_spaceships')
+  end  
+  
   def test_should_define_a_named_scope_for_flag_enabled
     expected_options = { :conditions => "(spaceships.flags & 1 = 1)" }
     assert_equal expected_options, Spaceship.warpdrive.proxy_options

@@ -80,10 +80,10 @@ module FlagShihTzu
         end
       end
 
-      def sql_condition_for_flag(flag, enabled = true)
+      def sql_condition_for_flag(flag, enabled = true, custom_table_name = table_name)
         check_flag(flag)
 
-        "(#{table_name}.#{flag_column} & #{flag_mapping[flag]} = #{enabled ? '1': '0'})"
+        "(#{custom_table_name}.#{flag_column} & #{flag_mapping[flag]} = #{enabled ? '1': '0'})"
       end
 
       def is_valid_flag_key(flag_key)
