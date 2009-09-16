@@ -1,6 +1,6 @@
 sqlite3:
   adapter: sqlite3
-  database: flag_shih_tzu_plugin.sqlite3.db
+  database: test/flag_shih_tzu_plugin.sqlite3.db
 
 mysql:
   adapter: mysql
