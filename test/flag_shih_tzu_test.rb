@@ -198,4 +198,8 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_return_a_sql_set_method_for_flag
+    assert_equal "spaceships.flags = spaceships.flags | 1",  Spaceship.send( :sql_set_for_flag, :warpdrive, true)
+    assert_equal "spaceships.flags = spaceships.flags & ~1", Spaceship.send( :sql_set_for_flag, :warpdrive, false)
+  end  
 end
