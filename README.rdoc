@@ -128,9 +128,9 @@ The following named scopes become available:
 
   Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
   Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
-  Spaceship.shields           # :conditions => "(spaceships.flags & 2 = 1)"
+  Spaceship.shields           # :conditions => "(spaceships.flags & 2 = 2)"
   Spaceship.not_shields       # :conditions => "(spaceships.flags & 2 = 0)"
-  Spaceship.electrolytes      # :conditions => "(spaceships.flags & 4 = 1)"
+  Spaceship.electrolytes      # :conditions => "(spaceships.flags & 4 = 4)"
   Spaceship.not_electrolytes  # :conditions => "(spaceships.flags & 4 = 0)"
     
 If you do not want the named scopes to be defined, set the
@@ -146,9 +146,9 @@ ActiveRecord conditions:
 
   Spaceship.warpdrive_condition         # "(spaceships.flags & 1 = 1)"
   Spaceship.not_warpdrive_condition     # "(spaceships.flags & 1 = 0)"
-  Spaceship.shields_condition           # "(spaceships.flags & 2 = 1)"
+  Spaceship.shields_condition           # "(spaceships.flags & 2 = 2)"
   Spaceship.not_shields_condition       # "(spaceships.flags & 2 = 0)"
-  Spaceship.electrolytes_condition      # "(spaceships.flags & 4 = 1)"
+  Spaceship.electrolytes_condition      # "(spaceships.flags & 4 = 4)"
   Spaceship.not_electrolytes_condition  # "(spaceships.flags & 4 = 0)"
   
 
@@ -198,7 +198,8 @@ Please find out more about our work in our
 
 ==Contributors
 
-{TobiTobes}[http://github.com/rngtng]
+{TobiTobes}[http://github.com/rngtng], 
+{Martin Stannard}[http://github.com/martinstannard]
 
 
 ==License
