@@ -1,13 +1,15 @@
 ENV['RAILS_ENV'] = 'test'
 ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..'
 
-require 'test/unit'
+#exend LOAD_PATH for test with- and without Railsframework
+$LOAD_PATH << 'lib/'
+$LOAD_PATH << 'vendor/plugins/flag_shih_tzu/lib/'
 
+require 'test/unit'
 require 'yaml'
 require 'rubygems'
 require 'activerecord'
-require 'lib/flag_shih_tzu'
-#require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb')) 
+require 'flag_shih_tzu' 
 
 def load_schema
   config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
