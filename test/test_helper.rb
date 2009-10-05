@@ -1,8 +1,11 @@
-ENV['RAILS_ENV'] = 'test'
-ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..'
-
+require 'rubygems'
 require 'test/unit'
-require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb')) 
+require 'yaml'
+require 'activerecord'
+
+$:.unshift File.join(File.dirname(__FILE__), '../lib')
+
+require 'init'
 
 def load_schema
   config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))

@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper.rb' 
 load_schema
 
-
 class Spaceship < ActiveRecord::Base
   set_table_name 'spaceships'
   include FlagShihTzu
