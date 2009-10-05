@@ -1,11 +1,15 @@
 ActiveRecord::Schema.define(:version => 0) do
   create_table :spaceships, :force => true do |t| 
     t.integer :flags, :null => false, :default => 0
+    t.string :incorrect_flags_column, :null => false, :default => ''
   end 
-end
 
-ActiveRecord::Schema.define(:version => 0) do
   create_table :spaceships_with_custom_flags_column, :force => true do |t| 
     t.integer :bits, :null => false, :default => 0
-  end 
+  end
+
+  create_table :spaceships_with_2_custom_flags_column, :force => true do |t| 
+    t.integer :bits, :null => false, :default => 0
+    t.integer :commanders, :null => false, :default => 0
+  end
 end
