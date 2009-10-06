@@ -22,7 +22,7 @@ module FlagShihTzu
         raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
 
         @flag_mapping[flag_column] ||= {}
-        @flag_mapping[flag_column][flag_name] = 2**(flag_key - 1)
+        @flag_mapping[flag_column][flag_name] = 1 << (flag_key - 1)
 
         if method_defined?(flag_name)
           raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name"
