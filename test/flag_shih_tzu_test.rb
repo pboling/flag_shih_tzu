@@ -25,6 +25,9 @@ class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'bits')
 end
 
+class SpaceCarrier < Spaceship
+  
+end
 
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
@@ -130,6 +133,80 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
 
   def setup
     @spaceship = Spaceship.new
+  end
+
+  def test_should_enable_flag
+    @spaceship.enable_flag(:warpdrive)
+    assert @spaceship.flag_enabled?(:warpdrive)
+  end
+
+  def test_should_disable_flag
+    @spaceship.enable_flag(:warpdrive)
+    assert @spaceship.flag_enabled?(:warpdrive)
+
+    @spaceship.disable_flag(:warpdrive)
+    assert @spaceship.flag_disabled?(:warpdrive)
+  end
+
+  def test_should_store_the_flags_correctly
+    @spaceship.enable_flag(:warpdrive)
+    @spaceship.disable_flag(:shields)
+    @spaceship.enable_flag(:electrolytes)
+
+    @spaceship.save!
+    @spaceship.reload
+
+    assert_equal 5, @spaceship.flags
+    assert @spaceship.flag_enabled?(:warpdrive)
+    assert !@spaceship.flag_enabled?(:shields)
+    assert @spaceship.flag_enabled?(:electrolytes)
+  end
+
+  def test_enable_flag_should_leave_the_flag_enabled_when_called_twice
+    2.times do 
+      @spaceship.enable_flag(:warpdrive)
+      assert @spaceship.flag_enabled?(:warpdrive)
+    end
+  end
+
+  def test_disable_flag_should_leave_the_flag_disabled_when_called_twice
+    2.times do 
+      @spaceship.disable_flag(:warpdrive)
+      assert !@spaceship.flag_enabled?(:warpdrive)
+    end
+  end
+
+  def test_should_define_an_attribute_reader_method
+    assert_equal false, @spaceship.warpdrive
+  end
+
+  def test_should_define_an_attribute_reader_predicate_method
+    assert_equal false, @spaceship.warpdrive?
+  end
+
+  def test_should_define_an_attribute_writer_method
+    @spaceship.warpdrive = true
+    assert @spaceship.warpdrive
+  end
+
+  def test_should_respect_true_values_like_active_record
+    [true, 1, '1', 't', 'T', 'true', 'TRUE'].each do |true_value|
+      @spaceship.warpdrive = true_value
+      assert @spaceship.warpdrive
+    end
+
+    [false, 0, '0', 'f', 'F', 'false', 'FALSE'].each do |false_value|
+      @spaceship.warpdrive = false_value
+      assert !@spaceship.warpdrive
+    end
+  end
+
+end
+
+class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
+
+  def setup
+    @spaceship = SpaceCarrier.new
   end
 
   def test_should_enable_flag

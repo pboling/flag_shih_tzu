@@ -9,16 +9,18 @@ module FlagShihTzu
     def has_flags(flag_hash, options = {})
       options = {:named_scopes => true, :column => 'flags'}.update(options)
       
-      @flag_column = options[:column]
+      class_inheritable_reader :flag_column
+      write_inheritable_attribute(:flag_column, options[:column])
       check_flag_column
       
-      @flag_mapping = {}
+      class_inheritable_hash :flag_mapping
+      write_inheritable_attribute(:flag_mapping, {})
       
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
         raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
 
-        @flag_mapping[flag_name] = 2**(flag_key - 1)
+        flag_mapping[flag_name] = 2**(flag_key - 1)
 
         class_eval <<-EVAL
           def #{flag_name}
@@ -49,14 +51,6 @@ module FlagShihTzu
           EVAL
         end
       end
-    end
-
-    def flag_mapping
-      @flag_mapping
-    end
-    
-    def flag_column
-      @flag_column
     end
     
     def check_flag(flag)
