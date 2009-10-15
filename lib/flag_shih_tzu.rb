@@ -61,8 +61,10 @@ module FlagShihTzu
     private 
     
       def check_flag_column
-        unless columns.any? { |column| column.name == flag_column && column.type == :integer }
-          raise "Table '#{table_name}' must have an integer column named '#{flag_column}' in order to use FlagShihTzu"
+        if not table_exists?
+          puts "Error: Table '#{table_name}' doesn't exist" 
+        elsif not columns.any? { |column| column.name == flag_column && column.type == :integer }
+          puts "Error: Table '#{table_name}' must have an integer column named '#{flag_column}' in order to use FlagShihTzu"
         end
       end
 
