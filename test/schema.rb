@@ -1,5 +1,6 @@
 ActiveRecord::Schema.define(:version => 0) do
   create_table :spaceships, :force => true do |t| 
+    t.string :type, :null => false, :default => 'Spaceship'
     t.integer :flags, :null => false, :default => 0
     t.string :incorrect_flags_column, :null => false, :default => ''
   end 
