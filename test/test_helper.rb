@@ -1,13 +1,16 @@
-ENV['RAILS_ENV'] = 'test'
-ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..'
-
+require 'rubygems'
 require 'test/unit'
-require File.expand_path(File.join(ENV['RAILS_ROOT'], 'config/environment.rb')) 
+require 'yaml'
+require 'active_record'
+
+$:.unshift File.join(File.dirname(__FILE__), '../lib')
+
+require 'init'
 
 def load_schema
   config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
   ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
-  db_adapter = ENV['DB']
+  db_adapter = ENV['DB'] || 'sqlite3'
   
   # no DB passed, try sqlite3 by default
   db_adapter ||=
