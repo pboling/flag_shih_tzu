@@ -10,22 +10,26 @@ module FlagShihTzu
 
   module ClassMethods
     def has_flags(flag_hash, options = {})
-      options = {:named_scopes => true, :column => 'flags'}.update(options)
+      options = {:named_scopes => true, :column => 'flags', :verbose => false}.update(options)
 
       class_inheritable_reader :flag_column
       write_inheritable_attribute(:flag_column, options[:column])
+
       flag_column = options[:column]
       check_flag_column(flag_column)
 
       class_inheritable_hash :flag_mapping
-      write_inheritable_attribute(:flag_mapping, {})
-      
+      # if has_flags is used more than once in a single class, then flag_mapping will already have data in it in successive declarations
+      write_inheritable_attribute(:flag_mapping, {}) if flag_mapping.nil?
+
+      # initialize flag_mapping for this column
+      flag_mapping[flag_column] ||= {}
+
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
         raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
         raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name" if method_defined?(flag_name)
 
-        flag_mapping[flag_column] ||= {}
         flag_mapping[flag_column][flag_name] = 1 << (flag_key - 1)
 
         class_eval <<-EVAL
@@ -50,33 +54,46 @@ module FlagShihTzu
           end
         EVAL
 
-        if options[:named_scopes]
+        if respond_to?(:named_scope) && options[:named_scopes]
           class_eval <<-EVAL
             named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
             named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
           EVAL
         end
       end
+      
     end
 
     def check_flag(flag, colmn)
-      raise ArgumentError, "Invalid flag '#{flag}'" unless flag_mapping[colmn].include?(flag)
+      raise ArgumentError, "Column name '#{colmn}' for flag '#{flag}' is not a string" unless colmn.is_a?(String)
+      raise ArgumentError, "Invalid flag '#{flag}'" if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
     end
 
     
     private
     
-      def check_flag_column(colmn)
-        puts "Error: Table '#{table_name}' doesn't exist"  and return false if not table_exists?
+      def check_flag_column(colmn, custom_table_name = self.table_name)
+        # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
+        # If you are using ActiveRecord then you only want to check column if the table exists so it won't fail pre-migration
+        has_ar = defined?(ActiveRecord) && self.is_a?(ActiveRecord::Base)
+        has_column = has_ar ? ActiveRecord::Base.connection.tables.include?(custom_table_name) : true
+
+        puts "Error: Table '#{custom_table_name}' doesn't exist" and return false unless has_column
         unless columns.any? { |column| column.name == colmn && column.type == :integer }
-          raise IncorrectFlagColumnException.new("Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
+          raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
         end
       end
 
-      def sql_condition_for_flag(flag, colmn, enabled = true)
+      def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
 
-        "(#{table_name}.#{colmn.to_s} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
+        "(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
+      end
+
+      def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
+        check_flag(flag, colmn)
+
+        "#{custom_table_name}.#{colmn} = #{custom_table_name}.#{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
       end
     
       def is_valid_flag_key(flag_key)

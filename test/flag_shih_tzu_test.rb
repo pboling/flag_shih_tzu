@@ -98,6 +98,10 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags & 2 = 0)", Spaceship.not_shields_condition
     assert_equal "(spaceships.flags & 4 = 0)", Spaceship.not_electrolytes_condition
   end
+  
+  def test_should_define_a_sql_condition_method_for_flag_enabled_with_custom_table_name
+    assert_equal "(custom_spaceships.flags & 1 = 1)", Spaceship.send( :sql_condition_for_flag, :warpdrive, 'flags', true, 'custom_spaceships')
+  end  
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_2_colmns_not_enabled
     assert_equal "(spaceships_with_2_custom_flags_column.bits & 1 = 0)", SpaceshipWith2CustomFlagsColumn.not_warpdrive_condition
@@ -360,10 +364,6 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
   end
 
   def test_should_define_an_attribute_reader_method
-    assert_equal false, @spaceship.warpdrive
-  end
-
-  def test_should_define_an_attribute_reader_predicate_method
     assert_equal false, @spaceship.warpdrive?
   end
 
@@ -384,4 +384,8 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_return_a_sql_set_method_for_flag
+    assert_equal "spaceships.flags = spaceships.flags | 1",  Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', true)
+    assert_equal "spaceships.flags = spaceships.flags & ~1", Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', false)
+  end
 end
