@@ -14,8 +14,9 @@ module FlagShihTzu
 
       class_inheritable_reader :flag_column
       write_inheritable_attribute(:flag_column, options[:column])
-      check_flag_column
-      
+      flag_column = options[:column]
+      check_flag_column(flag_column)
+
       class_inheritable_hash :flag_mapping
       write_inheritable_attribute(:flag_mapping, {})
       
@@ -24,7 +25,8 @@ module FlagShihTzu
         raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
         raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name" if method_defined?(flag_name)
 
-        flag_mapping[flag_name] = 2**(flag_key - 1)
+        flag_mapping[flag_column] ||= {}
+        flag_mapping[flag_column][flag_name] = 1 << (flag_key - 1)
 
         class_eval <<-EVAL
           def #{flag_name}
@@ -57,29 +59,26 @@ module FlagShihTzu
       end
     end
 
-    def check_flag(flag)
-      raise ArgumentError, "Invalid flag '#{flag}'" unless flag_mapping.include?(flag)
+    def check_flag(flag, colmn)
+      raise ArgumentError, "Invalid flag '#{flag}'" unless flag_mapping[colmn].include?(flag)
     end
+
     
-    private 
+    private
     
-      def check_flag_column
-#        def check_flag_column(colmn)
-#          unless columns.any? { |column| column.name == colmn && column.type == :integer }
-#            raise IncorrectFlagColumnException.new("Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
-        if not table_exists?
-          puts "Error: Table '#{table_name}' doesn't exist" 
-        elsif not columns.any? { |column| column.name == flag_column && column.type == :integer }
-          puts "Error: Table '#{table_name}' must have an integer column named '#{flag_column}' in order to use FlagShihTzu"
+      def check_flag_column(colmn)
+        puts "Error: Table '#{table_name}' doesn't exist"  and return false if not table_exists?
+        unless columns.any? { |column| column.name == colmn && column.type == :integer }
+          raise IncorrectFlagColumnException.new("Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
         end
       end
 
       def sql_condition_for_flag(flag, colmn, enabled = true)
-        check_flag(flag)
+        check_flag(flag, colmn)
 
         "(#{table_name}.#{colmn.to_s} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
       end
-
+    
       def is_valid_flag_key(flag_key)
         flag_key > 0 && flag_key == flag_key.to_i
       end
