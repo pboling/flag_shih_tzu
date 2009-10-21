@@ -74,13 +74,16 @@ module FlagShihTzu
     
       def check_flag_column(colmn, custom_table_name = self.table_name)
         # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
-        # If you are using ActiveRecord then you only want to check column if the table exists so it won't fail pre-migration
+        # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration
         has_ar = defined?(ActiveRecord) && self.is_a?(ActiveRecord::Base)
-        has_column = has_ar ? ActiveRecord::Base.connection.tables.include?(custom_table_name) : true
+        # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
+        has_table = has_ar ? ActiveRecord::Base.connection.tables.include?(custom_table_name) : true
 
-        puts "Error: Table '#{custom_table_name}' doesn't exist" and return false unless has_column
-        unless columns.any? { |column| column.name == colmn && column.type == :integer }
-          raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
+        puts "Error: Table '#{custom_table_name}' doesn't exist" and return false unless has_table
+        if !has_ar || (has_ar && has_table)
+          unless columns.any? { |column| column.name == colmn && column.type == :integer }
+            raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
+          end
         end
       end
 
