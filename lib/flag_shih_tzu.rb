@@ -9,7 +9,8 @@ module FlagShihTzu
   class NoSuchFlagException < Exception; end
 
   module ClassMethods
-    def has_flags(flag_hash, options = {})
+    def has_flags(*args)
+      flag_hash, options = parse_options(*args)
       options = {:named_scopes => true, :column => 'flags', :verbose => false}.update(options)
 
       class_inheritable_reader :flag_column
@@ -72,6 +73,19 @@ module FlagShihTzu
     
     private
     
+      def parse_options(*args)
+        options = args.shift
+        if args.size >= 1
+          add_options = args.shift
+        else
+          add_options = options.keys.select {|key| !key.is_a?(Fixnum)}.inject({}) do |hash, key|
+            hash[key] = options.delete(key)
+            hash
+          end
+        end
+        return options, add_options
+      end
+
       def check_flag_column(colmn, custom_table_name = self.table_name)
         # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
         # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration

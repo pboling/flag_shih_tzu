@@ -92,7 +92,7 @@ Read more about bit fields here: <http://en.wikipedia.org/wiki/Bit_field>
 The default column name to store the flags is 'flags', but you can provide a 
 custom column name using the `:column` option:
 
-    has_flags({ 1 => :warpdrive }, :column => 'bits')
+    has_flags(1 => :warpdrive , :column => 'bits')
 
 
 ### Generated instance methods
@@ -125,7 +125,7 @@ The following named scopes become available:
 If you do not want the named scopes to be defined, set the
 `:named_scopes` option to false when calling has_flags:
     
-    has_flags({ 1 => :warpdrive, 2 => :shields, 3 => :electrolytes }, :named_scopes => false)
+    has_flags(1 => :warpdrive, 2 => :shields, 3 => :electrolytes, :named_scopes => false)
 
 
 ### Support for manually building conditions
@@ -188,6 +188,9 @@ Please find out more about our work in our
 ## Contributors
 
 [TobiTobes](http://github.com/rngtng)
+[Martin Stannard](http://github.com/martinstannard)
+[pboling](http://github.com/pboling)
+[Thorsten Böttger](http://github.com/alto)
 
 
 ## License
