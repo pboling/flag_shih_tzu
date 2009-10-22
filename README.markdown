@@ -187,9 +187,9 @@ Please find out more about our work in our
 
 ## Contributors
 
-[TobiTobes](http://github.com/rngtng)
-[Martin Stannard](http://github.com/martinstannard)
-[pboling](http://github.com/pboling)
+[TobiTobes](http://github.com/rngtng),
+[Martin Stannard](http://github.com/martinstannard),
+[pboling](http://github.com/pboling),
 [Thorsten Böttger](http://github.com/alto)
 
 
