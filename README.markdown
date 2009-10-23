@@ -189,6 +189,7 @@ Please find out more about our work in our
 
 [TobiTobes](http://github.com/rngtng),
 [Martin Stannard](http://github.com/martinstannard),
+[Ladislav Martincik](http://github.com/lacomartincik),
 [Peter Boling](http://github.com/pboling),
 [Thorsten Böttger](http://github.com/alto)
 
