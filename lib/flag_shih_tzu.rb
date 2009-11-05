@@ -79,7 +79,7 @@ module FlagShihTzu
     def check_flag_column(colmn, custom_table_name = self.table_name)
       # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
       # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration
-      has_ar = (defined?(ActiveRecord) && ActiveRecord::Base.connection.respond_to?(:tables))
+      has_ar = (defined?(ActiveRecord) && ActiveRecord::Base.connected?)
       puts "ActiveRecord, or database connection not found. FlagShihTzu may not work without Active Record." and return true unless has_ar
       # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
       if ActiveRecord::Base.connection.tables.include?(custom_table_name)
