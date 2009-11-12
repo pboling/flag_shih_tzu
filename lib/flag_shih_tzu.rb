@@ -53,6 +53,14 @@ module FlagShihTzu
           def self.not_#{flag_name}_condition
             sql_condition_for_flag(:#{flag_name}, '#{flag_column}', false)
           end
+
+          def self.set_#{flag_name}_sql
+            sql_set_for_flag(:#{flag_name}, '#{flag_column}', true)
+          end
+
+          def self.unset_#{flag_name}_sql
+            sql_set_for_flag(:#{flag_name}, '#{flag_column}', false)
+          end
         EVAL
 
         if respond_to?(:named_scope) && options[:named_scopes]
