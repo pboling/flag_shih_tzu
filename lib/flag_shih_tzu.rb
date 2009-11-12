@@ -96,7 +96,7 @@ module FlagShihTzu
         puts "Error: Table '#{custom_table_name}' doesn't exist" and return false unless has_table
         if !has_ar || (has_ar && has_table)
           unless columns.any? { |column| column.name == colmn && column.type == :integer }
-            raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
+            logger.warn("Warning: Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
           end
         end
       end
