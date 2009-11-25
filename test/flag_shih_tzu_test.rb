@@ -298,9 +298,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
   
   def test_check_flag_column_raises_error_if_column_not_in_list_of_attributes
-    assert_raises FlagShihTzu::IncorrectFlagColumnException do
-      @spaceship.class.send(:check_flag_column, 'incorrect_flags_column')
-    end
+    assert_equal false, @spaceship.class.send(:check_flag_column, 'incorrect_flags_column')
   end
   
   def test_check_flag_column_raises_error_if_column_not_integer
