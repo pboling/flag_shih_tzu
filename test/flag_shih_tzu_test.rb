@@ -14,14 +14,21 @@ class SpaceshipWithoutNamedScopes < ActiveRecord::Base
   set_table_name 'spaceships'
   include FlagShihTzu
 
-  has_flags({ 1 => :warpdrive }, :named_scopes => false)
+  has_flags(1 => :warpdrive, :named_scopes => false)
+end
+
+class SpaceshipWithoutNamedScopesOldStyle < ActiveRecord::Base
+  set_table_name 'spaceships'
+  include FlagShihTzu
+
+  has_flags({1 => :warpdrive}, :named_scopes => false)
 end
 
 class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
   set_table_name 'spaceships_with_custom_flags_column'
   include FlagShihTzu
 
-  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'bits')
+  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
 end
 
 class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
@@ -160,6 +167,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
   def test_should_not_define_named_scopes_if_not_wanted
     assert !SpaceshipWithoutNamedScopes.respond_to?(:warpdrive)
+    assert !SpaceshipWithoutNamedScopesOldStyle.respond_to?(:warpdrive)
   end
 
   def test_should_work_with_a_custom_flags_column
