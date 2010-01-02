@@ -17,9 +17,6 @@ module FlagShihTzu
       write_inheritable_attribute(:flag_column, options[:column])
 
       flag_column = options[:column]
-      # If the flag column is not in the table, then we cannot declare the rest of this code (it would fail).
-      # This should allow the has_flags to be in the model in development even before the migration runs,
-      #   and crucially, *when* the migration is running.
       if check_flag_column(flag_column)
 
         class_inheritable_hash :flag_mapping
@@ -74,7 +71,6 @@ module FlagShihTzu
           end
         end
       end
-
     end
 
     def check_flag(flag, colmn)
