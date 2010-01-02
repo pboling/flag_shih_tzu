@@ -53,6 +53,14 @@ module FlagShihTzu
           def self.not_#{flag_name}_condition
             sql_condition_for_flag(:#{flag_name}, '#{flag_column}', false)
           end
+
+          def self.set_#{flag_name}_sql
+            sql_set_for_flag(:#{flag_name}, '#{flag_column}', true)
+          end
+
+          def self.unset_#{flag_name}_sql
+            sql_set_for_flag(:#{flag_name}, '#{flag_column}', false)
+          end
         EVAL
 
         if respond_to?(:named_scope) && options[:named_scopes]
@@ -96,7 +104,7 @@ module FlagShihTzu
         puts "Error: Table '#{custom_table_name}' doesn't exist" and return false unless has_table
         if !has_ar || (has_ar && has_table)
           unless columns.any? { |column| column.name == colmn && column.type == :integer }
-            raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
+            logger.warn("Warning: Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
           end
         end
       end
