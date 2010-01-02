@@ -304,7 +304,13 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
   
   def test_check_flag_column_raises_error_if_column_not_integer
-    
+    assert_raises FlagShihTzu::IncorrectFlagColumnException do
+      Class.new(ActiveRecord::Base) do
+        set_table_name 'spaceships_with_non_integer_flags_column'
+        include FlagShihTzu
+        has_flags 1 => :warpdrive, 2 => :hyperspace
+      end
+    end
   end
 
   def test_column_guessing_for_default_column
