@@ -8,7 +8,7 @@ $LOAD_PATH << 'vendor/plugins/flag_shih_tzu/lib/'
 require 'test/unit'
 require 'yaml'
 require 'rubygems'
-require 'activerecord'
+require 'active_record'
 require 'flag_shih_tzu' 
 
 def load_schema
