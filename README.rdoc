@@ -202,7 +202,8 @@ Please find out more about our work in our
 {Martin Stannard}[http://github.com/martinstannard],
 {Ladislav Martincik}[http://github.com/lacomartincik],
 {Peter Boling}[http://github.com/pboling],
-{Thorsten Boettger}[http://github.com/alto]
+{Thorsten Boettger}[http://github.com/alto],
+{Darren Torpey}[http://github.com/darrentorpey]
 
 
 ==License
