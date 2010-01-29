@@ -103,14 +103,21 @@ module FlagShihTzu
 
       def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
+        neg = enabled ? "" : "not "
 
-        "(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
+        "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
       end
 
       def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
 
         "#{custom_table_name}.#{colmn} = #{custom_table_name}.#{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
+      end
+      
+      def sql_in_for_flag(flag, colmn)
+        val = flag_mapping[colmn][flag]
+        num = 2 ** flag_mapping[flag_column].length
+        (1..num).select {|i| i & val == val}
       end
     
       def is_valid_flag_key(flag_key)
