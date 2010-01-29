@@ -297,14 +297,40 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     end
   end
   
-  def test_check_flag_column_raises_error_if_column_not_in_list_of_attributes
-    assert_raises FlagShihTzu::IncorrectFlagColumnException do
-      @spaceship.class.send(:check_flag_column, 'incorrect_flags_column')
+  def test_should_ignore_has_flags_call_if_column_does_not_exist_yet
+    assert_nothing_raised do
+      eval(<<-EOF
+        class SpaceshipWithoutFlagsColumn < ActiveRecord::Base
+          set_table_name 'spaceships_without_flags_column'
+          include FlagShihTzu
+
+          has_flags 1 => :warpdrive,
+                    2 => :shields,
+                    3 => :electrolytes
+        end
+      EOF
+      )
     end
+    
+    assert !SpaceshipWithoutFlagsColumn.method_defined?(:warpdrive)
   end
   
-  def test_check_flag_column_raises_error_if_column_not_integer
-    
+  def test_should_ignore_has_flags_call_if_column_not_integer
+    assert_raises FlagShihTzu::IncorrectFlagColumnException do
+      eval(<<-EOF
+        class SpaceshipWithNonIntegerColumn < ActiveRecord::Base
+          set_table_name 'spaceships_with_non_integer_column'
+          include FlagShihTzu
+
+          has_flags 1 => :warpdrive,
+                    2 => :shields,
+                    3 => :electrolytes
+        end
+      EOF
+      )
+    end
+
+    assert !SpaceshipWithoutFlagsColumn.method_defined?(:warpdrive)
   end
 
   def test_column_guessing_for_default_column

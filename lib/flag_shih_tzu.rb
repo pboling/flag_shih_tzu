@@ -16,8 +16,7 @@ module FlagShihTzu
       class_inheritable_reader :flag_column
       write_inheritable_attribute(:flag_column, options[:column])
 
-      flag_column = options[:column]
-      check_flag_column(flag_column)
+      return unless check_flag_column(flag_column)
 
       class_inheritable_hash :flag_mapping
       # if has_flags is used more than once in a single class, then flag_mapping will already have data in it in successive declarations
@@ -93,12 +92,18 @@ module FlagShihTzu
         # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
         has_table = has_ar ? ActiveRecord::Base.connection.tables.include?(custom_table_name) : true
 
-        puts "Error: Table '#{custom_table_name}' doesn't exist" and return false unless has_table
+        logger.warn("Error: Table '#{custom_table_name}' doesn't exist") and return false unless has_table
+        
         if !has_ar || (has_ar && has_table)
-          unless columns.any? { |column| column.name == colmn && column.type == :integer }
-            raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu")
-          end
+          has_column = columns.any? { |column| column.name == colmn }
+          is_integer_column = columns.any? { |column| column.name == colmn && column.type == :integer }
+
+          logger.warn("Warning: Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu") and return false unless has_column
+
+          raise IncorrectFlagColumnException, "Warning: Column '#{colmn}'must be of type integer in order to use FlagShihTzu" unless is_integer_column
         end
+        
+        true
       end
 
       def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
