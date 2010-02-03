@@ -126,12 +126,12 @@ on Spaceship:
 
 The following named scopes become available:
 
-  Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
-  Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
-  Spaceship.shields           # :conditions => "(spaceships.flags & 2 = 2)"
-  Spaceship.not_shields       # :conditions => "(spaceships.flags & 2 = 0)"
-  Spaceship.electrolytes      # :conditions => "(spaceships.flags & 4 = 4)"
-  Spaceship.not_electrolytes  # :conditions => "(spaceships.flags & 4 = 0)"
+  Spaceship.warpdrive         # :conditions => "(spaceships.flags in (1,3,5,7))"
+  Spaceship.not_warpdrive     # :conditions => "(spaceships.flags not in (1,3,5,7))"
+  Spaceship.shields           # :conditions => "(spaceships.flags in (2,3,6,7))"
+  Spaceship.not_shields       # :conditions => "(spaceships.flags not in (2,3,6,7))"
+  Spaceship.electrolytes      # :conditions => "(spaceships.flags in (4,5,6,7))"
+  Spaceship.not_electrolytes  # :conditions => "(spaceships.flags not in (4,5,6,7))"
     
 If you do not want the named scopes to be defined, set the
 <tt>:named_scopes</tt> option to false when calling +has_flags+:
@@ -144,12 +144,12 @@ If you do not want the named scopes to be defined, set the
 The following class methods may support you when manually building 
 ActiveRecord conditions:
 
-  Spaceship.warpdrive_condition         # "(spaceships.flags & 1 = 1)"
-  Spaceship.not_warpdrive_condition     # "(spaceships.flags & 1 = 0)"
-  Spaceship.shields_condition           # "(spaceships.flags & 2 = 2)"
-  Spaceship.not_shields_condition       # "(spaceships.flags & 2 = 0)"
-  Spaceship.electrolytes_condition      # "(spaceships.flags & 4 = 4)"
-  Spaceship.not_electrolytes_condition  # "(spaceships.flags & 4 = 0)"
+  Spaceship.warpdrive_condition         # "(spaceships.flags in (1,3,5,7))"
+  Spaceship.not_warpdrive_condition     # "(spaceships.flags not in (1,3,5,7))"
+  Spaceship.shields_condition           # "(spaceships.flags in (2,3,6,7))"
+  Spaceship.not_shields_condition       # "(spaceships.flags not in (2,3,6,7))"
+  Spaceship.electrolytes_condition      # "(spaceships.flags in (4,5,6,7))"
+  Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
   
 
 ===Example code
@@ -203,7 +203,8 @@ Please find out more about our work in our
 {Ladislav Martincik}[http://github.com/lacomartincik],
 {Peter Boling}[http://github.com/pboling],
 {Thorsten Boettger}[http://github.com/alto],
-{Darren Torpey}[http://github.com/darrentorpey]
+{Darren Torpey}[http://github.com/darrentorpey] and 
+{Joost Baaij}[http://github.com/tilsammans]
 
 
 ==License
