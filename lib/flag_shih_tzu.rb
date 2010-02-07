@@ -1,5 +1,6 @@
 module FlagShihTzu
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
+  SQL_IN_LIMITATION = 16
 
   def self.included(base)
     base.extend(ClassMethods)
@@ -108,9 +109,15 @@ module FlagShihTzu
 
       def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
-        neg = enabled ? "" : "not "
-
-        "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
+        
+        # use & bit operator directly in the SQL query for more than SQL_IN_LIMITATION flags.
+        # This has the drawback of fetching all records, but MySQL cannot handle more than 64k elements inside the IN parentheses.
+        if flag_mapping[flag_column].length > SQL_IN_LIMITATION
+          "(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
+        else
+          neg = enabled ? "" : "not "
+          "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
+        end
       end
 
       def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
@@ -119,6 +126,7 @@ module FlagShihTzu
         "#{custom_table_name}.#{colmn} = #{custom_table_name}.#{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
       end
       
+      # returns an array of integers suitable for a SQL IN statement.
       def sql_in_for_flag(flag, colmn)
         val = flag_mapping[colmn][flag]
         num = 2 ** flag_mapping[flag_column].length

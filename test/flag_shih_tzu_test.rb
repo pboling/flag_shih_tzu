@@ -39,10 +39,22 @@ class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => 'commanders')
 end
 
+# 17 flags is where mysql cannot handle the IN query any more.
+class SpaceshipFlagsGalore < ActiveRecord::Base
+  set_table_name 'spaceships'
+  include FlagShihTzu
+  
+  has_flags Hash[*(1..17).collect {|v| [v, :"flag#{v}" ]}.flatten]
+end
+
 class SpaceCarrier < Spaceship
 end
 
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
+  
+  def setup
+    Spaceship.destroy_all
+  end
 
   def test_has_flags_should_raise_an_exception_when_flag_key_is_negative
     assert_raises ArgumentError do
@@ -116,6 +128,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships_with_2_custom_flags_column.commanders not in (1,3))", SpaceshipWith2CustomFlagsColumn.not_jeanlucpicard_condition
     assert_equal "(spaceships_with_2_custom_flags_column.commanders not in (2,3))", SpaceshipWith2CustomFlagsColumn.not_dajanatroj_condition
   end
+  
+  def test_should_define_a_sql_condition_method_for_flag_enabled_with_many_flags
+    assert_equal "(spaceships.flags & 1 = 1)", SpaceshipFlagsGalore.flag1_condition
+    assert_equal "(spaceships.flags & 65536 = 65536)", SpaceshipFlagsGalore.flag17_condition
+  end
 
   def test_should_define_a_named_scope_for_flag_enabled
     assert_equal({ :conditions => "(spaceships.flags in (1,3,5,7))" }, Spaceship.warpdrive.proxy_options)
@@ -141,6 +158,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "(spaceships_with_2_custom_flags_column.bits not in (2,3))" }, SpaceshipWith2CustomFlagsColumn.not_hyperspace.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_2_custom_flags_column.commanders not in (1,3))" }, SpaceshipWith2CustomFlagsColumn.not_jeanlucpicard.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_2_custom_flags_column.commanders not in (2,3))" }, SpaceshipWith2CustomFlagsColumn.not_dajanatroj.proxy_options)
+  end
+  
+  def test_should_define_a_named_scope_for_flag_enabled_with_many_flags
+    assert_equal({ :conditions => "(spaceships.flags & 1 = 1)" }, SpaceshipFlagsGalore.flag1.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 65536 = 65536)" }, SpaceshipFlagsGalore.flag17.proxy_options)
   end
 
   def test_should_return_the_correct_number_of_items_from_a_named_scope
@@ -185,6 +207,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits not in (1,3))" }, SpaceshipWithCustomFlagsColumn.not_warpdrive.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits in (2,3))" }, SpaceshipWithCustomFlagsColumn.hyperspace.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits not in (2,3))" }, SpaceshipWithCustomFlagsColumn.not_hyperspace.proxy_options)
+  end
+  
+  def test_combined_named_scopes_should_work_for_many_flags
+    spaceship = SpaceshipFlagsGalore.create :flag3 => true, :flag8 => false, :flag10 => true, :flag11 => false
+    assert_equal SpaceshipFlagsGalore.flag3.not_flag8.flag10.not_flag11.count, 1
   end
 
 end
