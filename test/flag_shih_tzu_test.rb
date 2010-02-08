@@ -444,9 +444,4 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
       assert !@spaceship.warpdrive
     end
   end
-
-  def test_should_return_a_sql_set_method_for_flag
-    assert_equal "spaceships.flags = spaceships.flags | 1",  Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', true)
-    assert_equal "spaceships.flags = spaceships.flags & ~1", Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', false)
-  end
 end
