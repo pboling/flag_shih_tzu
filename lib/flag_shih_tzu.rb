@@ -1,5 +1,6 @@
 module FlagShihTzu
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
+  DEFAULT_COLUMN_NAME = 'flags'
 
   def self.included(base)
     base.extend(ClassMethods)
@@ -14,7 +15,7 @@ module FlagShihTzu
       flag_hash, options = parse_options(*args)
       options = {
         :named_scopes => true, 
-        :column => 'flags', 
+        :column => DEFAULT_COLUMN_NAME, 
         :flag_query_mode => :in_list
       }.update(options)
       
@@ -182,7 +183,7 @@ module FlagShihTzu
     !flag_enabled?(flag, colmn)
   end
 
-  def flags(colmn = 'flags')
+  def flags(colmn = DEFAULT_COLUMN_NAME)
     self[colmn] || 0
   end
 
@@ -197,7 +198,7 @@ module FlagShihTzu
     end
 
     def determine_flag_colmn_for(flag)
-      return 'flags' if self.class.flag_mapping.nil?
+      return DEFAULT_COLUMN_NAME if self.class.flag_mapping.nil?
       self.class.flag_mapping.each_pair do |colmn, mapping|
         return colmn if mapping.include?(flag)
       end
