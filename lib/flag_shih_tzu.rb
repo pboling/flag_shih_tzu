@@ -1,23 +1,34 @@
 module FlagShihTzu
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
-  SQL_IN_LIMITATION = 16
 
   def self.included(base)
     base.extend(ClassMethods)
   end
   
   class IncorrectFlagColumnException < Exception; end
+  class NoSuchFlagQueryModeException < Exception; end
   class NoSuchFlagException < Exception; end
 
   module ClassMethods
     def has_flags(*args)
       flag_hash, options = parse_options(*args)
-      options = {:named_scopes => true, :column => 'flags', :verbose => false}.update(options)
+      options = {
+        :named_scopes => true, 
+        :column => 'flags', 
+        :flag_query_mode => :in_list
+      }.update(options)
 
       class_inheritable_reader :flag_column
       write_inheritable_attribute(:flag_column, options[:column])
 
       return unless check_flag_column(flag_column)
+
+
+      class_inheritable_hash :flag_query_mode
+      write_inheritable_attribute(:flag_query_mode, {}) if flag_query_mode.nil?
+      # initialize flag_query_mode for this column
+      flag_query_mode[flag_column] = options[:flag_query_mode]
+
 
       class_inheritable_hash :flag_mapping
       # if has_flags is used more than once in a single class, then flag_mapping will already have data in it in successive declarations
@@ -25,6 +36,7 @@ module FlagShihTzu
 
       # initialize flag_mapping for this column
       flag_mapping[flag_column] ||= {}
+
 
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
@@ -110,13 +122,17 @@ module FlagShihTzu
       def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
         
-        # use & bit operator directly in the SQL query for more than SQL_IN_LIMITATION flags.
-        # This has the drawback of fetching all records, but MySQL cannot handle more than 64k elements inside the IN parentheses.
-        if flag_mapping[flag_column].length > SQL_IN_LIMITATION
+        if flag_query_mode[flag_column] == :bit_operator
+          # use & bit operator directly in the SQL query.
+          # This has the drawback of not using an index on the flags colum.
           "(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
-        else
+        elsif flag_query_mode[flag_column] == :in_list
+          # use IN() operator in the SQL query.
+          # This has the drawback of becoming a big query when you have lots of flags.
           neg = enabled ? "" : "not "
           "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
+        else
+          raise NoSuchFlagQueryModeException
         end
       end
 

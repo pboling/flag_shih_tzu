@@ -152,6 +152,37 @@ ActiveRecord conditions:
   Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
   
 
+===Choosing a query mode
+
+While the default way of building the SQL conditions uses an IN() list 
+(as shown above), this approach will not work well for a high number of flags, 
+as the value list for IN() grows. 
+
+For MySQL, depending on your MySQL settings, this can even hit the 
+'max_allowed_packet' limit with the generated query.
+
+In this case, consider changing the flag query mode to <tt>:bit_operator</tt> 
+instead of <tt>:in_list</tt>, like so:
+
+  has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
+
+This will modify the generated condition and named_scope methods to use bit 
+operators in the SQL instead of an IN() list:
+
+  Spaceship.warpdrive_condition         # "(spaceships.flags & 1 = 1)", 
+  Spaceship.not_warpdrive_condition     # "(spaceships.flags & 1 = 0)", 
+  Spaceship.shields_condition           # "(spaceships.flags & 2 = 2)", 
+  Spaceship.not_shields_condition       # "(spaceships.flags & 2 = 0)", 
+
+  Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
+  Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
+  Spaceship.shields           # :conditions => "(spaceships.flags & 2 = 2)"
+  Spaceship.not_shields       # :conditions => "(spaceships.flags & 2 = 0)"
+
+The drawback is that due to the bit operator, this query can not use an index
+on the flags column.
+
+
 ===Example code
 
   enterprise = Spaceship.new
