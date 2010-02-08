@@ -136,6 +136,7 @@ module FlagShihTzu
       end
   end
 
+  # Performs the bitwise operation so the flag will return +true+.
   def enable_flag(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
@@ -143,6 +144,7 @@ module FlagShihTzu
     set_flags(self.flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
   end
 
+  # Performs the bitwise operation so the flag will return +false+.
   def disable_flag(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
