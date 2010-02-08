@@ -93,20 +93,20 @@ module FlagShihTzu
         return options, add_options
       end
 
-      def check_flag_column(colmn, custom_table_name = self.table_name)
+      def check_flag_column(colmn, table_name = self.table_name)
         # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
         # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration
         has_ar = defined?(ActiveRecord) && self.is_a?(ActiveRecord::Base)
         # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
-        has_table = has_ar ? ActiveRecord::Base.connection.tables.include?(custom_table_name) : true
+        has_table = has_ar ? ActiveRecord::Base.connection.tables.include?(table_name) : true
 
-        logger.warn("Error: Table '#{custom_table_name}' doesn't exist") and return false unless has_table
+        logger.warn("Error: Table '#{table_name}' doesn't exist") and return false unless has_table
         
         if !has_ar || (has_ar && has_table)
           has_column = columns.any? { |column| column.name == colmn }
           is_integer_column = columns.any? { |column| column.name == colmn && column.type == :integer }
 
-          logger.warn("Warning: Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu") and return false unless has_column
+          logger.warn("Warning: Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu") and return false unless has_column
 
           raise IncorrectFlagColumnException, "Warning: Column '#{colmn}'must be of type integer in order to use FlagShihTzu" unless is_integer_column
         end
