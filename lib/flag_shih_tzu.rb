@@ -17,17 +17,17 @@ module FlagShihTzu
         :column => 'flags', 
         :flag_query_mode => :in_list
       }.update(options)
+      
+      class_inheritable_hash :options
+      write_inheritable_attribute :options, options
 
-      class_inheritable_reader :flag_column
-      write_inheritable_attribute(:flag_column, options[:column])
-
-      return unless check_flag_column(flag_column)
+      return unless check_flag_column(options[:column])
 
 
       class_inheritable_hash :flag_query_mode
       write_inheritable_attribute(:flag_query_mode, {}) if flag_query_mode.nil?
       # initialize flag_query_mode for this column
-      flag_query_mode[flag_column] = options[:flag_query_mode]
+      flag_query_mode[options[:column]] = options[:flag_query_mode]
 
 
       class_inheritable_hash :flag_mapping
@@ -35,7 +35,7 @@ module FlagShihTzu
       write_inheritable_attribute(:flag_mapping, {}) if flag_mapping.nil?
 
       # initialize flag_mapping for this column
-      flag_mapping[flag_column] ||= {}
+      flag_mapping[options[:column]] ||= {}
 
 
       flag_hash.each do |flag_key, flag_name|
@@ -43,27 +43,27 @@ module FlagShihTzu
         raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
         raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name" if method_defined?(flag_name)
 
-        flag_mapping[flag_column][flag_name] = 1 << (flag_key - 1)
+        flag_mapping[options[:column]][flag_name] = 1 << (flag_key - 1)
 
         class_eval <<-EVAL
           def #{flag_name}
-            flag_enabled?(:#{flag_name}, '#{flag_column}')
+            flag_enabled?(:#{flag_name}, '#{options[:column]}')
           end
 
           def #{flag_name}?
-            flag_enabled?(:#{flag_name}, '#{flag_column}')
+            flag_enabled?(:#{flag_name}, '#{options[:column]}')
           end
 
           def #{flag_name}=(value)
-            FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}, '#{flag_column}') : disable_flag(:#{flag_name}, '#{flag_column}')
+            FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}, '#{options[:column]}') : disable_flag(:#{flag_name}, '#{options[:column]}')
           end
 
           def self.#{flag_name}_condition
-            sql_condition_for_flag(:#{flag_name}, '#{flag_column}', true)
+            sql_condition_for_flag(:#{flag_name}, '#{options[:column]}', true)
           end
 
           def self.not_#{flag_name}_condition
-            sql_condition_for_flag(:#{flag_name}, '#{flag_column}', false)
+            sql_condition_for_flag(:#{flag_name}, '#{options[:column]}', false)
           end
         EVAL
 
@@ -122,11 +122,11 @@ module FlagShihTzu
       def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
         
-        if flag_query_mode[flag_column] == :bit_operator
+        if flag_query_mode[options[:column]] == :bit_operator
           # use & bit operator directly in the SQL query.
           # This has the drawback of not using an index on the flags colum.
           "(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
-        elsif flag_query_mode[flag_column] == :in_list
+        elsif flag_query_mode[options[:column]] == :in_list
           # use IN() operator in the SQL query.
           # This has the drawback of becoming a big query when you have lots of flags.
           neg = enabled ? "" : "not "
@@ -139,7 +139,7 @@ module FlagShihTzu
       # returns an array of integers suitable for a SQL IN statement.
       def sql_in_for_flag(flag, colmn)
         val = flag_mapping[colmn][flag]
-        num = 2 ** flag_mapping[flag_column].length
+        num = 2 ** flag_mapping[options[:column]].length
         (1..num).select {|i| i & val == val}
       end
     
