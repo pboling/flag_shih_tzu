@@ -120,12 +120,6 @@ module FlagShihTzu
         end
       end
 
-      def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
-        check_flag(flag, colmn)
-
-        "#{custom_table_name}.#{colmn} = #{custom_table_name}.#{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
-      end
-      
       # returns an array of integers suitable for a SQL IN statement.
       def sql_in_for_flag(flag, colmn)
         val = flag_mapping[colmn][flag]
