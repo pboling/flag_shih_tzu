@@ -5,8 +5,8 @@ class Spaceship < ActiveRecord::Base
   set_table_name 'spaceships'
   include FlagShihTzu
 
-  has_flags 1 => :warpdrive,
-            2 => :shields,
+  has_flags 1 => :warpdrive, 
+            2 => :shields, 
             3 => :electrolytes
 end
 
@@ -39,12 +39,11 @@ class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => 'commanders')
 end
 
-# 17 flags is where mysql cannot handle the IN query any more.
-class SpaceshipFlagsGalore < ActiveRecord::Base
+class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   set_table_name 'spaceships'
   include FlagShihTzu
   
-  has_flags Hash[*(1..17).collect {|v| [v, :"flag#{v}" ]}.flatten]
+  has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
 end
 
 class SpaceCarrier < Spaceship
@@ -129,9 +128,14 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships_with_2_custom_flags_column.commanders not in (2,3))", SpaceshipWith2CustomFlagsColumn.not_dajanatroj_condition
   end
   
-  def test_should_define_a_sql_condition_method_for_flag_enabled_with_many_flags
-    assert_equal "(spaceships.flags & 1 = 1)", SpaceshipFlagsGalore.flag1_condition
-    assert_equal "(spaceships.flags & 65536 = 65536)", SpaceshipFlagsGalore.flag17_condition
+  def test_should_define_a_sql_condition_method_for_flag_enabled_using_bit_operators
+    assert_equal "(spaceships.flags & 1 = 1)", SpaceshipWithBitOperatorQueryMode.warpdrive_condition
+    assert_equal "(spaceships.flags & 2 = 2)", SpaceshipWithBitOperatorQueryMode.shields_condition
+  end
+
+  def test_should_define_a_sql_condition_method_for_flag_not_enabled_using_bit_operators
+    assert_equal "(spaceships.flags & 1 = 0)", SpaceshipWithBitOperatorQueryMode.not_warpdrive_condition
+    assert_equal "(spaceships.flags & 2 = 0)", SpaceshipWithBitOperatorQueryMode.not_shields_condition
   end
 
   def test_should_define_a_named_scope_for_flag_enabled
@@ -160,9 +164,14 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "(spaceships_with_2_custom_flags_column.commanders not in (2,3))" }, SpaceshipWith2CustomFlagsColumn.not_dajanatroj.proxy_options)
   end
   
-  def test_should_define_a_named_scope_for_flag_enabled_with_many_flags
-    assert_equal({ :conditions => "(spaceships.flags & 1 = 1)" }, SpaceshipFlagsGalore.flag1.proxy_options)
-    assert_equal({ :conditions => "(spaceships.flags & 65536 = 65536)" }, SpaceshipFlagsGalore.flag17.proxy_options)
+  def test_should_define_a_named_scope_for_flag_enabled_using_bit_operators
+    assert_equal({ :conditions => "(spaceships.flags & 1 = 1)" }, SpaceshipWithBitOperatorQueryMode.warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 2 = 2)" }, SpaceshipWithBitOperatorQueryMode.shields.proxy_options)
+  end
+
+  def test_should_define_a_named_scope_for_flag_not_enabled_using_bit_operators
+    assert_equal({ :conditions => "(spaceships.flags & 1 = 0)" }, SpaceshipWithBitOperatorQueryMode.not_warpdrive.proxy_options)
+    assert_equal({ :conditions => "(spaceships.flags & 2 = 0)" }, SpaceshipWithBitOperatorQueryMode.not_shields.proxy_options)
   end
 
   def test_should_return_the_correct_number_of_items_from_a_named_scope
@@ -209,11 +218,6 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits not in (2,3))" }, SpaceshipWithCustomFlagsColumn.not_hyperspace.proxy_options)
   end
   
-  def test_combined_named_scopes_should_work_for_many_flags
-    spaceship = SpaceshipFlagsGalore.create :flag3 => true, :flag8 => false, :flag10 => true, :flag11 => false
-    assert_equal SpaceshipFlagsGalore.flag3.not_flag8.flag10.not_flag11.count, 1
-  end
-
 end
 
 class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
