@@ -103,12 +103,12 @@ module FlagShihTzu
         logger.warn("Error: Table '#{table_name}' doesn't exist") and return false unless has_table
         
         if !has_ar || (has_ar && has_table)
-          has_column = columns.any? { |column| column.name == colmn }
-          is_integer_column = columns.any? { |column| column.name == colmn && column.type == :integer }
-
-          logger.warn("Warning: Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu") and return false unless has_column
-
-          raise IncorrectFlagColumnException, "Warning: Column '#{colmn}'must be of type integer in order to use FlagShihTzu" unless is_integer_column
+          if found_column = columns.find {|column| column.name == colmn}
+            raise IncorrectFlagColumnException, "Warning: Column '#{colmn}'must be of type integer in order to use FlagShihTzu" unless found_column.type == :integer
+          else
+            # Do not raise an exception since the migration to add the flags column might still be pending
+            logger.warn("Warning: Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu") and return false
+          end
         end
         
         true
