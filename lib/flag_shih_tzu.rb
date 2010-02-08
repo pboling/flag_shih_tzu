@@ -120,18 +120,18 @@ module FlagShihTzu
         true
       end
 
-      def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
+      def sql_condition_for_flag(flag, colmn, enabled = true, table_name = self.table_name)
         check_flag(flag, colmn)
         
         if flag_query_mode[options[:column]] == :bit_operator
           # use & bit operator directly in the SQL query.
           # This has the drawback of not using an index on the flags colum.
-          "(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
+          "(#{table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
         elsif flag_query_mode[options[:column]] == :in_list
           # use IN() operator in the SQL query.
           # This has the drawback of becoming a big query when you have lots of flags.
           neg = enabled ? "" : "not "
-          "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
+          "(#{table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
         else
           raise NoSuchFlagQueryModeException
         end
