@@ -23,9 +23,9 @@ module FlagShihTzu
       return unless check_flag_column(colmn)
 
       # options are stored in a class level hash and apply per-column
-      class_inheritable_hash :options
-      write_inheritable_attribute(:options, {}) if options.nil?
-      options[colmn] = opts
+      class_inheritable_hash :flag_options
+      write_inheritable_attribute(:flag_options, {}) if flag_options.nil?
+      flag_options[colmn] = opts
       
       # the mappings are stored in this class level hash and apply per-column
       class_inheritable_hash :flag_mapping
@@ -62,7 +62,7 @@ module FlagShihTzu
           end
         EVAL
 
-        if respond_to?(:named_scope) && options[colmn][:named_scopes]
+        if respond_to?(:named_scope) && flag_options[colmn][:named_scopes]
           class_eval <<-EVAL
             named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
             named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
@@ -117,11 +117,11 @@ module FlagShihTzu
       def sql_condition_for_flag(flag, colmn, enabled = true, table_name = self.table_name)
         check_flag(flag, colmn)
         
-        if options[colmn][:flag_query_mode] == :bit_operator
+        if flag_options[colmn][:flag_query_mode] == :bit_operator
           # use & bit operator directly in the SQL query.
           # This has the drawback of not using an index on the flags colum.
           "(#{table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})"
-        elsif options[colmn][:flag_query_mode] == :in_list
+        elsif flag_options[colmn][:flag_query_mode] == :in_list
           # use IN() operator in the SQL query.
           # This has the drawback of becoming a big query when you have lots of flags.
           neg = enabled ? "" : "not "
@@ -134,7 +134,7 @@ module FlagShihTzu
       # returns an array of integers suitable for a SQL IN statement.
       def sql_in_for_flag(flag, colmn)
         val = flag_mapping[colmn][flag]
-        num = 2 ** flag_mapping[options[colmn][:column]].length
+        num = 2 ** flag_mapping[flag_options[colmn][:column]].length
         (1..num).select {|i| i & val == val}
       end
     
