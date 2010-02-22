@@ -50,7 +50,6 @@ PostgreSQL and SQLite3 databases.
     has_flags 1 => :warpdrive,
               2 => :shields,
               3 => :electrolytes
-
   end
 
 +has_flags+ takes a hash. The keys must be positive integers and represent
@@ -58,6 +57,23 @@ the position of the bit being used to enable or disable the flag.
 <b>The keys must not be changed once in use, or you will get wrong results.</b>
 That is why the plugin forces you to set them explicitly.
 The values are symbols for the flags being created.
+
+
+===Using a custom column name
+
+The default column name to store the flags is 'flags', but you can provide a
+custom column name using the <tt>:column</tt> option. This allows you to use
+different columns for separate flags:
+
+  has_flags 1 => :warpdrive,
+            2 => :shields,
+            3 => :electrolytes,
+            :column => 'features'
+
+  has_flags 1 => :spock, 
+            2 => :scott,
+            3 => :kirk,
+            :column => 'crew'
 
 
 ===Generated instance methods
@@ -148,14 +164,6 @@ and check individual flags.
 Read more about bit fields here: http://en.wikipedia.org/wiki/Bit_field
 
 
-===Using a custom column name
-
-The default column name to store the flags is 'flags', but you can provide a
-custom column name using the <tt>:column</tt> option:
-
-  has_flags 1 => :warpdrive, :column => 'bits'
-
-
 ===Support for manually building conditions
 
 The following class methods may support you when manually building
@@ -181,7 +189,9 @@ For MySQL, depending on your MySQL settings, this can even hit the
 In this case, consider changing the flag query mode to <tt>:bit_operator</tt>
 instead of <tt>:in_list</tt>, like so:
 
-  has_flags 1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator
+  has_flags 1 => :warpdrive, 
+            2 => :shields, 
+            :flag_query_mode => :bit_operator
 
 This will modify the generated condition and named_scope methods to use bit
 operators in the SQL instead of an IN() list:
