@@ -49,6 +49,10 @@ end
 class SpaceCarrier < Spaceship
 end
 
+# table planets is missing intentionally to see if flagshihtzu handles missing tables gracefully
+class Planet < ActiveRecord::Base
+end
+
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   
   def setup
@@ -216,6 +220,15 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits not in (1,3))" }, SpaceshipWithCustomFlagsColumn.not_warpdrive.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits in (2,3))" }, SpaceshipWithCustomFlagsColumn.hyperspace.proxy_options)
     assert_equal({ :conditions => "(spaceships_with_custom_flags_column.bits not in (2,3))" }, SpaceshipWithCustomFlagsColumn.not_hyperspace.proxy_options)
+  end
+  
+  def test_should_not_error_out_when_table_is_not_present
+    assert_nothing_raised(ActiveRecord::StatementInvalid) do
+      Planet.class_eval do
+        include FlagShihTzu
+        has_flags(1 => :habitable)
+      end
+    end
   end
   
 end
