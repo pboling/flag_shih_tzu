@@ -87,6 +87,37 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           )
     end
   end
+  
+  def test_has_flags_should_raise_an_exception_when_desired_flag_name_method_already_defined
+    assert_raises ArgumentError do
+      eval(<<-EOF
+        class SpaceshipWithAlreadyUsedMethod < ActiveRecord::Base
+          set_table_name 'spaceships_with_2_custom_flags_column'
+          include FlagShihTzu
+          
+          def jeanluckpicard; end
+
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
+        end
+           EOF
+          )
+    end
+  end
+
+  def test_has_flags_should_not_raise_an_exception_when_flag_name_method_defined_by_flagshitzu
+    assert_nothing_raised ArgumentError do
+      eval(<<-EOF
+        class SpaceshipWithAlreadyUsedMethodByFlagshitzu < ActiveRecord::Base
+          set_table_name 'spaceships_with_2_custom_flags_column'
+          include FlagShihTzu
+          
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
+        end
+           EOF
+          )
+    end
+  end
 
   def test_has_flags_should_raise_an_exception_when_flag_name_is_not_a_symbol
     assert_raises ArgumentError do

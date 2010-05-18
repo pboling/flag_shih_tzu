@@ -1,5 +1,3 @@
-
-
 module FlagShihTzu
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
   DEFAULT_COLUMN_NAME = 'flags'
@@ -34,10 +32,10 @@ module FlagShihTzu
       write_inheritable_attribute(:flag_mapping, {}) if flag_mapping.nil?
       flag_mapping[colmn] ||= {}
 
-
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
         raise ArgumentError, "has_flags: flag names should be symbols, and #{flag_name} is not" unless is_valid_flag_name(flag_name)
+        next if flag_mapping[colmn][flag_name] & (1 << (flag_key - 1)) # next if already methods defined by flagshitzu
         raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name" if method_defined?(flag_name)
 
         flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
@@ -78,7 +76,6 @@ module FlagShihTzu
       raise ArgumentError, "Column name '#{colmn}' for flag '#{flag}' is not a string" unless colmn.is_a?(String)
       raise ArgumentError, "Invalid flag '#{flag}'" if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
     end
-
     
     private
     
