@@ -108,6 +108,9 @@ If you do not want the named scopes to be defined, set the
 
   has_flags 1 => :warpdrive, 2 => :shields, 3 => :electrolytes, :named_scopes => false
 
+In a Rails 3 application, FlagShihTzu will use <tt>scope</tt> internally to generate
+the scopes. The option on has_flags is still named <tt>:named_scopes</tt> however.
+
 
 ===Examples for using the generated methods
 
