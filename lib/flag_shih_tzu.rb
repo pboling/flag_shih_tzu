@@ -62,11 +62,22 @@ module FlagShihTzu
           end
         EVAL
 
-        if respond_to?(:named_scope) && flag_options[colmn][:named_scopes]
-          class_eval <<-EVAL
-            named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
-            named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
-          EVAL
+        # Define the named scopes if the user wants them.
+        if flag_options[colmn][:named_scopes]
+          # To prevent deprecation notices on Rails 3, test for Active Record version.
+          # Can't use respond_to because both AR 2 and 3 respond to both +scope+ and +named_scope+.
+          if ActiveRecord::VERSION::MAJOR == 2 && respond_to?(:named_scope)
+            class_eval <<-EVAL
+              named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
+              named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
+            EVAL
+          # assume Active Record version 3 and upwars have +scope+.
+          elsif
+            class_eval <<-EVAL
+              scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
+              scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
+            EVAL
+          end
         end
       end
       
