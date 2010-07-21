@@ -5,7 +5,7 @@ module FlagShihTzu
   def self.included(base)
     base.extend(ClassMethods)
   end
-  
+
   class IncorrectFlagColumnException < Exception; end
   class NoSuchFlagQueryModeException < Exception; end
   class NoSuchFlagException < Exception; end
@@ -14,8 +14,8 @@ module FlagShihTzu
     def has_flags(*args)
       flag_hash, opts = parse_options(*args)
       opts = {
-        :named_scopes => true, 
-        :column => DEFAULT_COLUMN_NAME, 
+        :named_scopes => true,
+        :column => DEFAULT_COLUMN_NAME,
         :flag_query_mode => :in_list
       }.update(opts)
       colmn = opts[:column]
@@ -26,7 +26,7 @@ module FlagShihTzu
       class_inheritable_hash :flag_options
       write_inheritable_attribute(:flag_options, {}) if flag_options.nil?
       flag_options[colmn] = opts
-      
+
       # the mappings are stored in this class level hash and apply per-column
       class_inheritable_hash :flag_mapping
       write_inheritable_attribute(:flag_mapping, {}) if flag_mapping.nil?
@@ -62,34 +62,24 @@ module FlagShihTzu
           end
         EVAL
 
-        # Define the named scopes if the user wants them.
-        if flag_options[colmn][:named_scopes]
-          # To prevent deprecation notices on Rails 3, test for Active Record version.
-          # Can't use respond_to because both AR 2 and 3 respond to both +scope+ and +named_scope+.
-          if ActiveRecord::VERSION::MAJOR == 2 && respond_to?(:named_scope)
-            class_eval <<-EVAL
-              named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
-              named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
-            EVAL
-          # assume Active Record version 3 and upwars have +scope+.
-          elsif
-            class_eval <<-EVAL
-              scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
-              scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
-            EVAL
-          end
+        # Define the named scopes if the user wants them and AR supports it
+        if flag_options[colmn][:named_scopes] && respond_to?(named_scope_method)
+          class_eval <<-EVAL
+            #{named_scope_method} :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
+            #{named_scope_method} :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
+          EVAL
         end
       end
-      
+
     end
 
     def check_flag(flag, colmn)
       raise ArgumentError, "Column name '#{colmn}' for flag '#{flag}' is not a string" unless colmn.is_a?(String)
       raise ArgumentError, "Invalid flag '#{flag}'" if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
     end
-    
+
     private
-    
+
       def parse_options(*args)
         options = args.shift
         if args.size >= 1
@@ -111,7 +101,7 @@ module FlagShihTzu
         has_table = has_ar ? ActiveRecord::Base.connection.tables.include?(table_name) : true
 
         logger.warn("Error: Table '#{table_name}' doesn't exist") and return false unless has_table
-        
+
         if !has_ar || (has_ar && has_table)
           if found_column = columns.find {|column| column.name == colmn}
             raise IncorrectFlagColumnException, "Warning: Column '#{colmn}'must be of type integer in order to use FlagShihTzu" unless found_column.type == :integer
@@ -120,13 +110,13 @@ module FlagShihTzu
             logger.warn("Warning: Table '#{table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu") and return false
           end
         end
-        
+
         true
       end
 
       def sql_condition_for_flag(flag, colmn, enabled = true, table_name = self.table_name)
         check_flag(flag, colmn)
-        
+
         if flag_options[colmn][:flag_query_mode] == :bit_operator
           # use & bit operator directly in the SQL query.
           # This has the drawback of not using an index on the flags colum.
@@ -147,13 +137,20 @@ module FlagShihTzu
         num = 2 ** flag_mapping[flag_options[colmn][:column]].length
         (1..num).select {|i| i & val == val}
       end
-    
+
       def is_valid_flag_key(flag_key)
         flag_key > 0 && flag_key == flag_key.to_i
       end
 
       def is_valid_flag_name(flag_name)
         flag_name.is_a?(Symbol)
+      end
+
+      # Returns the correct method to create a named scope.
+      # Use to prevent deprecation notices on Rails 3 when using +named_scope+ instead of +scope+.
+      def named_scope_method
+        # Can't use respond_to because both AR 2 and 3 respond to both +scope+ and +named_scope+.
+        ActiveRecord::VERSION::MAJOR == 2 ? :named_scope : :scope
       end
   end
 
