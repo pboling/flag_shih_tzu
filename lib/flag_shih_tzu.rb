@@ -53,8 +53,8 @@ module FlagShihTzu
             FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}, '#{colmn}') : disable_flag(:#{flag_name}, '#{colmn}')
           end
 
-          def self.#{flag_name}_condition
-            sql_condition_for_flag(:#{flag_name}, '#{colmn}', true)
+          def self.#{flag_name}_condition(options = {})
+            sql_condition_for_flag(:#{flag_name}, '#{colmn}', true, options[:table_alias] || self.table_name)
           end
 
           def self.not_#{flag_name}_condition

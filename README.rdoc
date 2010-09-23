@@ -178,6 +178,11 @@ ActiveRecord conditions:
   Spaceship.not_shields_condition       # "(spaceships.flags not in (2,3,6,7))"
   Spaceship.electrolytes_condition      # "(spaceships.flags in (4,5,6,7))"
   Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
+  
+These methods also accept a :table_alias option that can be used when 
+generating SQL that references the same table more than once:
+
+  Spaceship.shields_condition(:table_alias => 'evil_spaceships') # "(evil_spaceships.flags in (2,3,6,7))"
 
 
 ===Choosing a query mode
