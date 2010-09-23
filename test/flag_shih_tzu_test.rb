@@ -138,6 +138,10 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags in (2,3,6,7))", Spaceship.shields_condition
     assert_equal "(spaceships.flags in (4,5,6,7))", Spaceship.electrolytes_condition
   end
+  
+  def test_should_accept_a_table_alias_option_for_sql_condition_method
+    assert_equal "(old_spaceships.flags in (1,3,5,7))", Spaceship.warpdrive_condition(:table_alias => 'old_spaceships')
+  end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_2_colmns
     assert_equal "(spaceships_with_2_custom_flags_column.bits in (1,3))", SpaceshipWith2CustomFlagsColumn.warpdrive_condition
