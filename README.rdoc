@@ -30,15 +30,27 @@ to store the flags, which should be defined to not allow NULL values and
 should have a default value of 0 (which means all flags are initially set to
 false).
 
-The plugin has been tested with Rails versions from 2.1 to 2.3 and MySQL,
-PostgreSQL and SQLite3 databases.
+The plugin has been tested with Rails versions from 2.1 to 3.0 and MySQL,
+PostgreSQL and SQLite3 databases. It has been tested with ruby 1.9.2 (with
+Rails 3 only).
 
 
 ==Installation
 
+===As plugin (Rails 2.x, Rails 3)
+
   cd path/to/your/rails-project
   ./script/plugin install git://github.com/xing/flag_shih_tzu.git
 
+===As gem (Rails 3)
+
+Add following line to your Gemfile:
+
+  gem 'flag_shih_tzu', '= 0.1.0.pre'
+
+Make sure to install gem with bundler:
+
+  bundle install
 
 ==Usage
 
@@ -220,6 +232,8 @@ on the flags column.
 
 ==Running the plugin tests
 
+1. (Rails 3 only) Add <tt>mysql2</tt>, <tt>pg</tt> and <tt>sqlite3</tt> gems to your Gemfile.
+1. Install flag_shih_tzu as plugin inside working Rails application.
 1. Modify <tt>test/database.yml</tt> to fit your test environment.
 2. If needed, create the test database you configured in <tt>test/database.yml</tt>.
 
@@ -253,8 +267,9 @@ Please find out more about our work in our
 {Peter Boling}[http://github.com/pboling],
 {Daniel Jagszent}[http://github.com/d--j],
 {Thorsten Boettger}[http://github.com/alto],
-{Darren Torpey}[http://github.com/darrentorpey] and
-{Joost Baaij}[http://github.com/tilsammans]
+{Darren Torpey}[http://github.com/darrentorpey],
+{Joost Baaij}[http://github.com/tilsammans] and
+{Musy Bite}[http://github.com/musybite]
 
 
 ==License
