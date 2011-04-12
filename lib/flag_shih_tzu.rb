@@ -157,29 +157,29 @@ module FlagShihTzu
   # Performs the bitwise operation so the flag will return +true+.
   def enable_flag(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
-    self.class.check_flag(flag, colmn)
+    get_class.check_flag(flag, colmn)
 
-    set_flags(self.flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
+    set_flags(self.flags(colmn) | get_class.flag_mapping[colmn][flag], colmn)
   end
 
   # Performs the bitwise operation so the flag will return +false+.
   def disable_flag(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
-    self.class.check_flag(flag, colmn)
+    get_class.check_flag(flag, colmn)
 
-    set_flags(self.flags(colmn) & ~self.class.flag_mapping[colmn][flag], colmn)
+    set_flags(self.flags(colmn) & ~get_class.flag_mapping[colmn][flag], colmn)
   end
 
   def flag_enabled?(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
-    self.class.check_flag(flag, colmn)
+    get_class.check_flag(flag, colmn)
 
     get_bit_for(flag, colmn) == 0 ? false : true
   end
 
   def flag_disabled?(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
-    self.class.check_flag(flag, colmn)
+    get_class.check_flag(flag, colmn)
 
     !flag_enabled?(flag, colmn)
   end
@@ -193,14 +193,18 @@ module FlagShihTzu
   end
 
   private
+    # Get the class. But return the superclass on STI
+    def get_class
+      self.class.superclass != ActiveRecord::Base ? self.class.superclass : self.class
+    end
 
     def get_bit_for(flag, colmn)
-      self.flags(colmn) & self.class.flag_mapping[colmn][flag]
+      self.flags(colmn) & get_class.flag_mapping[colmn][flag]
     end
 
     def determine_flag_colmn_for(flag)
-      return DEFAULT_COLUMN_NAME if self.class.flag_mapping.nil?
-      self.class.flag_mapping.each_pair do |colmn, mapping|
+      return DEFAULT_COLUMN_NAME if get_class.flag_mapping.nil?
+      get_class.flag_mapping.each_pair do |colmn, mapping|
         return colmn if mapping.include?(flag)
       end
       raise NoSuchFlagException.new("determine_flag_colmn_for: Couldn't determine column for your flags!")
