@@ -1,6 +1,9 @@
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rdoc/task'
+
+require 'bundler'
+Bundler::GemHelper.install_tasks
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -13,7 +16,7 @@ Rake::TestTask.new(:test) do |t|
 end
 
 desc 'Generate documentation for the flag_shih_tzu plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
+RDoc::Task.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'FlagShihTzu'
   rdoc.options << '--line-numbers' << '--inline-source'

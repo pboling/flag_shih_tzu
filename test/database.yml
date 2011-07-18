@@ -3,7 +3,7 @@ sqlite3:
   database: test/flag_shih_tzu_plugin.sqlite3.db
 
 mysql:
-  adapter: mysql
+  adapter: mysql2
   host: localhost
   username: root
   password: 

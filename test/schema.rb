@@ -14,8 +14,10 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer :commanders, :null => false, :default => 0
   end
 
-  create_table :spaceships_with_non_integer_flags_column, :force => true do |t| 
-    t.string :flags, :null => false, :default => 0
+  create_table :spaceships_without_flags_column, :force => true do |t| 
   end
 
+  create_table :spaceships_with_non_integer_column, :force => true do |t| 
+    t.string :flags, :null => false, :default => 'A string'
+  end
 end
