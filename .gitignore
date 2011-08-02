@@ -4,3 +4,7 @@ coverage
 .idea
 .idea/*
 .idea/**/*
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
