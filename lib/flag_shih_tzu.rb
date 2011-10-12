@@ -53,6 +53,15 @@ module FlagShihTzu
             FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}, '#{colmn}') : disable_flag(:#{flag_name}, '#{colmn}')
           end
 
+          def #{flag_name}_changed?
+            if colmn_changes = changes['#{colmn}']
+              flag_bit = self.class.flag_mapping['#{colmn}'][:#{flag_name}]
+              (colmn_changes[0] & flag_bit) != (colmn_changes[1] & flag_bit)
+            else
+              false
+            end
+          end
+
           def self.#{flag_name}_condition(options = {})
             sql_condition_for_flag(:#{flag_name}, '#{colmn}', true, options[:table_alias] || self.table_name)
           end

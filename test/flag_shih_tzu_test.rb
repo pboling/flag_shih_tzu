@@ -364,6 +364,14 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert @spaceship.warpdrive
   end
 
+  def test_should_define_dirty_suffix_changed?
+    @spaceship.enable_flag(:warpdrive)
+    assert @spaceship.warpdrive_changed?
+
+    @spaceship.disable_flag(:warpdrive)
+    assert !@spaceship.warpdrive_changed?
+  end
+
   def test_should_respect_true_values_like_active_record
     [true, 1, '1', 't', 'T', 'true', 'TRUE'].each do |true_value|
       @spaceship.warpdrive = true_value

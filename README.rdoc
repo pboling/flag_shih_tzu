@@ -84,12 +84,17 @@ on Spaceship:
   Spaceship#warpdrive
   Spaceship#warpdrive?
   Spaceship#warpdrive=
+  Spaceship#warpdrive_changed?
+
   Spaceship#shields
   Spaceship#shields?
   Spaceship#shields=
+  Spaceship#shields_changed?
+
   Spaceship#electrolytes
   Spaceship#electrolytes?
   Spaceship#electrolytes=
+  Spaceship#electrolytes_changed?
 
 
 ===Generated named scopes
