@@ -7,7 +7,7 @@ mysql:
   database: flag_shih_tzu_test
   username:
   encoding: utf8
-postgres:
+postgresql:
   adapter: postgresql
-  database: myapp_test
+  database: flag_shih_tzu_test
   username: postgres

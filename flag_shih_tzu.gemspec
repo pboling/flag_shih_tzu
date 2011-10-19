@@ -28,4 +28,6 @@ ActiveRecord object.
   s.add_development_dependency "rake"
   s.add_development_dependency "rcov"
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "mysql2"
+  s.add_development_dependency "pg"
 end

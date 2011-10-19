@@ -8,7 +8,7 @@ gemfile:
 env:
   - DB=sqlite
   - DB=mysql
-  - DB=postgres
+  - DB=postgresql
 before_script:
   - "mysql -e 'create database flag_shih_tzu_test;'"
   - "psql -c 'create database flag_shih_tzu_test;' -U postgres"
