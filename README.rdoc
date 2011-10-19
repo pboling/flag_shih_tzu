@@ -25,13 +25,6 @@ http://en.wikipedia.org/wiki/Shih_Tzu
 
 ==Prerequisites
 
-FlagShihTzu assumes that your ActiveRecord model already has an integer field
-to store the flags, which should be defined to not allow NULL values and
-should have a default value of 0 (which means all flags are initially set to
-false).
-
-The gem is actively being tested with:
-
 * ActiveRecord versions 2.3.x, 3.0.x, 3.1.x
 * MySQL, PostgreSQL and SQLite3 databases
 * Ruby 1.8.7 and 1.9.2
@@ -59,7 +52,14 @@ Then:
 
   $ bundle install
 
+
 ==Usage
+
+FlagShihTzu assumes that your ActiveRecord model already has an integer field
+to store the flags, which should be defined to not allow NULL values and
+should have a default value of 0 (which means all flags are initially set to
+false).
+
 
 ===Defining the flags
 
