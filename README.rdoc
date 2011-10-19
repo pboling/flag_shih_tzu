@@ -255,9 +255,9 @@ before executing the tests (see +gemfiles/+), e.g.:
 
 
 All tests will use an in-memory sqlite database by default.
-If you want to use a different database, see <tt>test/database.yml</tt>
-and use the DB environment variable to specify which config from
-<tt>test/database.yml</tt> to use, e.g.:
+If you want to use a different database, see <tt>test/database.yml</tt>,
+install the required adapter gem and use the DB environment variable to
+specify which config from <tt>test/database.yml</tt> to use, e.g.:
 
   $ DB=mysql bundle exec rake
 
