@@ -45,7 +45,9 @@ In environment.rb:
 
   config.gem 'flag_shih_tzu'
 
-Then run +rake gems:install+ (use +sudo+ if necessary).
+Then:
+
+  $ rake gems:install # use sudo if necessary
 
 ===Rails 3
 
@@ -53,7 +55,9 @@ In Gemfile:
 
   gem 'flag_shih_tzu'
 
-Then run +bundle install+.
+Then:
+
+  $ bundle install
 
 ==Usage
 
