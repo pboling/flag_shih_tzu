@@ -1,7 +1,9 @@
 require "active_support/all"
 
 module FlagShihTzu
-  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
+  # taken from ActiveRecord::ConnectionAdapters::Column
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE']
+
   DEFAULT_COLUMN_NAME = 'flags'
 
   def self.included(base)
@@ -209,4 +211,3 @@ module FlagShihTzu
     end
 
 end
-
