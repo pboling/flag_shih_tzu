@@ -25,6 +25,14 @@ RDoc::Task.new(:rdoc) do |rdoc|
 end
 
 namespace :test do
+  desc 'Test against all supported ActiveRecord versions'
+  task :all do
+    %w(2.3.x 3.0.x 3.1.x).each do |version|
+      sh "BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-#{version}' bundle"
+      sh "BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-#{version}' bundle exec rake test"
+    end
+  end
+
   desc 'Measures test coverage'
   task :coverage do
     rm_f "coverage"
