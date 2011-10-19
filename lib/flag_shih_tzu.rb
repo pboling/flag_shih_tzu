@@ -1,3 +1,5 @@
+require "active_support/all"
+
 module FlagShihTzu
   TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE'] # taken from ActiveRecord::ConnectionAdapters::Column
   DEFAULT_COLUMN_NAME = 'flags'
