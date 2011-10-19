@@ -5,3 +5,10 @@ gemfile:
   - gemfiles/Gemfile.activerecord-2.3.x
   - gemfiles/Gemfile.activerecord-3.0.x
   - gemfiles/Gemfile.activerecord-3.1.x
+env:
+  - DB=sqlite
+  - DB=mysql
+  - DB=postgres
+before_script:
+  - "mysql -e 'create database flag_shih_tzu_test;'"
+  - "psql -c 'create database flag_shih_tzu_test;' -U postgres"

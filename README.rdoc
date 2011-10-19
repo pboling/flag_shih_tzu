@@ -233,10 +233,14 @@ The drawback is that due to the bit operator, this query can not use an index
 on the flags column.
 
 
-==Running the tests
+==Running the gem tests
+
+First, make sure all required gems are installed:
+
+  $ bundle install
 
 The default rake test task will run the tests against the currently locked
-ActiveRecord version (see Gemfile.lock):
+ActiveRecord version (see +Gemfile.lock+):
 
   $ bundle exec rake test
 
@@ -244,16 +248,16 @@ If you want to run the tests against all supported ActiveRecord versions:
 
   $ bundle exec rake test:all
 
-This task will use bundler to load specific ActiveRecord versions before
-executing the tests (see gemfiles/), e.g.:
+This will internally use bundler to load specific ActiveRecord versions
+before executing the tests (see +gemfiles/+), e.g.:
 
   $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle exec rake test
 
 
-All tests will use the sqlite3 database adapter by default.
-If you want to use a different database, modify <tt>test/database.yml</tt>
-to fit your environment. Then you can use the DB environment variable
-to specify which config from <tt>test/database.yml</tt> to use, e.g.:
+All tests will use an in-memory sqlite database by default.
+If you want to use a different database, see <tt>test/database.yml</tt>
+and use the DB environment variable to specify which config from
+<tt>test/database.yml</tt> to use, e.g.:
 
   $ DB=mysql bundle exec rake
 

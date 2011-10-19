@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper.rb')
-load_schema
 
 class Spaceship < ActiveRecord::Base
   set_table_name 'spaceships'
@@ -54,7 +53,7 @@ class Planet < ActiveRecord::Base
 end
 
 class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
-  
+
   def setup
     Spaceship.destroy_all
   end

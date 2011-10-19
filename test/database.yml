@@ -1,17 +1,13 @@
-sqlite3:
+sqlite:
   adapter: sqlite3
-  database: test/flag_shih_tzu_plugin.sqlite3.db
-
+  database: ":memory:"
+  timeout: 500
 mysql:
   adapter: mysql2
-  host: localhost
-  username: root
-  password: 
-  database: flag_shih_tzu_plugin_test
-
-postgresql:
+  database: flag_shih_tzu_test
+  username:
+  encoding: utf8
+postgres:
   adapter: postgresql
+  database: myapp_test
   username: postgres
-  password: 
-  database: flag_shih_tzu_plugin_test
-  min_messages: ERROR

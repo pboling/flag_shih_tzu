@@ -1,34 +1,14 @@
-ENV['RAILS_ENV'] = 'test'
-ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '/../../../..'
+require "test/unit"
+require "yaml"
+require "logger"
+require "flag_shih_tzu"
 
-#exend LOAD_PATH for test with- and without Railsframework
-$LOAD_PATH << 'lib/'
-$LOAD_PATH << 'vendor/plugins/flag_shih_tzu/lib/'
+ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
 
-require 'test/unit'
-require 'yaml'
-require 'logger'
-require 'rubygems'
-require 'active_record'
-require 'flag_shih_tzu'
+configs = YAML.load_file('test/database.yml')
+ActiveRecord::Base.configurations = configs
 
-def load_schema
-  config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
-  ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
-  db_adapter = ENV['DB'] || 'sqlite3'
+db_name = ENV['DB'] || 'sqlite'
+ActiveRecord::Base.establish_connection(db_name)
 
-  # no DB passed, try sqlite3 by default
-  db_adapter ||=
-    begin
-      require 'sqlite3'
-        'sqlite3'
-    rescue MissingSourceFile
-    end
-
-  if db_adapter.nil?
-    raise "No DB Adapter selected. Configure test/database.yml and use DB=mysql|postgresql|sqlite3 to pick one. sqlite3 will be used by default (gem install sqlite3)."
-  end
-
-  ActiveRecord::Base.establish_connection(config[db_adapter])
-  load(File.dirname(__FILE__) + "/schema.rb")
-end
+load(File.dirname(__FILE__) + "/schema.rb")
