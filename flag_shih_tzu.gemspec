@@ -20,4 +20,12 @@ ActiveRecord object.
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_dependency "activerecord", ">= 2.3.0"
+
+  s.add_development_dependency "bundler"
+  s.add_development_dependency "rdoc", ">= 2.4.2"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rcov"
+  s.add_development_dependency "sqlite3"
 end
