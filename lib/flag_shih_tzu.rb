@@ -10,6 +10,8 @@ module FlagShihTzu
 
   def self.included(base)
     base.extend(ClassMethods)
+    base.class_attribute :flag_options
+    base.class_attribute :flag_mapping
   end
 
   class IncorrectFlagColumnException < Exception; end
@@ -29,14 +31,12 @@ module FlagShihTzu
       return unless check_flag_column(colmn)
 
       # options are stored in a class level hash and apply per-column
-      class_inheritable_hash :flag_options
-      write_inheritable_attribute(:flag_options, {}) if flag_options.nil?
-      flag_options[colmn] = opts
+      self.flag_options ||= {}
+      self.flag_options[colmn] = opts
 
       # the mappings are stored in this class level hash and apply per-column
-      class_inheritable_hash :flag_mapping
-      write_inheritable_attribute(:flag_mapping, {}) if flag_mapping.nil?
-      flag_mapping[colmn] ||= {}
+      self.flag_mapping ||= {}
+      self.flag_mapping[colmn] ||= {}
 
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
