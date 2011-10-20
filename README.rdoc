@@ -1,5 +1,7 @@
 =FlagShihTzu
 
+Bitfields for ActiveRecord
+
 An extension for ActiveRecord to store a collection of boolean attributes in a
 single integer column as a bit field.
 
