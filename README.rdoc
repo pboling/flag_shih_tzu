@@ -40,7 +40,7 @@ The gem is actively being tested with:
 
 In environment.rb:
 
-  config.gem 'flag_shih_tzu'
+  config.gem 'xing-flag_shih_tzu'
 
 Then:
 
@@ -50,7 +50,7 @@ Then:
 
 In Gemfile:
 
-  gem 'flag_shih_tzu'
+  gem 'xing-flag_shih_tzu'
 
 Then:
 
