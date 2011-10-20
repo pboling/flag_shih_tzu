@@ -26,6 +26,11 @@ And just in case you are wondering what a "Shih Tzu" is:
 http://en.wikipedia.org/wiki/Shih_Tzu
 
 
+==Build status
+
+{<img src="https://secure.travis-ci.org/xing/flag_shih_tzu.png" />}[http://travis-ci.org/xing/flag_shih_tzu]
+
+
 ==Prerequisites
 
 The gem is actively being tested with:
@@ -294,10 +299,6 @@ Please find out more about our work in our
 {Joost Baaij}[http://github.com/tilsammans] and
 {Musy Bite}[http://github.com/musybite]
 
-
-==Build status
-
-{<img src="https://secure.travis-ci.org/xing/flag_shih_tzu.png" />}[http://travis-ci.org/xing/flag_shih_tzu]
 
 ==License
 
