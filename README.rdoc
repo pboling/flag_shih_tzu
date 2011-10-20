@@ -280,24 +280,14 @@ specify which config from <tt>test/database.yml</tt> to use, e.g.:
 
 {Patryk Peszko}[http://github.com/ppeszko],
 {Sebastian Roebke}[http://github.com/boosty],
-{David Anderson}[http://github.com/alpinegizmo]
-and {Tim Payton}[http://github.com/dizzy42]
+{David Anderson}[http://github.com/alpinegizmo],
+{Tim Payton}[http://github.com/dizzy42]
+and a helpful group of
+{contributors}[https://github.com/xing/flag_shih_tzu/contributors].
+Thanks!
 
 Please find out more about our work in our
 {tech blog}[http://blog.xing.com/category/english/tech-blog].
-
-
-==Contributors
-
-{TobiTobes}[http://github.com/rngtng],
-{Martin Stannard}[http://github.com/martinstannard],
-{Ladislav Martincik}[http://github.com/lacomartincik],
-{Peter Boling}[http://github.com/pboling],
-{Daniel Jagszent}[http://github.com/d--j],
-{Thorsten Boettger}[http://github.com/alto],
-{Darren Torpey}[http://github.com/darrentorpey],
-{Joost Baaij}[http://github.com/tilsammans] and
-{Musy Bite}[http://github.com/musybite]
 
 
 ==License
