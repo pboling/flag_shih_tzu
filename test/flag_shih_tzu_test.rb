@@ -30,6 +30,13 @@ class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
   has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
 end
 
+class SpaceshipWithColumnNameAsSymol < ActiveRecord::Base
+  set_table_name 'spaceships_with_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => :bits)
+end
+
 class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
   set_table_name 'spaceships_with_2_custom_flags_column'
   include FlagShihTzu
@@ -254,6 +261,14 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_where_value "(spaceships_with_custom_flags_column.bits not in (1,3))", SpaceshipWithCustomFlagsColumn.not_warpdrive
     assert_where_value "(spaceships_with_custom_flags_column.bits in (2,3))", SpaceshipWithCustomFlagsColumn.hyperspace
     assert_where_value "(spaceships_with_custom_flags_column.bits not in (2,3))", SpaceshipWithCustomFlagsColumn.not_hyperspace
+  end
+
+  def test_should_work_with_a_custom_flags_column_name_as_symbol
+    spaceship = SpaceshipWithColumnNameAsSymol.new
+    spaceship.enable_flag(:warpdrive)
+    spaceship.save!
+    spaceship.reload
+    assert_equal 1, spaceship.flags('bits')
   end
 
   def test_should_not_error_out_when_table_is_not_present

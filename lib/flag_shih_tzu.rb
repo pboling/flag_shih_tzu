@@ -26,7 +26,7 @@ module FlagShihTzu
         :column => DEFAULT_COLUMN_NAME,
         :flag_query_mode => :in_list
       }.update(opts)
-      colmn = opts[:column]
+      colmn = opts[:column].to_s
 
       return unless check_flag_column(colmn)
 
