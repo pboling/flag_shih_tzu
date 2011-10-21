@@ -386,11 +386,24 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_define_dirty_suffix_changed?
+    assert !@spaceship.warpdrive_changed?
+    assert !@spaceship.shields_changed?
+
     @spaceship.enable_flag(:warpdrive)
     assert @spaceship.warpdrive_changed?
+    assert !@spaceship.shields_changed?
+
+    @spaceship.enable_flag(:shields)
+    assert @spaceship.warpdrive_changed?
+    assert @spaceship.shields_changed?
 
     @spaceship.disable_flag(:warpdrive)
     assert !@spaceship.warpdrive_changed?
+    assert @spaceship.shields_changed?
+
+    @spaceship.disable_flag(:shields)
+    assert !@spaceship.warpdrive_changed?
+    assert !@spaceship.shields_changed?
   end
 
   def test_should_respect_true_values_like_active_record
