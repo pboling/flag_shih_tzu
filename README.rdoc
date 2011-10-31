@@ -46,7 +46,7 @@ The gem is actively being tested with:
 
 In environment.rb:
 
-  config.gem 'xing-flag_shih_tzu', :lib => 'flag_shih_tzu'
+  config.gem 'flag_shih_tzu'
 
 Then:
 
@@ -56,7 +56,7 @@ Then:
 
 In Gemfile:
 
-  gem 'xing-flag_shih_tzu', :require => 'flag_shih_tzu'
+  gem 'flag_shih_tzu'
 
 Then:
 

@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "flag_shih_tzu/version"
 
 Gem::Specification.new do |s|
-  s.name        = "xing-flag_shih_tzu"
+  s.name        = "flag_shih_tzu"
   s.version     = FlagShihTzu::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
