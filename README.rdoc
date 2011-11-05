@@ -251,6 +251,18 @@ operators in the SQL instead of an IN() list:
 The drawback is that due to the bit operator, this query can not use an index
 on the flags column.
 
+===Skipping flag column check
+
+By default when you call has_flags in your code it will automatically check
+your database to see if you have correct column defined.
+
+Sometimes this may not be a wanted behaviour (e.g. when loading model without
+database connection established) so you can set :check_for_column option to
+false to avoid it.
+
+  has_flags 1 => :warpdrive,
+            2 => :shields,
+            :check_for_column => false
 
 ==Running the gem tests
 

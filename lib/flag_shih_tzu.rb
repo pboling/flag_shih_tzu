@@ -24,11 +24,12 @@ module FlagShihTzu
       opts = {
         :named_scopes => true,
         :column => DEFAULT_COLUMN_NAME,
-        :flag_query_mode => :in_list
+        :flag_query_mode => :in_list,
+        :check_for_column => true
       }.update(opts)
       colmn = opts[:column].to_s
 
-      return unless check_flag_column(colmn)
+      return if opts[:check_for_column] && ! check_flag_column(colmn)
 
       # options are stored in a class level hash and apply per-column
       self.flag_options ||= {}
