@@ -219,6 +219,35 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_where_value "(spaceships.flags & 2 = 0)", SpaceshipWithBitOperatorQueryMode.not_shields
   end
 
+  def test_should_work_with_raw_sql
+    spaceship = Spaceship.new
+    spaceship.enable_flag(:shields)
+    spaceship.enable_flag(:electrolytes)
+    spaceship.save!
+
+    Spaceship.update_all Spaceship.set_flag_sql(:warpdrive, true),
+                         ["id=?", spaceship.id]
+    spaceship.reload
+    
+    assert_equal true, spaceship.warpdrive
+    assert_equal true, spaceship.shields
+    assert_equal true, spaceship.electrolytes
+
+    spaceship = Spaceship.new
+    spaceship.enable_flag(:warpdrive)
+    spaceship.enable_flag(:shields)
+    spaceship.enable_flag(:electrolytes)
+    spaceship.save!
+
+    Spaceship.update_all Spaceship.set_flag_sql(:shields, false),
+                         ["id=?", spaceship.id]
+    spaceship.reload
+
+    assert_equal true, spaceship.warpdrive
+    assert_equal false, spaceship.shields
+    assert_equal true, spaceship.electrolytes
+  end
+
   def test_should_return_the_correct_number_of_items_from_a_named_scope
     spaceship = Spaceship.new
     spaceship.enable_flag(:warpdrive)
@@ -455,18 +484,18 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
 
   def test_column_guessing_for_default_column
-    assert_equal 'flags', @spaceship.send(:determine_flag_colmn_for, :warpdrive)
+    assert_equal 'flags', @spaceship.class.determine_flag_colmn_for(:warpdrive)
   end
 
   def test_column_guessing_for_default_column
     assert_raises FlagShihTzu::NoSuchFlagException do
-      @spaceship.send(:determine_flag_colmn_for, :xxx)
+      @spaceship.class.determine_flag_colmn_for(:xxx)
     end
   end
 
   def test_column_guessing_for_2_columns
-    assert_equal 'commanders', @big_spaceship.send(:determine_flag_colmn_for, :jeanlucpicard)
-    assert_equal 'bits', @big_spaceship.send(:determine_flag_colmn_for, :warpdrive)
+    assert_equal 'commanders', @big_spaceship.class.determine_flag_colmn_for(:jeanlucpicard)
+    assert_equal 'bits', @big_spaceship.class.determine_flag_colmn_for(:warpdrive)
   end
 
 end

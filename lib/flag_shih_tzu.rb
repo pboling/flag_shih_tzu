@@ -94,6 +94,28 @@ module FlagShihTzu
       raise ArgumentError, "Invalid flag '#{flag}'" if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
     end
 
+    # Returns SQL statement to enable flag.
+    def set_flag_sql(flag, value, colmn = nil)
+      colmn = determine_flag_colmn_for(flag) if colmn.nil?
+      check_flag(flag, colmn)
+
+      if value
+        "#{colmn} = #{colmn} | #{flag_mapping[colmn][flag]}"
+      else
+        "#{colmn} = #{colmn} & ~#{flag_mapping[colmn][flag]}"
+      end
+    end
+    
+    def determine_flag_colmn_for(flag)
+      return DEFAULT_COLUMN_NAME if flag_mapping.nil?
+      flag_mapping.each_pair do |colmn, mapping|
+        return colmn if mapping.include?(flag)
+      end
+      raise NoSuchFlagException.new(
+        "determine_flag_colmn_for: Couldn't determine column for your flags!"
+      )
+    end
+
     private
 
       def parse_options(*args)
@@ -172,7 +194,7 @@ module FlagShihTzu
 
   # Performs the bitwise operation so the flag will return +true+.
   def enable_flag(flag, colmn = nil)
-    colmn = determine_flag_colmn_for(flag) if colmn.nil?
+    colmn = self.class.determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
     set_flags(self.flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
@@ -180,21 +202,21 @@ module FlagShihTzu
 
   # Performs the bitwise operation so the flag will return +false+.
   def disable_flag(flag, colmn = nil)
-    colmn = determine_flag_colmn_for(flag) if colmn.nil?
+    colmn = self.class.determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
     set_flags(self.flags(colmn) & ~self.class.flag_mapping[colmn][flag], colmn)
   end
 
   def flag_enabled?(flag, colmn = nil)
-    colmn = determine_flag_colmn_for(flag) if colmn.nil?
+    colmn = self.class.determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
     get_bit_for(flag, colmn) == 0 ? false : true
   end
 
   def flag_disabled?(flag, colmn = nil)
-    colmn = determine_flag_colmn_for(flag) if colmn.nil?
+    colmn = self.class.determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
     !flag_enabled?(flag, colmn)
@@ -212,14 +234,6 @@ module FlagShihTzu
 
     def get_bit_for(flag, colmn)
       self.flags(colmn) & self.class.flag_mapping[colmn][flag]
-    end
-
-    def determine_flag_colmn_for(flag)
-      return DEFAULT_COLUMN_NAME if self.class.flag_mapping.nil?
-      self.class.flag_mapping.each_pair do |colmn, mapping|
-        return colmn if mapping.include?(flag)
-      end
-      raise NoSuchFlagException.new("determine_flag_colmn_for: Couldn't determine column for your flags!")
     end
 
 end
