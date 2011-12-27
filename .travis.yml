@@ -6,3 +6,4 @@ gemfile:
   - gemfiles/Gemfile.activerecord-2.3.x
   - gemfiles/Gemfile.activerecord-3.0.x
   - gemfiles/Gemfile.activerecord-3.1.x
+  - gemfiles/Gemfile.activerecord-3.2.x
