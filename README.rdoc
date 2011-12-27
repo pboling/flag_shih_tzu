@@ -292,7 +292,7 @@ and a helpful group of
 Thanks!
 
 Please find out more about our work in our
-{tech blog}[http://blog.xing.com/category/english/tech-blog].
+{Devblog}[http://devblog.xing.com/].
 
 
 ==License
