@@ -37,7 +37,7 @@ The gem is actively being tested with:
 
 * ActiveRecord versions 2.3.x, 3.0.x, 3.1.x
 * MySQL, PostgreSQL and SQLite3 databases
-* Ruby 1.8.7 and 1.9.2
+* Ruby 1.8.7, 1.9.2 and 1.9.3
 
 
 ==Installation
