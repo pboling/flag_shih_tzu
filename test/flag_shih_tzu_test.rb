@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper.rb')
 
 class Spaceship < ActiveRecord::Base
-  set_table_name 'spaceships'
+  self.table_name = 'spaceships'
   include FlagShihTzu
 
   has_flags 1 => :warpdrive,
@@ -10,35 +10,35 @@ class Spaceship < ActiveRecord::Base
 end
 
 class SpaceshipWithoutNamedScopes < ActiveRecord::Base
-  set_table_name 'spaceships'
+  self.table_name = 'spaceships'
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, :named_scopes => false)
 end
 
 class SpaceshipWithoutNamedScopesOldStyle < ActiveRecord::Base
-  set_table_name 'spaceships'
+  self.table_name = 'spaceships'
   include FlagShihTzu
 
   has_flags({1 => :warpdrive}, :named_scopes => false)
 end
 
 class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
-  set_table_name 'spaceships_with_custom_flags_column'
+  self.table_name = 'spaceships_with_custom_flags_column'
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
 end
 
 class SpaceshipWithColumnNameAsSymol < ActiveRecord::Base
-  set_table_name 'spaceships_with_custom_flags_column'
+  self.table_name = 'spaceships_with_custom_flags_column'
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :hyperspace, :column => :bits)
 end
 
 class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
-  set_table_name 'spaceships_with_2_custom_flags_column'
+  self.table_name = 'spaceships_with_2_custom_flags_column'
   include FlagShihTzu
 
   has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'bits')
@@ -46,7 +46,7 @@ class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
 end
 
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
-  set_table_name 'spaceships'
+  self.table_name = 'spaceships'
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
@@ -69,7 +69,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_raises ArgumentError do
       eval(<<-EOF
         class SpaceshipWithInvalidFlagKey < ActiveRecord::Base
-          set_table_name 'spaceships'
+          self.table_name = 'spaceships'
           include FlagShihTzu
 
           has_flags({ -1 => :error })
@@ -83,7 +83,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_raises ArgumentError do
       eval(<<-EOF
         class SpaceshipWithAlreadyUsedFlag < ActiveRecord::Base
-          set_table_name 'spaceships_with_2_custom_flags_column'
+          self.table_name = 'spaceships_with_2_custom_flags_column'
           include FlagShihTzu
 
           has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
@@ -98,7 +98,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_raises ArgumentError do
       eval(<<-EOF
         class SpaceshipWithAlreadyUsedMethod < ActiveRecord::Base
-          set_table_name 'spaceships_with_2_custom_flags_column'
+          self.table_name = 'spaceships_with_2_custom_flags_column'
           include FlagShihTzu
 
           def jeanluckpicard; end
@@ -114,7 +114,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_nothing_raised ArgumentError do
       eval(<<-EOF
         class SpaceshipWithAlreadyUsedMethodByFlagshitzu < ActiveRecord::Base
-          set_table_name 'spaceships_with_2_custom_flags_column'
+          self.table_name = 'spaceships_with_2_custom_flags_column'
           include FlagShihTzu
 
           has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
@@ -129,7 +129,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_raises ArgumentError do
       eval(<<-EOF
         class SpaceshipWithInvalidFlagName < ActiveRecord::Base
-          set_table_name 'spaceships'
+          self.table_name = 'spaceships'
           include FlagShihTzu
 
           has_flags({ 1 => 'error' })
@@ -422,7 +422,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_nothing_raised do
       eval(<<-EOF
         class SpaceshipWithoutFlagsColumn < ActiveRecord::Base
-          set_table_name 'spaceships_without_flags_column'
+          self.table_name = 'spaceships_without_flags_column'
           include FlagShihTzu
 
           has_flags 1 => :warpdrive,
@@ -440,7 +440,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_raises FlagShihTzu::IncorrectFlagColumnException do
       eval(<<-EOF
         class SpaceshipWithNonIntegerColumn < ActiveRecord::Base
-          set_table_name 'spaceships_with_non_integer_column'
+          self.table_name ='spaceships_with_non_integer_column'
           include FlagShihTzu
 
           has_flags 1 => :warpdrive,
