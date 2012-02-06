@@ -10,8 +10,8 @@ module FlagShihTzu
 
   def self.included(base)
     base.extend(ClassMethods)
-    base.class_attribute :flag_options
-    base.class_attribute :flag_mapping
+    base.class_attribute :flag_options unless defined?(base.flag_options)
+    base.class_attribute :flag_mapping unless defined?(base.flag_mapping)
   end
 
   class IncorrectFlagColumnException < Exception; end
