@@ -44,8 +44,8 @@ module FlagShihTzu
       self.flag_mapping[colmn] ||= {}
 
       # keep track of which flag columns are defined on this class
-      self.flag_options ||= {}
-      self.flag_columns << "#{colmn}"
+      self.flag_columns ||= []
+      self.flag_columns << colmn
 
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
