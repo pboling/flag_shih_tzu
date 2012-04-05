@@ -1,3 +1,17 @@
+==Notes on this fork
+
+This fork of xing/flag_shih_tzu is in production use on http://www.neighborino.com.
+It has been maintained by Peter Boling (pboling) for several years.
+It add a few (fully tested, fully backwards compatible) features to the official flavor (xing):
+
+* ClassWithHasFlags.set_#{flag_name}_sql  # Returns the sql string for setting a flag for use in customized SQL
+* ClassWithHasFlags.unset_#{flag_name}_sql  # Returns the sql string for unsetting a flag for use in customized SQL
+* ClassWithHasFlags.flag_columns  # Returns the column_names used by FlagShihTzu as bit fields
+* has_flags :strict => true  # DuplicateFlagColumnException when a single DB column is declared as a flag column twice
+* Less verbosity for expected conditions when the DB connaction for the class is unavailable.
+* Tests for additional features, but does not change any behavior of official version by default.
+* Easily migrate from official version.  No code changes required.
+
 =FlagShihTzu
 
 Bit fields for ActiveRecord
