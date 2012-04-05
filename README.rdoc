@@ -1,16 +1,20 @@
 ==Notes on this fork
 
 This fork of xing/flag_shih_tzu is in production use on http://www.neighborino.com.
-It has been maintained by Peter Boling (pboling) for several years.
-It add a few (fully tested, fully backwards compatible) features to the official flavor (xing):
+I have been maintaining a fork of the official flag_shih_tzu for several years. 
+I regularly glom improvements from other forks into my fork. 
+It adds a few (fully tested, fully backwards compatible) features to the official flavor (xing):
 
-* ClassWithHasFlags.set_#{flag_name}_sql  # Returns the sql string for setting a flag for use in customized SQL
-* ClassWithHasFlags.unset_#{flag_name}_sql  # Returns the sql string for unsetting a flag for use in customized SQL
-* ClassWithHasFlags.flag_columns  # Returns the column_names used by FlagShihTzu as bit fields
-* has_flags :strict => true  # DuplicateFlagColumnException when a single DB column is declared as a flag column twice
-* Less verbosity for expected conditions when the DB connaction for the class is unavailable.
+* ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
+* ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
+* ClassWithHasFlags.flag_columns # Returns the column_names used by FlagShihTzu as bit fields
+* has_flags :strict => true # DuplicateFlagColumnException raised when a single DB column is declared as a flag column twice
+* Less verbosity for expected conditions when the DB connection for the class is unavailable.
 * Tests for additional features, but does not change any behavior of official version by default.
-* Easily migrate from official version.  No code changes required.
+* Easily migrate from official version. No code changes required.
+
+I would welcome any of these additions/improvements being added to the official version. 
+I recognize a feature branch per feature added would be best, but my fork is so old that I'm not sure how to accomplish that.
 
 =FlagShihTzu
 
