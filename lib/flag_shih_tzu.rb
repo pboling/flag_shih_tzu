@@ -10,9 +10,9 @@ module FlagShihTzu
 
   def self.included(base)
     base.extend(ClassMethods)
-    base.class_attribute :flag_options
-    base.class_attribute :flag_mapping
-    base.class_attribute :flag_columns
+    base.class_attribute :flag_options unless defined?(base.flag_options)
+    base.class_attribute :flag_mapping unless defined?(base.flag_mapping)
+    base.class_attribute :flag_columns unless defined?(base.flag_columns)
   end
 
   class IncorrectFlagColumnException < Exception; end
@@ -44,11 +44,8 @@ module FlagShihTzu
       self.flag_mapping[colmn] ||= {}
 
       # keep track of which flag columns are defined on this class
-      class_eval <<-EVAL
-        cattr_accessor :flag_columns
-        @@flag_columns ||= []
-        @@flag_columns << "#{colmn}"
-      EVAL
+      self.flag_options ||= {}
+      self.flag_columns << "#{colmn}"
 
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, "has_flags: flag keys should be positive integers, and #{flag_key} is not" unless is_valid_flag_key(flag_key)
