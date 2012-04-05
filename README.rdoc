@@ -1,56 +1,67 @@
 =FlagShihTzu
 
-A rails plugin to store a collection of boolean attributes in a single
-ActiveRecord column as a bit field.
+Bit fields for ActiveRecord
+
+An extension for {ActiveRecord}[https://rubygems.org/gems/activerecord]
+to store a collection of boolean attributes in a single integer column
+as a bit field.
 
 http://github.com/xing/flag_shih_tzu
 
-This plugin lets you use a single integer column in an ActiveRecord model
+This gem lets you use a single integer column in an ActiveRecord model
 to store a collection of boolean attributes (flags). Each flag can be used
 almost in the same way you would use any boolean attribute on an
 ActiveRecord object.
 
 The benefits:
 * No migrations needed for new boolean attributes. This helps a lot
-  if you have very large db-tables where you want to avoid ALTER TABLE whenever
-  possible.
+  if you have very large db-tables, on which you want to avoid ALTER TABLE
+  whenever possible.
 * Only the one integer column needs to be indexed.
 
 Using FlagShihTzu, you can add new boolean attributes whenever you want,
 without needing any migration. Just add a new flag to the +has_flags+ call.
 
-And just in case you are wondering what "Shih Tzu" means:
+And just in case you are wondering what a "Shih Tzu" is:
 http://en.wikipedia.org/wiki/Shih_Tzu
+
+
+==Build status
+
+{<img src="https://secure.travis-ci.org/xing/flag_shih_tzu.png" />}[http://travis-ci.org/xing/flag_shih_tzu]
 
 
 ==Prerequisites
 
-FlagShihTzu assumes that your ActiveRecord model already has an integer field
-to store the flags, which should be defined to not allow NULL values and
-should have a default value of 0 (which means all flags are initially set to
-false).
+The gem is actively being tested with:
 
-The plugin has been tested with Rails versions from 2.1 to 3.0 and MySQL,
-PostgreSQL and SQLite3 databases. It has been tested with ruby 1.9.2 (with
-Rails 3 only).
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x
+* MySQL, PostgreSQL and SQLite3 databases
+* Ruby 1.8.7, 1.9.2 and 1.9.3
 
 
 ==Installation
 
-===As plugin (Rails 2.x, Rails 3)
+===Rails 2.x
 
-  cd path/to/your/rails-project
-  ./script/plugin install git://github.com/xing/flag_shih_tzu.git
+In environment.rb:
 
-===As gem (Rails 3)
+  config.gem 'flag_shih_tzu'
 
-Add following line to your Gemfile:
+Then:
 
-  gem 'flag_shih_tzu', '= 0.1.0.pre'
+  $ rake gems:install # use sudo if necessary
 
-Make sure to install gem with bundler:
+===Rails 3
 
-  bundle install
+In Gemfile:
+
+  gem 'flag_shih_tzu'
+
+Then:
+
+  $ bundle install
+
 
 ==Usage
 
@@ -62,13 +73,52 @@ Make sure to install gem with bundler:
     has_flags 1 => :warpdrive,
               2 => :shields,
               3 => :electrolytes
+
   end
 
-+has_flags+ takes a hash. The keys must be positive integers and represent
-the position of the bit being used to enable or disable the flag.
++has_flags+ takes a hash. The keys must be positive integers and represent 
+the position of the bit being used to enable or disable the flag. 
 <b>The keys must not be changed once in use, or you will get wrong results.</b>
 That is why the plugin forces you to set them explicitly.
 The values are symbols for the flags being created.
+
+
+===How it stores the values
+
+As said, FlagShihTzu uses a single integer column to store the values for all
+the defined flags as a bit field.
+
+The bit position of a flag corresponds to the given key.
+
+This way, we can use bit operators on the stored integer value to set, unset 
+and check individual flags.
+
+                +---+---+---+                +---+---+---+
+                |   |   |   |                |   |   |   |
+  Bit position  | 3 | 2 | 1 |                | 3 | 2 | 1 |
+  (flag key)    |   |   |   |                |   |   |   |
+                +---+---+---+                +---+---+---+
+                |   |   |   |                |   |   |   |
+  Bit value     | 4 | 2 | 1 |                | 4 | 2 | 1 |
+                |   |   |   |                |   |   |   |
+                +---+---+---+                +---+---+---+
+                | e | s | w |                | e | s | w |
+                | l | h | a |                | l | h | a |
+                | e | i | r |                | e | i | r |
+                | c | e | p |                | c | e | p |
+                | t | l | d |                | t | l | d |
+                | r | d | r |                | r | d | r |
+                | o | s | i |                | o | s | i |
+                | l |   | v |                | l |   | v |
+                | y |   | e |                | y |   | e |
+                | t |   |   |                | t |   |   |
+                | e |   |   |                | e |   |   |
+                | s |   |   |                | s |   |   |
+                +---+---+---+                +---+---+---+
+                | 1 | 1 | 0 | = 4 + 2 = 6    | 1 | 0 | 1 | = 4 + 1 = 5
+                +---+---+---+                +---+---+---+
+
+Read more about bit fields here: http://en.wikipedia.org/wiki/Bit_field
 
 
 ===Using a custom column name
@@ -82,7 +132,7 @@ different columns for separate flags:
             3 => :electrolytes,
             :column => 'features'
 
-  has_flags 1 => :spock, 
+  has_flags 1 => :spock,
             2 => :scott,
             3 => :kirk,
             :column => 'crew'
@@ -96,13 +146,24 @@ on Spaceship:
   Spaceship#warpdrive
   Spaceship#warpdrive?
   Spaceship#warpdrive=
+  Spaceship#warpdrive_changed?
+
   Spaceship#shields
   Spaceship#shields?
   Spaceship#shields=
+  Spaceship#shields_changed?
+
   Spaceship#electrolytes
   Spaceship#electrolytes?
   Spaceship#electrolytes=
+  Spaceship#electrolytes_changed?
 
+===Generated class methods
+
+Calling +has_flags+ as shown above creates the following class methods
+on Spaceship:
+
+  Spaceship.flag_columns      # [:features, :crew]
 
 ===Generated named scopes
 
@@ -141,44 +202,6 @@ the scopes. The option on has_flags is still named <tt>:named_scopes</tt> howeve
   ...
 
 
-===How it stores the values
-
-As said, FlagShihTzu uses a single integer column to store the values for all
-the defined flags as a bit field.
-
-The bit position of a flag corresponds to the given key.
-
-This way, we can use bit operators on the stored integer value to set, unset
-and check individual flags.
-
-                +---+---+---+                +---+---+---+
-                |   |   |   |                |   |   |   |
-  Bit position  | 3 | 2 | 1 |                | 3 | 2 | 1 |
-  (flag key)    |   |   |   |                |   |   |   |
-                +---+---+---+                +---+---+---+
-                |   |   |   |                |   |   |   |
-  Bit value     | 4 | 2 | 1 |                | 4 | 2 | 1 |
-                |   |   |   |                |   |   |   |
-                +---+---+---+                +---+---+---+
-                | e | s | w |                | e | s | w |
-                | l | h | a |                | l | h | a |
-                | e | i | r |                | e | i | r |
-                | c | e | p |                | c | e | p |
-                | t | l | d |                | t | l | d |
-                | r | d | r |                | r | d | r |
-                | o | s | i |                | o | s | i |
-                | l |   | v |                | l |   | v |
-                | y |   | e |                | y |   | e |
-                | t |   |   |                | t |   |   |
-                | e |   |   |                | e |   |   |
-                | s |   |   |                | s |   |   |
-                +---+---+---+                +---+---+---+
-                | 1 | 1 | 0 | = 4 + 2 = 6    | 1 | 0 | 1 | = 4 + 1 = 5
-                +---+---+---+                +---+---+---+
-
-Read more about bit fields here: http://en.wikipedia.org/wiki/Bit_field
-
-
 ===Support for manually building conditions
 
 The following class methods may support you when manually building
@@ -190,8 +213,8 @@ ActiveRecord conditions:
   Spaceship.not_shields_condition       # "(spaceships.flags not in (2,3,6,7))"
   Spaceship.electrolytes_condition      # "(spaceships.flags in (4,5,6,7))"
   Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
-  
-These methods also accept a :table_alias option that can be used when 
+
+These methods also accept a :table_alias option that can be used when
 generating SQL that references the same table more than once:
 
   Spaceship.shields_condition(:table_alias => 'evil_spaceships') # "(evil_spaceships.flags in (2,3,6,7))"
@@ -209,74 +232,75 @@ For MySQL, depending on your MySQL settings, this can even hit the
 In this case, consider changing the flag query mode to <tt>:bit_operator</tt>
 instead of <tt>:in_list</tt>, like so:
 
-  has_flags 1 => :warpdrive, 
-            2 => :shields, 
+  has_flags 1 => :warpdrive,
+            2 => :shields,
             :flag_query_mode => :bit_operator
 
 This will modify the generated condition and named_scope methods to use bit
 operators in the SQL instead of an IN() list:
 
-  Spaceship.warpdrive_condition         # "(spaceships.flags & 1 = 1)",
-  Spaceship.not_warpdrive_condition     # "(spaceships.flags & 1 = 0)",
-  Spaceship.shields_condition           # "(spaceships.flags & 2 = 2)",
-  Spaceship.not_shields_condition       # "(spaceships.flags & 2 = 0)",
+  Spaceship.warpdrive_condition     # "(spaceships.flags & 1 = 1)",
+  Spaceship.not_warpdrive_condition # "(spaceships.flags & 1 = 0)",
+  Spaceship.shields_condition       # "(spaceships.flags & 2 = 2)",
+  Spaceship.not_shields_condition   # "(spaceships.flags & 2 = 0)",
 
-  Spaceship.warpdrive         # :conditions => "(spaceships.flags & 1 = 1)"
-  Spaceship.not_warpdrive     # :conditions => "(spaceships.flags & 1 = 0)"
-  Spaceship.shields           # :conditions => "(spaceships.flags & 2 = 2)"
-  Spaceship.not_shields       # :conditions => "(spaceships.flags & 2 = 0)"
+  Spaceship.warpdrive     # :conditions => "(spaceships.flags & 1 = 1)"
+  Spaceship.not_warpdrive # :conditions => "(spaceships.flags & 1 = 0)"
+  Spaceship.shields       # :conditions => "(spaceships.flags & 2 = 2)"
+  Spaceship.not_shields   # :conditions => "(spaceships.flags & 2 = 0)"
 
 The drawback is that due to the bit operator, this query can not use an index
 on the flags column.
 
 
-==Running the plugin tests
+==Running the gem tests
 
-1. (Rails 3 only) Add <tt>mysql2</tt>, <tt>pg</tt> and <tt>sqlite3</tt> gems to your Gemfile.
-1. Install flag_shih_tzu as plugin inside working Rails application.
-1. Modify <tt>test/database.yml</tt> to fit your test environment.
-2. If needed, create the test database you configured in <tt>test/database.yml</tt>.
+First, make sure all required gems are installed:
 
-Then you can run
+  $ bundle install
 
-  DB=mysql|postgres|sqlite3 rake test:plugins PLUGIN=flag_shih_tzu
+The default rake test task will run the tests against the currently locked
+ActiveRecord version (see +Gemfile.lock+):
 
-from your Rails project root or
+  $ bundle exec rake test
 
-  DB=mysql|postgres|sqlite3 rake
+If you want to run the tests against all supported ActiveRecord versions:
 
-from <tt>vendor/plugins/flag_shih_tzu</tt>.
+  $ bundle exec rake test:all
+
+This will internally use bundler to load specific ActiveRecord versions
+before executing the tests (see +gemfiles/+), e.g.:
+
+  $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle exec rake test
+
+
+All tests will use an in-memory sqlite database by default.
+If you want to use a different database, see <tt>test/database.yml</tt>,
+install the required adapter gem and use the DB environment variable to
+specify which config from <tt>test/database.yml</tt> to use, e.g.:
+
+  $ DB=mysql bundle exec rake
 
 
 ==Authors
 
 {Patryk Peszko}[http://github.com/ppeszko],
 {Sebastian Roebke}[http://github.com/boosty],
-{David Anderson}[http://github.com/alpinegizmo]
-and {Tim Payton}[http://github.com/dizzy42]
+{David Anderson}[http://github.com/alpinegizmo],
+{Tim Payton}[http://github.com/dizzy42]
+and a helpful group of
+{contributors}[https://github.com/xing/flag_shih_tzu/contributors].
+Thanks!
 
 Please find out more about our work in our
-{tech blog}[http://blog.xing.com/category/english/tech-blog].
-
-
-==Contributors
-
-{TobiTobes}[http://github.com/rngtng],
-{Martin Stannard}[http://github.com/martinstannard],
-{Ladislav Martincik}[http://github.com/lacomartincik],
-{Peter Boling}[http://github.com/pboling],
-{Daniel Jagszent}[http://github.com/d--j],
-{Thorsten Boettger}[http://github.com/alto],
-{Darren Torpey}[http://github.com/darrentorpey],
-{Joost Baaij}[http://github.com/tilsammans] and
-{Musy Bite}[http://github.com/musybite]
+{Devblog}[http://devblog.xing.com/].
 
 
 ==License
 
 The MIT License
 
-Copyright (c) 2009 {XING AG}[http://www.xing.com/]
+Copyright (c) 2011 {XING AG}[http://www.xing.com/]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

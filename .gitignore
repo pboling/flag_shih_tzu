@@ -7,4 +7,6 @@ coverage
 *.gem
 .bundle
 Gemfile.lock
+gemfiles/*.lock
 pkg/*
+rdoc/*
