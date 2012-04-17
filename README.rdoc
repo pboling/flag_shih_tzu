@@ -1,3 +1,21 @@
+==Notes on this fork
+
+This fork of xing/flag_shih_tzu is in production use on http://www.neighborino.com.
+I have been maintaining a fork of the official flag_shih_tzu for several years. 
+I regularly glom improvements from other forks into my fork. 
+It adds a few (fully tested, fully backwards compatible) features to the official flavor (xing):
+
+* ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
+* ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
+* ClassWithHasFlags.flag_columns # Returns the column_names used by FlagShihTzu as bit fields
+* has_flags :strict => true # DuplicateFlagColumnException raised when a single DB column is declared as a flag column twice
+* Less verbosity for expected conditions when the DB connection for the class is unavailable.
+* Tests for additional features, but does not change any behavior of official version by default.
+* Easily migrate from official version. No code changes required.
+
+I would welcome any of these additions/improvements being added to the official version. 
+I recognize a feature branch per feature added would be best, but my fork is so old that I'm not sure how to accomplish that.
+
 =FlagShihTzu
 
 Bit fields for ActiveRecord
@@ -65,12 +83,6 @@ Then:
 
 ==Usage
 
-FlagShihTzu assumes that your ActiveRecord model already has an integer field
-to store the flags, which should be defined to not allow NULL values and
-should have a default value of 0 (which means all flags are initially set to
-false).
-
-
 ===Defining the flags
 
   class Spaceship < ActiveRecord::Base
@@ -79,10 +91,11 @@ false).
     has_flags 1 => :warpdrive,
               2 => :shields,
               3 => :electrolytes
+
   end
 
-+has_flags+ takes a hash. The keys must be positive integers and represent
-the position of the bit being used to enable or disable the flag.
++has_flags+ takes a hash. The keys must be positive integers and represent 
+the position of the bit being used to enable or disable the flag. 
 <b>The keys must not be changed once in use, or you will get wrong results.</b>
 That is why the plugin forces you to set them explicitly.
 The values are symbols for the flags being created.
@@ -95,7 +108,7 @@ the defined flags as a bit field.
 
 The bit position of a flag corresponds to the given key.
 
-This way, we can use bit operators on the stored integer value to set, unset
+This way, we can use bit operators on the stored integer value to set, unset 
 and check individual flags.
 
                 +---+---+---+                +---+---+---+
@@ -163,6 +176,12 @@ on Spaceship:
   Spaceship#electrolytes=
   Spaceship#electrolytes_changed?
 
+===Generated class methods
+
+Calling +has_flags+ as shown above creates the following class methods
+on Spaceship:
+
+  Spaceship.flag_columns      # [:features, :crew]
 
 ===Generated named scopes
 
