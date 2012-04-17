@@ -251,6 +251,39 @@ operators in the SQL instead of an IN() list:
 The drawback is that due to the bit operator, this query can not use an index
 on the flags column.
 
+===Updating flag column by raw sql
+
+If you need to do mass updates without initializing object for each row, you can
+use #set_flag_sql method on your class. Example:
+
+  Spaceship.set_flag_sql(:warpdrive, true) # "flags = flags | 1"
+  Spaceship.set_flag_sql(:shields, false)  # "flags = flags & ~2"
+
+And then use it in:
+
+  Spaceship.update_all Spaceship.set_flag_sql(:shields, false)
+
+Beware that having multiple flag manipulation sql statements probably will not
+bring required result (at least on sqlite3, not tested on other databases), so
+you _should not_ do this:
+
+  Spaceship.update_all "#{Spaceship.set_flag_sql(:shields, false)},#{
+    Spaceship.set_flag_sql(:warpdrive, true)}"
+
+General rule of thumb: issue only one flag update per update statement.
+
+===Skipping flag column check
+
+By default when you call has_flags in your code it will automatically check
+your database to see if you have correct column defined.
+
+Sometimes this may not be a wanted behaviour (e.g. when loading model without
+database connection established) so you can set :check_for_column option to
+false to avoid it.
+
+  has_flags 1 => :warpdrive,
+            2 => :shields,
+            :check_for_column => false
 
 ==Running the gem tests
 
