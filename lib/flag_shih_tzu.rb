@@ -77,6 +77,36 @@ module FlagShihTzu
           end
         EVAL
 
+        if colmn != DEFAULT_COLUMN_NAME
+          class_eval <<-EVAL
+
+            def all_#{colmn}
+              all_flags('#{colmn}')
+            end
+
+            def selected_#{colmn}
+              selected_flags('#{colmn}')
+            end
+
+            def select_all_#{colmn}
+              select_all_flags('#{colmn}')
+            end
+
+            def unselect_all_#{colmn}
+              unselect_all_flags('#{colmn}')
+            end
+
+            # useful for a form builder
+            def selected_#{colmn}=(selected_flags)
+              unselect_all_flags('#{colmn}')
+              selected_flags.each do |selected_flag|
+                enable_flag(selected_flag.to_sym, '#{colmn}') if selected_flag.present?
+              end
+            end
+
+          EVAL
+        end
+
         # Define the named scopes if the user wants them and AR supports it
         if flag_options[colmn][:named_scopes] && respond_to?(named_scope_method)
           class_eval <<-EVAL
@@ -205,6 +235,26 @@ module FlagShihTzu
 
   def set_flags(value, colmn)
     self[colmn] = value
+  end
+
+  def all_flags(column)
+    flag_mapping[column].keys
+  end
+
+  def selected_flags(column)
+    all_flags(column).map { |flag_name| self.send(flag_name) ? flag_name : nil }.compact
+  end
+
+  def select_all_flags(column)
+    all_flags(column).each do |flag|
+      enable_flag(flag, column)
+    end
+  end
+
+  def unselect_all_flags(column)
+    all_flags(column).each do |flag|
+      disable_flag(flag, column)
+    end
   end
 
   private
