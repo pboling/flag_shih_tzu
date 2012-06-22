@@ -52,6 +52,13 @@ class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
 end
 
+class SpaceshipWithBangMethods < ActiveRecord::Base
+  self.table_name = 'spaceships'
+  include FlagShihTzu
+
+  has_flags(1 => :warpdrive, 2 => :shields, :bang_methods => true)
+end
+
 class SpaceCarrier < Spaceship
 end
 
@@ -537,5 +544,13 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
       @spaceship.warpdrive = false_value
       assert !@spaceship.warpdrive
     end
+  end
+
+  def test_should_define_bang_methods
+    spaceship = SpaceshipWithBangMethods.new
+    spaceship.warpdrive!
+    assert spaceship.warpdrive
+    spaceship.not_warpdrive!
+    assert !spaceship.warpdrive
   end
 end
