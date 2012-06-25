@@ -93,7 +93,34 @@ module FlagShihTzu
       raise ArgumentError, "Invalid flag '#{flag}'" if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
     end
 
+    def chained_flags_with(*args)
+      where(chained_flags_condition(*args))
+    end
+
+    def chained_flags_condition(colmn, *args)
+      "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(',')}))"
+    end
+
     private
+
+      def chained_flags_values(colmn, *args)
+        val = (1..(2 ** flag_mapping[flag_options[colmn][:column]].length)).to_a
+        args.each do |flag|
+          neg = false
+          if flag.match /^not_/
+            neg = true
+            flag = flag.to_s.sub(/^not_/, '').to_sym
+          end
+          check_flag(flag, colmn)
+          flag_values = sql_in_for_flag(flag, colmn)
+          if neg
+            val = val - flag_values
+          else
+            val = val & flag_values
+          end
+        end
+        val
+      end
 
       def parse_options(*args)
         options = args.shift
