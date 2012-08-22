@@ -10,8 +10,8 @@ module FlagShihTzu
 
   def self.included(base)
     base.extend(ClassMethods)
-    base.class_attribute :flag_options
-    base.class_attribute :flag_mapping
+    base.class_attribute :flag_options unless defined?(base.flag_options)
+    base.class_attribute :flag_mapping unless defined?(base.flag_mapping)
   end
 
   class IncorrectFlagColumnException < Exception; end
@@ -104,6 +104,19 @@ module FlagShihTzu
               end
             end
 
+          EVAL
+        end
+
+        # Define bancg methods when requested
+        if flag_options[colmn][:bang_methods]
+          class_eval <<-EVAL
+            def #{flag_name}!
+              enable_flag(:#{flag_name}, '#{colmn}')
+            end
+
+            def not_#{flag_name}!
+              disable_flag(:#{flag_name}, '#{colmn}')
+            end
           EVAL
         end
 

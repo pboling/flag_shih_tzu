@@ -52,6 +52,13 @@ class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
 end
 
+class SpaceshipWithBangMethods < ActiveRecord::Base
+  self.table_name = 'spaceships'
+  include FlagShihTzu
+
+  has_flags(1 => :warpdrive, 2 => :shields, :bang_methods => true)
+end
+
 class SpaceCarrier < Spaceship
 end
 
@@ -380,21 +387,21 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   # --------------------------------------------------
 
   def test_should_define_an_all_flags_reader_method
-    assert_equal [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
+    assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
   end
 
   def test_should_define_a_selected_flags_reader_method
-    assert_equal [], @spaceship.selected_flags('flags')
+    assert_array_similarity [], @spaceship.selected_flags('flags')
 
     @spaceship.warpdrive = true
-    assert_equal [:warpdrive], @spaceship.selected_flags('flags')
+    assert_array_similarity [:warpdrive], @spaceship.selected_flags('flags')
 
     @spaceship.electrolytes = true
-    assert_equal [:electrolytes, :warpdrive], @spaceship.selected_flags('flags')
+    assert_array_similarity [:electrolytes, :warpdrive], @spaceship.selected_flags('flags')
 
     @spaceship.warpdrive = false
     @spaceship.electrolytes = false
-    assert_equal [], @spaceship.selected_flags('flags')
+    assert_array_similarity [], @spaceship.selected_flags('flags')
   end
 
   def test_should_define_a_select_all_flags_method
@@ -419,21 +426,21 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   # --------------------------------------------------
 
   def test_should_define_a_customized_all_flags_reader_method
-    assert_equal [:hyperspace, :warpdrive], @small_spaceship.all_bits
+    assert_array_similarity [:hyperspace, :warpdrive], @small_spaceship.all_bits
   end
 
   def test_should_define_a_customized_selected_flags_reader_method
-    assert_equal [], @small_spaceship.selected_bits
+    assert_array_similarity [], @small_spaceship.selected_bits
 
     @small_spaceship.warpdrive = true
-    assert_equal [:warpdrive], @small_spaceship.selected_bits
+    assert_array_similarity [:warpdrive], @small_spaceship.selected_bits
 
     @small_spaceship.hyperspace = true
-    assert_equal [:hyperspace, :warpdrive], @small_spaceship.selected_bits
+    assert_array_similarity [:hyperspace, :warpdrive], @small_spaceship.selected_bits
 
     @small_spaceship.warpdrive = false
     @small_spaceship.hyperspace = false
-    assert_equal [], @small_spaceship.selected_bits
+    assert_array_similarity [], @small_spaceship.selected_bits
   end
 
   def test_should_define_a_customized_select_all_flags_method
@@ -473,32 +480,32 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   # --------------------------------------------------
 
   def test_should_define_a_customized_all_flags_reader_method_with_2_columns
-    assert_equal [:hyperspace, :warpdrive], @big_spaceship.all_bits
-    assert_equal [:dajanatroj, :jeanlucpicard], @big_spaceship.all_commanders
+    assert_array_similarity [:hyperspace, :warpdrive], @big_spaceship.all_bits
+    assert_array_similarity [:dajanatroj, :jeanlucpicard], @big_spaceship.all_commanders
   end
 
   def test_should_define_a_customized_selected_flags_reader_method_with_2_columns
-    assert_equal [], @big_spaceship.selected_bits
-    assert_equal [], @big_spaceship.selected_commanders
+    assert_array_similarity [], @big_spaceship.selected_bits
+    assert_array_similarity [], @big_spaceship.selected_commanders
 
     @big_spaceship.warpdrive = true
     @big_spaceship.jeanlucpicard = true
-    assert_equal [:warpdrive], @big_spaceship.selected_bits
-    assert_equal [:jeanlucpicard], @big_spaceship.selected_commanders
+    assert_array_similarity [:warpdrive], @big_spaceship.selected_bits
+    assert_array_similarity [:jeanlucpicard], @big_spaceship.selected_commanders
 
     @big_spaceship.hyperspace = true
     @big_spaceship.hyperspace = true
     @big_spaceship.jeanlucpicard = true
     @big_spaceship.dajanatroj = true
-    assert_equal [:hyperspace, :warpdrive], @big_spaceship.selected_bits
-    assert_equal [:dajanatroj, :jeanlucpicard], @big_spaceship.selected_commanders
+    assert_array_similarity [:hyperspace, :warpdrive], @big_spaceship.selected_bits
+    assert_array_similarity [:dajanatroj, :jeanlucpicard], @big_spaceship.selected_commanders
 
     @big_spaceship.warpdrive = false
     @big_spaceship.hyperspace = false
     @big_spaceship.jeanlucpicard = false
     @big_spaceship.dajanatroj = false
-    assert_equal [], @big_spaceship.selected_bits
-    assert_equal [], @big_spaceship.selected_commanders
+    assert_array_similarity [], @big_spaceship.selected_bits
+    assert_array_similarity [], @big_spaceship.selected_commanders
   end
 
   def test_should_define_a_customized_select_all_flags_method_with_2_columns
@@ -718,5 +725,13 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
       @spaceship.warpdrive = false_value
       assert !@spaceship.warpdrive
     end
+  end
+
+  def test_should_define_bang_methods
+    spaceship = SpaceshipWithBangMethods.new
+    spaceship.warpdrive!
+    assert spaceship.warpdrive
+    spaceship.not_warpdrive!
+    assert !spaceship.warpdrive
   end
 end
