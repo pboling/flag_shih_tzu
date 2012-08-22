@@ -163,6 +163,13 @@ on Spaceship:
   Spaceship#electrolytes=
   Spaceship#electrolytes_changed?
 
+Opionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
+
+  Spaceship#electrolytes!
+  Spaceship#not_electrolytes!
+
+which respectively enables or disables the electrolytes flag.
+
 
 ===Generated named scopes
 
