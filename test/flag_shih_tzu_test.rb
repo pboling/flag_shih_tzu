@@ -423,6 +423,22 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert !@spaceship.electrolytes
   end
 
+  def test_should_define_an_has_flag_method
+    assert !@spaceship.has_flag?('flags')
+
+    @spaceship.warpdrive = true
+    assert @spaceship.has_flag?('flags')
+
+    @spaceship.shields = true
+    assert @spaceship.has_flag?('flags')
+
+    @spaceship.electrolytes = true
+    assert @spaceship.has_flag?('flags')
+
+    @spaceship.unselect_all_flags('flags')
+    assert !@spaceship.has_flag?('flags')
+  end
+
   # --------------------------------------------------
 
   def test_should_define_a_customized_all_flags_reader_method
@@ -475,6 +491,19 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     @small_spaceship.selected_bits = []
     assert !@small_spaceship.warpdrive
     assert !@small_spaceship.hyperspace
+  end
+
+  def test_should_define_a_customized_has_flag_method
+    assert !@small_spaceship.has_bit?
+
+    @small_spaceship.warpdrive = true
+    assert @small_spaceship.has_bit?
+
+    @small_spaceship.hyperspace = true
+    assert @small_spaceship.has_bit?
+
+    @small_spaceship.unselect_all_bits
+    assert !@small_spaceship.has_bit?
   end
 
   # --------------------------------------------------
@@ -560,6 +589,24 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert !@big_spaceship.hyperspace
     assert !@big_spaceship.jeanlucpicard
     assert !@big_spaceship.dajanatroj
+  end
+
+  def test_should_define_a_customized_has_flag_method_with_2_columns
+    assert !@big_spaceship.has_bit?
+    assert !@big_spaceship.has_commander?
+
+    @big_spaceship.warpdrive = true
+    @big_spaceship.jeanlucpicard = true
+    assert @big_spaceship.has_bit?
+    assert @big_spaceship.has_commander?
+
+    @big_spaceship.hyperspace = true
+    @big_spaceship.dajanatroj = true
+    assert @big_spaceship.has_bit?
+
+    @big_spaceship.unselect_all_bits
+    @big_spaceship.unselect_all_commanders
+    assert !@big_spaceship.has_bit?
   end
 
   # --------------------------------------------------
