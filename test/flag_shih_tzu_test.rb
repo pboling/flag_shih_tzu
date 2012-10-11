@@ -301,6 +301,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   def setup
     @spaceship = Spaceship.new
     @big_spaceship = SpaceshipWith2CustomFlagsColumn.new
+    @small_spaceship = SpaceshipWithCustomFlagsColumn.new
   end
 
   def test_should_enable_flag
@@ -382,6 +383,233 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   def test_should_define_an_attribute_reader_method
     assert_equal false, @spaceship.warpdrive
   end
+
+  # --------------------------------------------------
+
+  def test_should_define_an_all_flags_reader_method
+    assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
+  end
+
+  def test_should_define_a_selected_flags_reader_method
+    assert_array_similarity [], @spaceship.selected_flags('flags')
+
+    @spaceship.warpdrive = true
+    assert_array_similarity [:warpdrive], @spaceship.selected_flags('flags')
+
+    @spaceship.electrolytes = true
+    assert_array_similarity [:electrolytes, :warpdrive], @spaceship.selected_flags('flags')
+
+    @spaceship.warpdrive = false
+    @spaceship.electrolytes = false
+    assert_array_similarity [], @spaceship.selected_flags('flags')
+  end
+
+  def test_should_define_a_select_all_flags_method
+    @spaceship.select_all_flags('flags')
+    assert @spaceship.warpdrive
+    assert @spaceship.shields
+    assert @spaceship.electrolytes
+  end
+
+  def test_should_define_an_unselect_all_flags_method
+    @spaceship.warpdrive = true
+    @spaceship.shields = true
+    @spaceship.electrolytes = true
+
+    @spaceship.unselect_all_flags('flags')
+
+    assert !@spaceship.warpdrive
+    assert !@spaceship.shields
+    assert !@spaceship.electrolytes
+  end
+
+  def test_should_define_an_has_flag_method
+    assert !@spaceship.has_flag?('flags')
+
+    @spaceship.warpdrive = true
+    assert @spaceship.has_flag?('flags')
+
+    @spaceship.shields = true
+    assert @spaceship.has_flag?('flags')
+
+    @spaceship.electrolytes = true
+    assert @spaceship.has_flag?('flags')
+
+    @spaceship.unselect_all_flags('flags')
+    assert !@spaceship.has_flag?('flags')
+  end
+
+  # --------------------------------------------------
+
+  def test_should_define_a_customized_all_flags_reader_method
+    assert_array_similarity [:hyperspace, :warpdrive], @small_spaceship.all_bits
+  end
+
+  def test_should_define_a_customized_selected_flags_reader_method
+    assert_array_similarity [], @small_spaceship.selected_bits
+
+    @small_spaceship.warpdrive = true
+    assert_array_similarity [:warpdrive], @small_spaceship.selected_bits
+
+    @small_spaceship.hyperspace = true
+    assert_array_similarity [:hyperspace, :warpdrive], @small_spaceship.selected_bits
+
+    @small_spaceship.warpdrive = false
+    @small_spaceship.hyperspace = false
+    assert_array_similarity [], @small_spaceship.selected_bits
+  end
+
+  def test_should_define_a_customized_select_all_flags_method
+    @small_spaceship.select_all_bits
+    assert @small_spaceship.warpdrive
+    assert @small_spaceship.hyperspace
+  end
+
+  def test_should_define_a_customized_unselect_all_flags_method
+    @small_spaceship.warpdrive = true
+    @small_spaceship.hyperspace = true
+
+    @small_spaceship.unselect_all_bits
+
+    assert !@small_spaceship.warpdrive
+    assert !@small_spaceship.hyperspace
+  end
+
+  def test_should_define_a_customized_selected_flags_writer_method
+    @small_spaceship.selected_bits = [:warpdrive]
+    assert @small_spaceship.warpdrive
+    assert !@small_spaceship.hyperspace
+
+    @small_spaceship.selected_bits = [:hyperspace]
+    assert !@small_spaceship.warpdrive
+    assert @small_spaceship.hyperspace
+
+    @small_spaceship.selected_bits = [:hyperspace, :warpdrive]
+    assert @small_spaceship.warpdrive
+    assert @small_spaceship.hyperspace
+
+    @small_spaceship.selected_bits = []
+    assert !@small_spaceship.warpdrive
+    assert !@small_spaceship.hyperspace
+  end
+
+  def test_should_define_a_customized_has_flag_method
+    assert !@small_spaceship.has_bit?
+
+    @small_spaceship.warpdrive = true
+    assert @small_spaceship.has_bit?
+
+    @small_spaceship.hyperspace = true
+    assert @small_spaceship.has_bit?
+
+    @small_spaceship.unselect_all_bits
+    assert !@small_spaceship.has_bit?
+  end
+
+  # --------------------------------------------------
+
+  def test_should_define_a_customized_all_flags_reader_method_with_2_columns
+    assert_array_similarity [:hyperspace, :warpdrive], @big_spaceship.all_bits
+    assert_array_similarity [:dajanatroj, :jeanlucpicard], @big_spaceship.all_commanders
+  end
+
+  def test_should_define_a_customized_selected_flags_reader_method_with_2_columns
+    assert_array_similarity [], @big_spaceship.selected_bits
+    assert_array_similarity [], @big_spaceship.selected_commanders
+
+    @big_spaceship.warpdrive = true
+    @big_spaceship.jeanlucpicard = true
+    assert_array_similarity [:warpdrive], @big_spaceship.selected_bits
+    assert_array_similarity [:jeanlucpicard], @big_spaceship.selected_commanders
+
+    @big_spaceship.hyperspace = true
+    @big_spaceship.hyperspace = true
+    @big_spaceship.jeanlucpicard = true
+    @big_spaceship.dajanatroj = true
+    assert_array_similarity [:hyperspace, :warpdrive], @big_spaceship.selected_bits
+    assert_array_similarity [:dajanatroj, :jeanlucpicard], @big_spaceship.selected_commanders
+
+    @big_spaceship.warpdrive = false
+    @big_spaceship.hyperspace = false
+    @big_spaceship.jeanlucpicard = false
+    @big_spaceship.dajanatroj = false
+    assert_array_similarity [], @big_spaceship.selected_bits
+    assert_array_similarity [], @big_spaceship.selected_commanders
+  end
+
+  def test_should_define_a_customized_select_all_flags_method_with_2_columns
+    @big_spaceship.select_all_bits
+    @big_spaceship.select_all_commanders
+    assert @big_spaceship.warpdrive
+    assert @big_spaceship.hyperspace
+    assert @big_spaceship.jeanlucpicard
+    assert @big_spaceship.dajanatroj
+  end
+
+  def test_should_define_a_customized_unselect_all_flags_method_with_2_columns
+    @big_spaceship.warpdrive = true
+    @big_spaceship.hyperspace = true
+    @big_spaceship.jeanlucpicard = true
+    @big_spaceship.dajanatroj = true
+
+    @big_spaceship.unselect_all_bits
+    @big_spaceship.unselect_all_commanders
+
+    assert !@big_spaceship.warpdrive
+    assert !@big_spaceship.hyperspace
+    assert !@big_spaceship.jeanlucpicard
+    assert !@big_spaceship.dajanatroj
+  end
+
+  def test_should_define_a_customized_selected_flags_writer_method_with_2_columns
+    @big_spaceship.selected_bits = [:warpdrive]
+    @big_spaceship.selected_commanders = [:jeanlucpicard]
+    assert @big_spaceship.warpdrive
+    assert !@big_spaceship.hyperspace
+    assert @big_spaceship.jeanlucpicard
+    assert !@big_spaceship.dajanatroj
+
+    @big_spaceship.selected_bits = [:hyperspace]
+    @big_spaceship.selected_commanders = [:dajanatroj]
+    assert !@big_spaceship.warpdrive
+    assert @big_spaceship.hyperspace
+    assert !@big_spaceship.jeanlucpicard
+    assert @big_spaceship.dajanatroj
+
+    @big_spaceship.selected_bits = [:hyperspace, :warpdrive]
+    @big_spaceship.selected_commanders = [:dajanatroj, :jeanlucpicard]
+    assert @big_spaceship.warpdrive
+    assert @big_spaceship.hyperspace
+    assert @big_spaceship.jeanlucpicard
+    assert @big_spaceship.dajanatroj
+
+    @big_spaceship.selected_bits = []
+    @big_spaceship.selected_commanders = []
+    assert !@big_spaceship.warpdrive
+    assert !@big_spaceship.hyperspace
+    assert !@big_spaceship.jeanlucpicard
+    assert !@big_spaceship.dajanatroj
+  end
+
+  def test_should_define_a_customized_has_flag_method_with_2_columns
+    assert !@big_spaceship.has_bit?
+    assert !@big_spaceship.has_commander?
+
+    @big_spaceship.warpdrive = true
+    @big_spaceship.jeanlucpicard = true
+    assert @big_spaceship.has_bit?
+    assert @big_spaceship.has_commander?
+
+    @big_spaceship.hyperspace = true
+    @big_spaceship.dajanatroj = true
+    assert @big_spaceship.has_bit?
+
+    @big_spaceship.unselect_all_bits
+    @big_spaceship.unselect_all_commanders
+    assert !@big_spaceship.has_bit?
+  end
+
+  # --------------------------------------------------
 
   def test_should_define_an_attribute_reader_predicate_method
     assert_equal false, @spaceship.warpdrive?

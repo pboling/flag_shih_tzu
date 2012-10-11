@@ -152,16 +152,34 @@ on Spaceship:
   Spaceship#warpdrive?
   Spaceship#warpdrive=
   Spaceship#warpdrive_changed?
+  Spaceship#all_warpdrives
+  Spaceship#selected_warpdrives
+  Spaceship#select_all_warpdrives
+  Spaceship#unselect_all_warpdrives
+  Spaceship#selected_warpdrives=
+  Spaceship#has_warpdrive?
 
   Spaceship#shields
   Spaceship#shields?
   Spaceship#shields=
   Spaceship#shields_changed?
+  Spaceship#all_shields
+  Spaceship#selected_shields
+  Spaceship#select_all_shields
+  Spaceship#unselect_all_shields
+  Spaceship#selected_shields=
+  Spaceship#has_shield?
 
   Spaceship#electrolytes
   Spaceship#electrolytes?
   Spaceship#electrolytes=
   Spaceship#electrolytes_changed?
+  Spaceship#all_electrolytes
+  Spaceship#selected_electrolytes
+  Spaceship#select_all_electrolytes
+  Spaceship#unselect_all_electrolytes
+  Spaceship#selected_electrolytes=
+  Spaceship#has_electrolyte?
 
 Opionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
 
