@@ -104,6 +104,10 @@ module FlagShihTzu
               end
             end
 
+            def has_#{colmn.singularize}?
+              not selected_#{colmn}.empty?
+            end
+
           EVAL
         end
 
@@ -268,6 +272,10 @@ module FlagShihTzu
     all_flags(column).each do |flag|
       disable_flag(flag, column)
     end
+  end
+
+  def has_flag?(column = DEFAULT_COLUMN_NAME)
+    not selected_flags(column).empty?
   end
 
   private
