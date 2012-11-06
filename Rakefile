@@ -28,15 +28,8 @@ namespace :test do
   desc 'Test against all supported ActiveRecord versions'
   task :all do
     %w(2.3.x 3.0.x 3.1.x 3.2.x).each do |version|
-      sh "BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-#{version}' bundle"
+      sh "BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-#{version}' bundle --quiet"
       sh "BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-#{version}' bundle exec rake test"
     end
-  end
-
-  desc 'Measures test coverage'
-  task :coverage do
-    rm_f "coverage"
-    system("rcov -Ilib test/*_test.rb")
-    system("open coverage/index.html") if PLATFORM['darwin']
   end
 end

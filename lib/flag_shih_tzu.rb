@@ -94,6 +94,19 @@ module FlagShihTzu
           end
         EVAL
 
+        # Define bancg methods when requested
+        if flag_options[colmn][:bang_methods]
+          class_eval <<-EVAL
+            def #{flag_name}!
+              enable_flag(:#{flag_name}, '#{colmn}')
+            end
+
+            def not_#{flag_name}!
+              disable_flag(:#{flag_name}, '#{colmn}')
+            end
+          EVAL
+        end
+
         # Define the named scopes if the user wants them and AR supports it
         if flag_options[colmn][:named_scopes] && respond_to?(named_scope_method)
           class_eval <<-EVAL

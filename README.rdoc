@@ -83,6 +83,12 @@ Then:
 
 ==Usage
 
+FlagShihTzu assumes that your ActiveRecord model already has an integer field
+to store the flags, which should be defined to not allow NULL values and
+should have a default value of 0 (which means all flags are initially set to
+false).
+
+
 ===Defining the flags
 
   class Spaceship < ActiveRecord::Base
@@ -91,11 +97,10 @@ Then:
     has_flags 1 => :warpdrive,
               2 => :shields,
               3 => :electrolytes
-
   end
 
-+has_flags+ takes a hash. The keys must be positive integers and represent 
-the position of the bit being used to enable or disable the flag. 
++has_flags+ takes a hash. The keys must be positive integers and represent
+the position of the bit being used to enable or disable the flag.
 <b>The keys must not be changed once in use, or you will get wrong results.</b>
 That is why the plugin forces you to set them explicitly.
 The values are symbols for the flags being created.
@@ -108,7 +113,7 @@ the defined flags as a bit field.
 
 The bit position of a flag corresponds to the given key.
 
-This way, we can use bit operators on the stored integer value to set, unset 
+This way, we can use bit operators on the stored integer value to set, unset
 and check individual flags.
 
                 +---+---+---+                +---+---+---+
@@ -182,6 +187,14 @@ Calling +has_flags+ as shown above creates the following class methods
 on Spaceship:
 
   Spaceship.flag_columns      # [:features, :crew]
+
+Opionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
+
+  Spaceship#electrolytes!
+  Spaceship#not_electrolytes!
+
+which respectively enables or disables the electrolytes flag.
+
 
 ===Generated named scopes
 

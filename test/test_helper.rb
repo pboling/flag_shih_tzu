@@ -4,6 +4,7 @@ require "logger"
 require "flag_shih_tzu"
 
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
+ActiveRecord::Migration.verbose = false
 
 configs = YAML.load_file(File.dirname(__FILE__) + "/database.yml")
 ActiveRecord::Base.configurations = configs
