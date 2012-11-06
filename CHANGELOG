@@ -1,3 +1,8 @@
+Version 0.3.1 - NOV.06.2012
+
+* Adds new methods (for a flag column named 'bar', with many individual flags within) - from ddidier
+  - all_bar, selected_bar, select_all_bar, unselect_all_bar, selected_bar=(selected_flags), has_bar?
+
 Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
 
 * ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
