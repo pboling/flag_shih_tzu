@@ -7,7 +7,23 @@ remain true to XING's original.  The 0.3 line aims to maintain complete parity a
 well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
 rebase your work onto the current master to make integration easier.
 
-Some new things in the 0.3 line:
+=== New Stuff in 0.3.X
+
+Version 0.3.2 - NOV.06.2012
+
+* Adds skip column check option :check_for_column - from arturaz
+* Adds a 'smart' set_flag_sql method which will auto determine the correct column for the given flag - from arturaz
+* Changes the behavior of sql_set_for_flag to not use table names in the generated SQL
+  - because it didn't actually work before
+  - Now there is a test ensuring that the generated SQL can be executed by a real DB
+  - This improved sql_set_for_flag underlies the public set_flag_sql method
+
+Version 0.3.1 - NOV.06.2012
+
+* Adds new methods (for a flag column named 'bar', with many individual flags within) - from ddidier
+  - all_bar, selected_bar, select_all_bar, unselect_all_bar, selected_bar=(selected_flags), has_bar?
+
+Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
 
 * ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
 * ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
