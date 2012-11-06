@@ -27,6 +27,6 @@ ActiveRecord object.
   s.add_development_dependency "bundler"
   s.add_development_dependency "rdoc", ">= 2.4.2"
   s.add_development_dependency "rake"
-  s.add_development_dependency "rcov"
+  #s.add_development_dependency "rcov"
   s.add_development_dependency "sqlite3"
 end

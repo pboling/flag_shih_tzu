@@ -1,3 +1,22 @@
+== Change of Ownership and 0.3.X Release Notes
+
+FlagShihTzu was originally a {XING AG}[http://www.xing.com/] project.  {Peter Boling}[http://peterboling.com] was a long time contributor and watcher of the project.
+In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
+fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
+remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
+well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
+rebase your work onto the current master to make integration easier.
+
+Some new things in the 0.3 line:
+
+* ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
+* ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
+* ClassWithHasFlags.flag_columns # Returns the column_names used by FlagShihTzu as bit fields
+* has_flags :strict => true # DuplicateFlagColumnException raised when a single DB column is declared as a flag column twice
+* Less verbosity for expected conditions when the DB connection for the class is unavailable.
+* Tests for additional features, but does not change any behavior of 0.2 versions by default.
+* Easily migrate from 0.2 versions. No code changes required.
+
 =FlagShihTzu
 
 Bit fields for ActiveRecord
@@ -28,16 +47,16 @@ http://en.wikipedia.org/wiki/Shih_Tzu
 
 ==Build status
 
-{<img src="https://secure.travis-ci.org/xing/flag_shih_tzu.png" />}[http://travis-ci.org/xing/flag_shih_tzu]
+{<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
 
 
 ==Prerequisites
 
 The gem is actively being tested with:
 
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x
 * MySQL, PostgreSQL and SQLite3 databases
-* Ruby 1.8.7 and 1.9.2
+* Ruby 1.8.7, 1.9.2 and 1.9.3
 
 
 ==Installation
@@ -152,16 +171,48 @@ on Spaceship:
   Spaceship#warpdrive?
   Spaceship#warpdrive=
   Spaceship#warpdrive_changed?
+  Spaceship#all_warpdrives
+  Spaceship#selected_warpdrives
+  Spaceship#select_all_warpdrives
+  Spaceship#unselect_all_warpdrives
+  Spaceship#selected_warpdrives=
+  Spaceship#has_warpdrive?
 
   Spaceship#shields
   Spaceship#shields?
   Spaceship#shields=
   Spaceship#shields_changed?
+  Spaceship#all_shields
+  Spaceship#selected_shields
+  Spaceship#select_all_shields
+  Spaceship#unselect_all_shields
+  Spaceship#selected_shields=
+  Spaceship#has_shield?
 
   Spaceship#electrolytes
   Spaceship#electrolytes?
   Spaceship#electrolytes=
   Spaceship#electrolytes_changed?
+  Spaceship#all_electrolytes
+  Spaceship#selected_electrolytes
+  Spaceship#select_all_electrolytes
+  Spaceship#unselect_all_electrolytes
+  Spaceship#selected_electrolytes=
+  Spaceship#has_electrolyte?
+
+===Generated class methods
+
+Calling +has_flags+ as shown above creates the following class methods
+on Spaceship:
+
+  Spaceship.flag_columns      # [:features, :crew]
+
+Optionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
+
+  Spaceship#electrolytes!
+  Spaceship#not_electrolytes!
+
+which respectively enables or disables the electrolytes flag.
 
 
 ===Generated named scopes
@@ -316,22 +367,27 @@ specify which config from <tt>test/database.yml</tt> to use, e.g.:
 
 ==Authors
 
+{Peter Boling}[http://github.com/pboling],
 {Patryk Peszko}[http://github.com/ppeszko],
 {Sebastian Roebke}[http://github.com/boosty],
 {David Anderson}[http://github.com/alpinegizmo],
 {Tim Payton}[http://github.com/dizzy42]
 and a helpful group of
-{contributors}[https://github.com/xing/flag_shih_tzu/contributors].
+{contributors}[https://github.com/pboling/flag_shih_tzu/contributors].
 Thanks!
 
-Please find out more about our work in our
-{tech blog}[http://blog.xing.com/category/english/tech-blog].
+Find out more about Peter Boling's work
+{PeterBoling.com}[http://peterboling.com/].
+
+Find out more about XING
+{Devblog}[http://devblog.xing.com/].
 
 
 ==License
 
 The MIT License
 
+Copyright (c) 2012 {Peter Boling}[http://www.peterboling.com/]
 Copyright (c) 2011 {XING AG}[http://www.xing.com/]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
