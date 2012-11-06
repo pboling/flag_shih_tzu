@@ -45,6 +45,15 @@ class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => 'commanders')
 end
 
+class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
+  self.table_name = 'spaceships_with_3_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'engines')
+  has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
+  has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
+end
+
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   self.table_name = 'spaceships'
   include FlagShihTzu
@@ -111,6 +120,21 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           def jeanluckpicard; end
 
           has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
+        end
+           EOF
+          )
+    end
+  end
+
+  def test_has_flags_should_raise_an_exception_when_flag_name_method_defined_by_flagshitzu_if_strict
+    assert_raises FlagShihTzu::DuplicateFlagColumnException do
+      eval(<<-EOF
+        class SpaceshipWithAlreadyUsedMethodByFlagshitzuStrict < ActiveRecord::Base
+          self.table_name = 'spaceships_with_2_custom_flags_column'
+          include FlagShihTzu
+
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits', :strict => true)
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits', :strict => true)
         end
            EOF
           )
@@ -781,4 +805,20 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
     spaceship.not_warpdrive!
     assert !spaceship.warpdrive
   end
+
+  def test_should_return_a_sql_set_method_for_flag
+    assert_equal "spaceships.flags = spaceships.flags | 1",  Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', true)
+    assert_equal "spaceships.flags = spaceships.flags & ~1", Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', false)
+  end
+
+end
+
+class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
+
+  def test_should_track_columns_used_by_FlagShihTzu
+    assert_equal Spaceship.flag_columns, ['flags']
+    assert_equal SpaceshipWith2CustomFlagsColumn.flag_columns, ['bits', 'commanders']
+    assert_equal SpaceshipWith3CustomFlagsColumn.flag_columns, ['engines', 'weapons', 'hal3000']
+  end
+
 end
