@@ -1,0 +1,17 @@
+Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
+
+* ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
+* ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
+* ClassWithHasFlags.flag_columns # Returns the column_names used by FlagShihTzu as bit fields
+* has_flags :strict => true # DuplicateFlagColumnException raised when a single DB column is declared as a flag column twice
+* Less verbosity for expected conditions when the DB connection for the class is unavailable.
+* Tests for additional features, but does not change any behavior of 0.2.3 / 0.2.4 by default.
+* Easily migrate from 0.2.3 / 0.2.4. Goal is no code changes required. Minor version bump to encourage caution.
+
+Version 0.2.4 - NOV.05.2012 - released last few changes from XING master
+
+* Fix deprecation warning for set_table_name
+* Optional bang methods
+* Complete Ruby 1.9(\.[^1]) and Rails 3.2.X compatibility
+
+Version 0.2.3 - last version maintained by XING AG
