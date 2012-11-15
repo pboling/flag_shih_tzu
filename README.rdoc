@@ -13,7 +13,7 @@ ActiveRecord object.
 
 The benefits:
 * No migrations needed for new boolean attributes. This helps a lot
-  if you have very large db-tables, on which you want to avoid +ALTER TABLE+
+  if you have very large db-tables, on which you want to avoid `ALTER TABLE`
   whenever possible.
 * Only the one integer column needs to be indexed.
 
