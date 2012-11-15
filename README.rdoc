@@ -32,7 +32,7 @@ remain true to XING's original.  The 0.3 line aims to maintain complete parity a
 well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
 rebase your work onto the current master to make integration easier.
 
-More information on the changes for 0.3.X: {https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x}[https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x]
+More information on the changes for 0.3.X: {pboling/flag_shih_tzu/wiki/Changes-for-0.3.x}[https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x]
 
 ==Build status
 
