@@ -36,8 +36,9 @@ More information on the changes for 0.3.X: {pboling/flag_shih_tzu/wiki/Changes-f
 
 ==Build status
 
-{<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
+Travis CI: {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
 
+CodeClimate: https://codeclimate.com/github/pboling/flag_shih_tzu
 
 ==Prerequisites
 
