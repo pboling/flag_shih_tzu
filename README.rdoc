@@ -1,39 +1,4 @@
-== Change of Ownership and 0.3.X Release Notes
-
-FlagShihTzu was originally a {XING AG}[http://www.xing.com/] project.  {Peter Boling}[http://peterboling.com] was a long time contributor and watcher of the project.
-In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
-fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
-remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
-well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
-rebase your work onto the current master to make integration easier.
-
-=== New Stuff in 0.3.X
-
-Version 0.3.2 - NOV.06.2012
-
-* Adds skip column check option :check_for_column - from arturaz
-* Adds a 'smart' set_flag_sql method which will auto determine the correct column for the given flag - from arturaz
-* Changes the behavior of sql_set_for_flag to not use table names in the generated SQL
-  - because it didn't actually work before
-  - Now there is a test ensuring that the generated SQL can be executed by a real DB
-  - This improved sql_set_for_flag underlies the public set_flag_sql method
-
-Version 0.3.1 - NOV.06.2012
-
-* Adds new methods (for a flag column named 'bar', with many individual flags within) - from ddidier
-  - all_bar, selected_bar, select_all_bar, unselect_all_bar, selected_bar=(selected_flags), has_bar?
-
-Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
-
-* ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
-* ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
-* ClassWithHasFlags.flag_columns # Returns the column_names used by FlagShihTzu as bit fields
-* has_flags :strict => true # DuplicateFlagColumnException raised when a single DB column is declared as a flag column twice
-* Less verbosity for expected conditions when the DB connection for the class is unavailable.
-* Tests for additional features, but does not change any behavior of 0.2 versions by default.
-* Easily migrate from 0.2 versions. No code changes required.
-
-=FlagShihTzu
+=FlagShihTzu {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
 
 Bit fields for ActiveRecord
 
@@ -60,6 +25,16 @@ without needing any migration. Just add a new flag to the +has_flags+ call.
 And just in case you are wondering what a "Shih Tzu" is:
 http://en.wikipedia.org/wiki/Shih_Tzu
 
+== Change of Ownership and 0.3.X Release Notes
+
+FlagShihTzu was originally a {XING AG}[http://www.xing.com/] project.  {Peter Boling}[http://peterboling.com] was a long time contributor and watcher of the project.
+In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
+fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
+remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
+well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
+rebase your work onto the current master to make integration easier.
+
+More information on the changes for 0.3.X: [https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x](https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x)
 
 ==Build status
 
