@@ -6,8 +6,6 @@ An extension for {ActiveRecord}[https://rubygems.org/gems/activerecord]
 to store a collection of boolean attributes in a single integer column
 as a bit field.
 
-http://github.com/xing/flag_shih_tzu
-
 This gem lets you use a single integer column in an ActiveRecord model
 to store a collection of boolean attributes (flags). Each flag can be used
 almost in the same way you would use any boolean attribute on an
