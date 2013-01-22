@@ -87,8 +87,7 @@ class SpaceshipWithValidationsAnd3CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
   has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
 
-  validates_presence_of_flags :engines
-  validates_presence_of_flags :weapons
+  validates_presence_of_flags :engines, :weapons
 end
 
 # table planets is missing intentionally to see if flagshihtzu handles missing tables gracefully
