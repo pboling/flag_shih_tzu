@@ -1,12 +1,10 @@
-=FlagShihTzu
+=FlagShihTzu {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu] {<img src="http://api.coderwall.com/pboling/endorsecount.png" />}[http://coderwall.com/pboling]
 
 Bit fields for ActiveRecord
 
 An extension for {ActiveRecord}[https://rubygems.org/gems/activerecord]
 to store a collection of boolean attributes in a single integer column
 as a bit field.
-
-http://github.com/xing/flag_shih_tzu
 
 This gem lets you use a single integer column in an ActiveRecord model
 to store a collection of boolean attributes (flags). Each flag can be used
@@ -15,7 +13,7 @@ ActiveRecord object.
 
 The benefits:
 * No migrations needed for new boolean attributes. This helps a lot
-  if you have very large db-tables, on which you want to avoid ALTER TABLE
+  if you have very large db-tables, on which you want to avoid `ALTER TABLE`
   whenever possible.
 * Only the one integer column needs to be indexed.
 
@@ -25,11 +23,22 @@ without needing any migration. Just add a new flag to the +has_flags+ call.
 And just in case you are wondering what a "Shih Tzu" is:
 http://en.wikipedia.org/wiki/Shih_Tzu
 
+== Change of Ownership and 0.3.X Release Notes
+
+FlagShihTzu was originally a {XING AG}[http://www.xing.com/] project.  {Peter Boling}[http://peterboling.com] was a long time contributor and watcher of the project.
+In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
+fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
+remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
+well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
+rebase your work onto the current master to make integration easier.
+
+More information on the changes for 0.3.X: {pboling/flag_shih_tzu/wiki/Changes-for-0.3.x}[https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x]
 
 ==Build status
 
-{<img src="https://secure.travis-ci.org/xing/flag_shih_tzu.png" />}[http://travis-ci.org/xing/flag_shih_tzu]
+Travis CI: {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
 
+CodeClimate: https://codeclimate.com/github/pboling/flag_shih_tzu
 
 ==Prerequisites
 
@@ -181,7 +190,14 @@ on Spaceship:
   Spaceship#selected_electrolytes=
   Spaceship#has_electrolyte?
 
-Opionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
+===Generated class methods
+
+Calling +has_flags+ as shown above creates the following class methods
+on Spaceship:
+
+  Spaceship.flag_columns      # [:features, :crew]
+
+Optionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
 
   Spaceship#electrolytes!
   Spaceship#not_electrolytes!
@@ -276,6 +292,39 @@ operators in the SQL instead of an IN() list:
 The drawback is that due to the bit operator, this query can not use an index
 on the flags column.
 
+===Updating flag column by raw sql
+
+If you need to do mass updates without initializing object for each row, you can
+use #set_flag_sql method on your class. Example:
+
+  Spaceship.set_flag_sql(:warpdrive, true) # "flags = flags | 1"
+  Spaceship.set_flag_sql(:shields, false)  # "flags = flags & ~2"
+
+And then use it in:
+
+  Spaceship.update_all Spaceship.set_flag_sql(:shields, false)
+
+Beware that having multiple flag manipulation sql statements probably will not
+bring required result (at least on sqlite3, not tested on other databases), so
+you _should not_ do this:
+
+  Spaceship.update_all "#{Spaceship.set_flag_sql(:shields, false)},#{
+    Spaceship.set_flag_sql(:warpdrive, true)}"
+
+General rule of thumb: issue only one flag update per update statement.
+
+===Skipping flag column check
+
+By default when you call has_flags in your code it will automatically check
+your database to see if you have correct column defined.
+
+Sometimes this may not be a wanted behaviour (e.g. when loading model without
+database connection established) so you can set :check_for_column option to
+false to avoid it.
+
+  has_flags 1 => :warpdrive,
+            2 => :shields,
+            :check_for_column => false
 
 ==Running the gem tests
 
@@ -308,22 +357,51 @@ specify which config from <tt>test/database.yml</tt> to use, e.g.:
 
 ==Authors
 
+{Peter Boling}[http://github.com/pboling],
 {Patryk Peszko}[http://github.com/ppeszko],
 {Sebastian Roebke}[http://github.com/boosty],
 {David Anderson}[http://github.com/alpinegizmo],
 {Tim Payton}[http://github.com/dizzy42]
 and a helpful group of
-{contributors}[https://github.com/xing/flag_shih_tzu/contributors].
+{contributors}[https://github.com/pboling/flag_shih_tzu/contributors].
 Thanks!
 
-Please find out more about our work in our
+Find out more about Peter Boling's work
+{RailsBling.com}[http://railsbling.com/].
+
+Find out more about XING
 {Devblog}[http://devblog.xing.com/].
 
+== Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+6. Create new Pull Request
+
+== Versioning
+
+This library aims to adhere to {Semantic Versioning 2.0.0}[http://semver.org/].
+Violations of this scheme should be reported as bugs. Specifically, 
+if a minor or patch version is released that breaks backward 
+compatibility, a new version should be immediately released that
+restores compatibility. Breaking changes to the public API will 
+only be introduced with new major versions.
+
+As a result of this policy, you can (and should) specify a 
+dependency on this gem using the {Pessimistic Version Constraint}[http://docs.rubygems.org/read/chapter/16#page74] with two digits of precision. 
+
+For example:
+
+    spec.add_dependency 'flag_shih_tzu', '~> 4.0'
 
 ==License
 
 The MIT License
 
+Copyright (c) 2012 {Peter Boling}[http://www.peterboling.com/]
 Copyright (c) 2011 {XING AG}[http://www.xing.com/]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

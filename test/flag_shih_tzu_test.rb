@@ -45,6 +45,15 @@ class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => 'commanders')
 end
 
+class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
+  self.table_name = 'spaceships_with_3_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'engines')
+  has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
+  has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
+end
+
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   self.table_name = 'spaceships'
   include FlagShihTzu
@@ -111,6 +120,21 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           def jeanluckpicard; end
 
           has_flags({ 1 => :jeanluckpicard }, :column => 'bits')
+        end
+           EOF
+          )
+    end
+  end
+
+  def test_has_flags_should_raise_an_exception_when_flag_name_method_defined_by_flagshitzu_if_strict
+    assert_raises FlagShihTzu::DuplicateFlagColumnException do
+      eval(<<-EOF
+        class SpaceshipWithAlreadyUsedMethodByFlagshitzuStrict < ActiveRecord::Base
+          self.table_name = 'spaceships_with_2_custom_flags_column'
+          include FlagShihTzu
+
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits', :strict => true)
+          has_flags({ 1 => :jeanluckpicard }, :column => 'bits', :strict => true)
         end
            EOF
           )
@@ -224,6 +248,35 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   def test_should_define_a_named_scope_for_flag_not_enabled_using_bit_operators
     assert_where_value "(spaceships.flags & 1 = 0)", SpaceshipWithBitOperatorQueryMode.not_warpdrive
     assert_where_value "(spaceships.flags & 2 = 0)", SpaceshipWithBitOperatorQueryMode.not_shields
+  end
+
+  def test_should_work_with_raw_sql
+    spaceship = Spaceship.new
+    spaceship.enable_flag(:shields)
+    spaceship.enable_flag(:electrolytes)
+    spaceship.save!
+
+    Spaceship.update_all Spaceship.set_flag_sql(:warpdrive, true),
+                         ["id=?", spaceship.id]
+    spaceship.reload
+    
+    assert_equal true, spaceship.warpdrive
+    assert_equal true, spaceship.shields
+    assert_equal true, spaceship.electrolytes
+
+    spaceship = Spaceship.new
+    spaceship.enable_flag(:warpdrive)
+    spaceship.enable_flag(:shields)
+    spaceship.enable_flag(:electrolytes)
+    spaceship.save!
+
+    Spaceship.update_all Spaceship.set_flag_sql(:shields, false),
+                         ["id=?", spaceship.id]
+    spaceship.reload
+
+    assert_equal true, spaceship.warpdrive
+    assert_equal false, spaceship.shields
+    assert_equal true, spaceship.electrolytes
   end
 
   def test_should_return_the_correct_number_of_items_from_a_named_scope
@@ -690,18 +743,18 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
 
   def test_column_guessing_for_default_column
-    assert_equal 'flags', @spaceship.send(:determine_flag_colmn_for, :warpdrive)
+    assert_equal 'flags', @spaceship.class.determine_flag_colmn_for(:warpdrive)
   end
 
   def test_column_guessing_for_default_column
     assert_raises FlagShihTzu::NoSuchFlagException do
-      @spaceship.send(:determine_flag_colmn_for, :xxx)
+      @spaceship.class.determine_flag_colmn_for(:xxx)
     end
   end
 
   def test_column_guessing_for_2_columns
-    assert_equal 'commanders', @big_spaceship.send(:determine_flag_colmn_for, :jeanlucpicard)
-    assert_equal 'bits', @big_spaceship.send(:determine_flag_colmn_for, :warpdrive)
+    assert_equal 'commanders', @big_spaceship.class.determine_flag_colmn_for(:jeanlucpicard)
+    assert_equal 'bits', @big_spaceship.class.determine_flag_colmn_for(:warpdrive)
   end
 
 end
@@ -781,4 +834,20 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
     spaceship.not_warpdrive!
     assert !spaceship.warpdrive
   end
+
+  def test_should_return_a_sql_set_method_for_flag
+    assert_equal "flags = flags | 1",  Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', true)
+    assert_equal "flags = flags & ~1", Spaceship.send( :sql_set_for_flag, :warpdrive, 'flags', false)
+  end
+
+end
+
+class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
+
+  def test_should_track_columns_used_by_FlagShihTzu
+    assert_equal Spaceship.flag_columns, ['flags']
+    assert_equal SpaceshipWith2CustomFlagsColumn.flag_columns, ['bits', 'commanders']
+    assert_equal SpaceshipWith3CustomFlagsColumn.flag_columns, ['engines', 'weapons', 'hal3000']
+  end
+
 end
