@@ -71,6 +71,26 @@ end
 class SpaceCarrier < Spaceship
 end
 
+class SpaceshipWithValidationsAndCustomFlagsColumn < ActiveRecord::Base
+  self.table_name = 'spaceships_with_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
+  validates_presence_of_flags :bits
+end
+
+class SpaceshipWithValidationsAnd3CustomFlagsColumn < ActiveRecord::Base
+  self.table_name = 'spaceships_with_3_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'engines')
+  has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
+  has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
+
+  validates_presence_of_flags :engines
+  validates_presence_of_flags :weapons
+end
+
 # table planets is missing intentionally to see if flagshihtzu handles missing tables gracefully
 class Planet < ActiveRecord::Base
 end
@@ -259,7 +279,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     Spaceship.update_all Spaceship.set_flag_sql(:warpdrive, true),
                          ["id=?", spaceship.id]
     spaceship.reload
-    
+
     assert_equal true, spaceship.warpdrive
     assert_equal true, spaceship.shields
     assert_equal true, spaceship.electrolytes
@@ -755,6 +775,43 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   def test_column_guessing_for_2_columns
     assert_equal 'commanders', @big_spaceship.class.determine_flag_colmn_for(:jeanlucpicard)
     assert_equal 'bits', @big_spaceship.class.determine_flag_colmn_for(:warpdrive)
+  end
+
+  # --------------------------------------------------
+
+  def test_validation_should_succeed_with_a_blank_optional_flag
+    spaceship = Spaceship.new
+    assert_equal true, spaceship.valid?
+  end
+
+  def test_validation_should_fail_with_a_blank_required_flag
+    spaceship = SpaceshipWithValidationsAndCustomFlagsColumn.new
+    assert_equal false, spaceship.valid?
+    assert_equal ["can't be blank"], spaceship.errors.messages[:bits]
+  end
+
+  def test_validation_should_succeed_with_a_set_required_flag
+    spaceship = SpaceshipWithValidationsAndCustomFlagsColumn.new
+    spaceship.warpdrive = true
+    assert_equal true, spaceship.valid?
+  end
+
+  def test_validation_should_fail_with_a_blank_required_flag_among_2
+    spaceship = SpaceshipWithValidationsAnd3CustomFlagsColumn.new
+    assert_equal false, spaceship.valid?
+    assert_equal ["can't be blank"], spaceship.errors.messages[:engines]
+    assert_equal ["can't be blank"], spaceship.errors.messages[:weapons]
+
+    spaceship.warpdrive = true
+    assert_equal false, spaceship.valid?
+    assert_equal ["can't be blank"], spaceship.errors.messages[:weapons]
+  end
+
+  def test_validation_should_succeed_with_a_set_required_flag_among_2
+    spaceship = SpaceshipWithValidationsAnd3CustomFlagsColumn.new
+    spaceship.warpdrive = true
+    spaceship.photon = true
+    assert_equal true, spaceship.valid?
   end
 
 end

@@ -1,6 +1,7 @@
 require "rubygems"
 require "active_record"
 require "active_support/all"
+require "flag_shih_tzu/validators"
 
 module FlagShihTzu
   # taken from ActiveRecord::ConnectionAdapters::Column
@@ -235,7 +236,7 @@ module FlagShihTzu
         num = 2 ** flag_mapping[flag_options[colmn][:column]].length
         (1..num).select {|i| i & val == val}
       end
-    
+
       def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
         "#{colmn} = #{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
