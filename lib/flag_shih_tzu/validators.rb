@@ -2,10 +2,17 @@ module ActiveModel
   module Validations
 
     class PresenceOfFlagsValidator < EachValidator
-      def validate(record)
-        [attributes].flatten.each do |attribute|
-          value = record.send(:read_attribute_for_validation, attribute)
-          record.errors.add(attribute, :blank, options) if value == 0
+      def validate_each(record, attribute, value)
+        value = record.send(:read_attribute_for_validation, attribute)
+        check_flag(record, attribute)
+        record.errors.add(attribute, :blank, options) if value.blank? or value == 0
+      end
+
+      private
+
+      def check_flag(record, attribute)
+        unless record.class.flag_columns.include? attribute.to_s
+          raise ArgumentError.new("#{attribute} is not one of the flags columns (#{record.class.flag_columns.join(', ')})")
         end
       end
     end

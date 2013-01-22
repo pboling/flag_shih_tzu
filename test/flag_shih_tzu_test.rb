@@ -90,6 +90,14 @@ class SpaceshipWithValidationsAnd3CustomFlagsColumn < ActiveRecord::Base
   validates_presence_of_flags :engines, :weapons
 end
 
+class SpaceshipWithValidationsOnNonFlagsColumn < ActiveRecord::Base
+  self.table_name = 'spaceships_with_custom_flags_column'
+  include FlagShihTzu
+
+  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
+  validates_presence_of_flags :id
+end
+
 # table planets is missing intentionally to see if flagshihtzu handles missing tables gracefully
 class Planet < ActiveRecord::Base
 end
@@ -778,9 +786,23 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
 
   # --------------------------------------------------
 
+  def test_validation_should_raise_if_not_a_flag_column
+    spaceship = SpaceshipWithValidationsOnNonFlagsColumn.new
+    assert_raises ArgumentError do
+      spaceship.valid?
+    end
+  end
+
   def test_validation_should_succeed_with_a_blank_optional_flag
     spaceship = Spaceship.new
     assert_equal true, spaceship.valid?
+  end
+
+  def test_validation_should_fail_with_a_nil_required_flag
+    spaceship = SpaceshipWithValidationsAndCustomFlagsColumn.new
+    spaceship.bits = nil
+    assert_equal false, spaceship.valid?
+    assert_equal ["can't be blank"], spaceship.errors.messages[:bits]
   end
 
   def test_validation_should_fail_with_a_blank_required_flag
