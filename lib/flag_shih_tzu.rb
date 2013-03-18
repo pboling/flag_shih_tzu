@@ -145,8 +145,8 @@ module FlagShihTzu
         # Define the named scopes if the user wants them and AR supports it
         if flag_options[colmn][:named_scopes] && respond_to?(named_scope_method)
           class_eval <<-EVAL
-            #{named_scope_method} :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
-            #{named_scope_method} :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
+            #{named_scope_method} :#{flag_name}, lambda { where(#{flag_name}_condition) }
+            #{named_scope_method} :not_#{flag_name}, lambda { where(not_#{flag_name}_condition) }
           EVAL
         end
       end
@@ -235,7 +235,7 @@ module FlagShihTzu
         num = 2 ** flag_mapping[flag_options[colmn][:column]].length
         (1..num).select {|i| i & val == val}
       end
-    
+
       def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
         "#{colmn} = #{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
