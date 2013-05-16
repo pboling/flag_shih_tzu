@@ -56,7 +56,7 @@ module FlagShihTzu
 
         flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
 
-        class_eval <<-EVAL
+        class_eval <<-EVAL, __FILE__, __LINE__ + 1
           def #{flag_name}
             flag_enabled?(:#{flag_name}, '#{colmn}')
           end
@@ -96,7 +96,7 @@ module FlagShihTzu
         EVAL
 
         if colmn != DEFAULT_COLUMN_NAME
-          class_eval <<-EVAL
+          class_eval <<-EVAL, __FILE__, __LINE__ + 1
 
             def all_#{colmn}
               all_flags('#{colmn}')
@@ -131,7 +131,7 @@ module FlagShihTzu
 
         # Define bancg methods when requested
         if flag_options[colmn][:bang_methods]
-          class_eval <<-EVAL
+          class_eval <<-EVAL, __FILE__, __LINE__ + 1
             def #{flag_name}!
               enable_flag(:#{flag_name}, '#{colmn}')
             end
@@ -144,7 +144,7 @@ module FlagShihTzu
 
         # Define the named scopes if the user wants them and AR supports it
         if flag_options[colmn][:named_scopes] && respond_to?(named_scope_method)
-          class_eval <<-EVAL
+          class_eval <<-EVAL, __FILE__, __LINE__ + 1
             #{named_scope_method} :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
             #{named_scope_method} :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
           EVAL
