@@ -68,6 +68,14 @@ class SpaceshipWithBangMethods < ActiveRecord::Base
   has_flags(1 => :warpdrive, 2 => :shields, :bang_methods => true)
 end
 
+class SpaceshipWithMissingFlags < ActiveRecord::Base
+  self.table_name = 'spaceships'
+  include FlagShihTzu
+
+  has_flags 1 => :warpdrive,
+            3 => :electrolytes
+end
+
 class SpaceCarrier < Spaceship
 end
 
@@ -176,6 +184,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags in (4,5,6,7))", Spaceship.electrolytes_condition
   end
 
+  def test_should_define_a_sql_condition_method_for_flag_enabled_with_missing_flags
+    assert_equal "(spaceships.flags in (1,3,5,7))", SpaceshipWithMissingFlags.warpdrive_condition
+    assert_equal "(spaceships.flags in (4,5,6,7))", SpaceshipWithMissingFlags.electrolytes_condition
+  end
+
   def test_should_accept_a_table_alias_option_for_sql_condition_method
     assert_equal "(old_spaceships.flags in (1,3,5,7))", Spaceship.warpdrive_condition(:table_alias => 'old_spaceships')
   end
@@ -191,6 +204,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags not in (1,3,5,7))", Spaceship.not_warpdrive_condition
     assert_equal "(spaceships.flags not in (2,3,6,7))", Spaceship.not_shields_condition
     assert_equal "(spaceships.flags not in (4,5,6,7))", Spaceship.not_electrolytes_condition
+  end
+
+  def test_should_define_a_sql_condition_method_for_flag_not_enabled_with_missing_flags
+    assert_equal "(spaceships.flags not in (1,3,5,7))", SpaceshipWithMissingFlags.not_warpdrive_condition
+    assert_equal "(spaceships.flags not in (4,5,6,7))", SpaceshipWithMissingFlags.not_electrolytes_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_custom_table_name
