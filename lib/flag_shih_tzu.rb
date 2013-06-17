@@ -173,6 +173,10 @@ module FlagShihTzu
       raise NoSuchFlagException.new("determine_flag_colmn_for: Couldn't determine column for your flags!")
     end
 
+    def flag_keys(colmn = DEFAULT_COLUMN_NAME)
+      flag_mapping[colmn].keys
+    end
+
     private
 
       def parse_options(*args)
