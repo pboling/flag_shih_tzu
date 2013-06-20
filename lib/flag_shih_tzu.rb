@@ -183,8 +183,12 @@ module FlagShihTzu
 
     private
 
+      def max_flag_value_for_column(colmn)
+        flag_mapping[colmn].values.max
+      end
+
       def chained_flags_values(colmn, *args)
-        val = (1..(2 ** flag_mapping[flag_options[colmn][:column]].length)).to_a
+        val = (1..(2 * max_flag_value_for_column(colmn))).to_a
         args.each do |flag|
           neg = false
           if flag.match /^not_/
@@ -259,7 +263,7 @@ module FlagShihTzu
       # returns an array of integers suitable for a SQL IN statement.
       def sql_in_for_flag(flag, colmn)
         val = flag_mapping[colmn][flag]
-        num = 2 * flag_mapping[flag_options[colmn][:column]].values.max
+        num = 2 * max_flag_value_for_column(colmn)
         (1..num).select {|i| i & val == val}
       end
 
