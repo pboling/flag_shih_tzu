@@ -191,6 +191,10 @@ module FlagShihTzu
       "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(',')}))"
     end
 
+    def flag_keys(colmn = DEFAULT_COLUMN_NAME)
+      flag_mapping[colmn].keys
+    end
+
     private
 
       def max_flag_value_for_column(colmn)
@@ -290,6 +294,12 @@ module FlagShihTzu
         flag_name.is_a?(Symbol)
       end
 
+      # Returns the correct method to create a named scope.
+      # Use to prevent deprecation notices on Rails 3 when using +named_scope+ instead of +scope+.
+      def named_scope_method
+        # Can't use respond_to because both AR 2 and 3 respond to both +scope+ and +named_scope+.
+        ActiveRecord::VERSION::MAJOR == 2 ? :named_scope : :scope
+      end
   end
 
   # Performs the bitwise operation so the flag will return +true+.
