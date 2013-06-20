@@ -32,7 +32,7 @@ module FlagShihTzu
       }.update(opts)
       colmn = opts[:column].to_s
 
-      return if opts[:check_for_column] && ! check_flag_column(colmn)
+      return if opts[:check_for_column] && !check_flag_column(colmn)
 
       # options are stored in a class level hash and apply per-column
       self.flag_options ||= {}
@@ -173,7 +173,34 @@ module FlagShihTzu
       raise NoSuchFlagException.new("determine_flag_colmn_for: Couldn't determine column for your flags!")
     end
 
+    def chained_flags_with(*args)
+      where(chained_flags_condition(*args))
+    end
+
+    def chained_flags_condition(colmn, *args)
+      "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(',')}))"
+    end
+
     private
+
+      def chained_flags_values(colmn, *args)
+        val = (1..(2 ** flag_mapping[flag_options[colmn][:column]].length)).to_a
+        args.each do |flag|
+          neg = false
+          if flag.match /^not_/
+            neg = true
+            flag = flag.to_s.sub(/^not_/, '').to_sym
+          end
+          check_flag(flag, colmn)
+          flag_values = sql_in_for_flag(flag, colmn)
+          if neg
+            val = val - flag_values
+          else
+            val = val & flag_values
+          end
+        end
+        val
+      end
 
       def parse_options(*args)
         options = args.shift
@@ -235,7 +262,7 @@ module FlagShihTzu
         num = 2 * flag_mapping[flag_options[colmn][:column]].values.max
         (1..num).select {|i| i & val == val}
       end
-    
+
       def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
         check_flag(flag, colmn)
         "#{colmn} = #{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"

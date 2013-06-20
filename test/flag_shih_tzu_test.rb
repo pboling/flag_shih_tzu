@@ -319,6 +319,33 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal 0, Spaceship.not_warpdrive.not_shields.count
   end
 
+  def test_should_return_the_correct_condition_with_chained_flags
+    assert_equal "(spaceships.flags in (3,7))", Spaceship.chained_flags_condition("flags", :warpdrive, :shields)
+    assert_equal "(spaceships.flags in (7))", Spaceship.chained_flags_condition("flags", :warpdrive, :shields, :electrolytes)
+    assert_equal "(spaceships.flags in (2,6))", Spaceship.chained_flags_condition("flags", :not_warpdrive, :shields)
+  end
+
+  def test_should_return_the_correct_number_of_items_with_chained_flags_with
+    spaceship = Spaceship.new
+    spaceship.enable_flag(:warpdrive)
+    spaceship.enable_flag(:shields)
+    spaceship.save!
+    spaceship.reload
+    spaceship_2 = Spaceship.new
+    spaceship_2.enable_flag(:warpdrive)
+    spaceship_2.save!
+    spaceship_2.reload
+    spaceship_3 = Spaceship.new
+    spaceship_3.enable_flag(:shields)
+    spaceship_3.save!
+    spaceship_3.reload
+    assert_equal 2, Spaceship.chained_flags_with("flags", :warpdrive).count
+    assert_equal 1, Spaceship.chained_flags_with("flags", :warpdrive, :shields).count
+    assert_equal 1, Spaceship.chained_flags_with("flags", :warpdrive, :not_shields).count
+    assert_equal 0, Spaceship.chained_flags_with("flags", :not_warpdrive, :shields, :electrolytes).count
+    assert_equal 1, Spaceship.chained_flags_with("flags", :not_warpdrive, :shields, :not_electrolytes).count
+  end
+
   def test_should_not_define_named_scopes_if_not_wanted
     assert !SpaceshipWithoutNamedScopes.respond_to?(:warpdrive)
     assert !SpaceshipWithoutNamedScopesOldStyle.respond_to?(:warpdrive)
