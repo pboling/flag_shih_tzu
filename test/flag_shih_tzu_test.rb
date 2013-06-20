@@ -54,6 +54,16 @@ class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
 end
 
+class SpaceshipWithSymbolAndStringFlagColumns < ActiveRecord::Base
+  self.table_name = 'spaceships_with_symbol_and_string_flag_columns'
+  include FlagShihTzu
+
+  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => :peace, :check_for_column => true)
+  has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => :love, :check_for_column => true)
+  has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'happiness', :check_for_column => true)
+  validates_presence_of_flags :peace, :love
+end
+
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   self.table_name = 'spaceships'
   include FlagShihTzu
@@ -971,6 +981,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal Spaceship.flag_columns, ['flags']
     assert_equal SpaceshipWith2CustomFlagsColumn.flag_columns, ['bits', 'commanders']
     assert_equal SpaceshipWith3CustomFlagsColumn.flag_columns, ['engines', 'weapons', 'hal3000']
+    assert_equal SpaceshipWithValidationsAnd3CustomFlagsColumn.flag_columns, ["engines", "weapons", "hal3000"]
+    assert_equal SpaceshipWithSymbolAndStringFlagColumns.flag_columns, ['peace', 'love', 'happiness']
   end
 
 end

@@ -32,8 +32,15 @@ module FlagShihTzu
         :check_for_column => true
       }.update(opts)
       colmn = opts[:column].to_s
-
-      return if opts[:check_for_column] && !check_flag_column(colmn)
+      if !is_valid_column_name(opts[:column])
+        puts "FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}"
+        opts[:column] = opts[:column].to_s
+      end
+      colmn = opts[:column]
+      if opts[:check_for_column] && !check_flag_column(colmn)
+        puts "FlagShihTzu says: Flag column #{colmn} appears to be missing!\nTo turn off this warning set check_for_colum: false in has_flags definition here: #{caller.first}"
+        return
+      end
 
       # options are stored in a class level hash and apply per-column
       self.flag_options ||= {}
@@ -56,6 +63,7 @@ module FlagShihTzu
         raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name" if method_defined?(flag_name)
 
         flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
+        #puts "Defined: #{flag_key} as #{flag_mapping[colmn][flag_name]}"
 
         class_eval <<-EVAL, __FILE__, __LINE__ + 1
           def #{flag_name}
@@ -292,6 +300,10 @@ module FlagShihTzu
 
       def is_valid_flag_name(flag_name)
         flag_name.is_a?(Symbol)
+      end
+
+      def is_valid_column_name(colmn)
+        colmn.is_a?(String)
       end
 
       # Returns the correct method to create a named scope.
