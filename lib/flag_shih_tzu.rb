@@ -232,7 +232,7 @@ module FlagShihTzu
       # returns an array of integers suitable for a SQL IN statement.
       def sql_in_for_flag(flag, colmn)
         val = flag_mapping[colmn][flag]
-        num = 2 ** flag_mapping[flag_options[colmn][:column]].length
+        num = 2 * flag_mapping[flag_options[colmn][:column]].values.max
         (1..num).select {|i| i & val == val}
       end
     
