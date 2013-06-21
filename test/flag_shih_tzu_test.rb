@@ -533,15 +533,15 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
 
   # --------------------------------------------------
 
-  def test_should_define_an_all_flags_reader_method
+  def test_should_define_an_all_flags_reader_method_with_arity_1
     assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
   end
 
-  def test_should_define_an_all_flags_reader_method_with_default
+  def test_should_define_an_all_flags_reader_method_with_arity_0
     assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags
   end
 
-  def test_should_define_a_selected_flags_reader_method
+  def test_should_define_a_selected_flags_reader_method_with_arity_1
     assert_array_similarity [], @spaceship.selected_flags('flags')
 
     @spaceship.warpdrive = true
@@ -555,14 +555,35 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_array_similarity [], @spaceship.selected_flags('flags')
   end
 
-  def test_should_define_a_select_all_flags_method
+  def test_should_define_a_selected_flags_reader_method_with_arity_0
+    assert_array_similarity [], @spaceship.selected_flags
+
+    @spaceship.warpdrive = true
+    assert_array_similarity [:warpdrive], @spaceship.selected_flags
+
+    @spaceship.electrolytes = true
+    assert_array_similarity [:electrolytes, :warpdrive], @spaceship.selected_flags
+
+    @spaceship.warpdrive = false
+    @spaceship.electrolytes = false
+    assert_array_similarity [], @spaceship.selected_flags
+  end
+
+  def test_should_define_a_select_all_flags_method_with_arity_1
     @spaceship.select_all_flags('flags')
     assert @spaceship.warpdrive
     assert @spaceship.shields
     assert @spaceship.electrolytes
   end
 
-  def test_should_define_an_unselect_all_flags_method
+  def test_should_define_a_select_all_flags_method_with_arity_0
+    @spaceship.select_all_flags
+    assert @spaceship.warpdrive
+    assert @spaceship.shields
+    assert @spaceship.electrolytes
+  end
+
+  def test_should_define_an_unselect_all_flags_method_with_arity_1
     @spaceship.warpdrive = true
     @spaceship.shields = true
     @spaceship.electrolytes = true
@@ -574,7 +595,19 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert !@spaceship.electrolytes
   end
 
-  def test_should_define_an_has_flag_method
+  def test_should_define_an_unselect_all_flags_method_with_arity_0
+    @spaceship.warpdrive = true
+    @spaceship.shields = true
+    @spaceship.electrolytes = true
+
+    @spaceship.unselect_all_flags
+
+    assert !@spaceship.warpdrive
+    assert !@spaceship.shields
+    assert !@spaceship.electrolytes
+  end
+
+  def test_should_define_an_has_flag_method_with_arity_1
     assert !@spaceship.has_flag?('flags')
 
     @spaceship.warpdrive = true
@@ -588,6 +621,22 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
 
     @spaceship.unselect_all_flags('flags')
     assert !@spaceship.has_flag?('flags')
+  end
+
+  def test_should_define_an_has_flag_method_with_arity_0
+    assert !@spaceship.has_flag?
+
+    @spaceship.warpdrive = true
+    assert @spaceship.has_flag?
+
+    @spaceship.shields = true
+    assert @spaceship.has_flag?
+
+    @spaceship.electrolytes = true
+    assert @spaceship.has_flag?
+
+    @spaceship.unselect_all_flags
+    assert !@spaceship.has_flag?
   end
 
   # --------------------------------------------------
