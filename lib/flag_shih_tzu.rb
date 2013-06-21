@@ -244,22 +244,30 @@ module FlagShihTzu
       def check_flag_column(colmn, custom_table_name = self.table_name)
         # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
         # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration
-        has_ar = !!defined?(ActiveRecord) && self.respond_to?(:descends_from_active_record?)
+        has_ar = (!!defined?(ActiveRecord) && self.respond_to?(:descends_from_active_record?))
         # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
-        has_table = has_ar ? ActiveRecord::Base.connection.tables.include?(custom_table_name) : true
-
+        has_table = has_ar ? connection.tables.include?(custom_table_name) : true
         if has_table
           found_column = columns.find {|column| column.name == colmn}
           #If you have not yet run the migration that adds the 'flags' column then we don't want to fail, because we need to be able to run the migration
           #If the column is there but is of the wrong type, then we must fail, because flag_shih_tzu will not work
           if found_column.nil?
-            logger.warn("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?") and return false
+            if respond_to?(:logger)
+              logger.warn("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?") and return false
+            else
+              puts("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?") and return false
+            end
           elsif found_column.type != :integer
             raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu.") and return false
           end
         else
           # ActiveRecord gem probably hasn't loaded yet?
-          logger.warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") and return false
+          if respond_to?(:logger)
+            logger.warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") if has_ar
+            return false
+          #else
+          #  puts("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") and return false
+          end
         end
 
         true
@@ -348,32 +356,32 @@ module FlagShihTzu
     self[colmn] || 0
   end
 
-  def set_flags(value, colmn)
+  def set_flags(value, colmn = DEFAULT_COLUMN_NAME)
     self[colmn] = value
   end
 
-  def all_flags(column)
-    flag_mapping[column].keys
+  def all_flags(colmn = DEFAULT_COLUMN_NAME)
+    flag_mapping[colmn].keys
   end
 
-  def selected_flags(column)
-    all_flags(column).map { |flag_name| self.send(flag_name) ? flag_name : nil }.compact
+  def selected_flags(colmn = DEFAULT_COLUMN_NAME)
+    all_flags(colmn).map { |flag_name| self.send(flag_name) ? flag_name : nil }.compact
   end
 
-  def select_all_flags(column)
-    all_flags(column).each do |flag|
-      enable_flag(flag, column)
+  def select_all_flags(colmn = DEFAULT_COLUMN_NAME)
+    all_flags(colmn).each do |flag|
+      enable_flag(flag, colmn)
     end
   end
 
-  def unselect_all_flags(column)
-    all_flags(column).each do |flag|
-      disable_flag(flag, column)
+  def unselect_all_flags(colmn = DEFAULT_COLUMN_NAME)
+    all_flags(colmn).each do |flag|
+      disable_flag(flag, colmn)
     end
   end
 
-  def has_flag?(column = DEFAULT_COLUMN_NAME)
-    not selected_flags(column).empty?
+  def has_flag?(colmn = DEFAULT_COLUMN_NAME)
+    not selected_flags(colmn).empty?
   end
 
   private

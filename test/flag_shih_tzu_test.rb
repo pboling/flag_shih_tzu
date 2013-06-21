@@ -422,6 +422,18 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_not_error_out_when_column_is_not_present
+    assert_nothing_raised(ActiveRecord::StatementInvalid) do
+      Planet.class_eval do
+        # Now it has a table that exists, but the column does not.
+        self.table_name = 'spaceships'
+        include FlagShihTzu
+
+        has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => :i_do_not_exist, :check_for_column => true)
+      end
+    end
+  end
+
   private
 
   def assert_where_value(expected, scope)
@@ -520,6 +532,10 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
   end
 
   # --------------------------------------------------
+
+  def test_should_define_an_all_flags_reader_method
+    assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
+  end
 
   def test_should_define_an_all_flags_reader_method
     assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
@@ -824,11 +840,11 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert !SpaceshipWithoutFlagsColumn.method_defined?(:warpdrive)
   end
 
-  def test_column_guessing_for_default_column
+  def test_column_guessing_for_default_column_2
     assert_equal 'flags', @spaceship.class.determine_flag_colmn_for(:warpdrive)
   end
 
-  def test_column_guessing_for_default_column
+  def test_column_guessing_for_default_column_1
     assert_raises FlagShihTzu::NoSuchFlagException do
       @spaceship.class.determine_flag_colmn_for(:xxx)
     end
