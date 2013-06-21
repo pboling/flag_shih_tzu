@@ -5,6 +5,8 @@ require "flag_shih_tzu/version"
 Gem::Specification.new do |s|
   s.name        = "flag_shih_tzu"
   s.version     = FlagShihTzu::VERSION
+  s.licenses    = ['MIT']
+  s.email       = 'peter.boling@gmail.com'
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
   s.homepage    = "https://github.com/xing/flag_shih_tzu"
