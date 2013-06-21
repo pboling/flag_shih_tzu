@@ -1,3 +1,18 @@
+Version 0.3.3 - JUN.20.2013
+* Allow non sequential flag numbers by Thomas Jachmann
+* Report correct source location for class_evaled methods. by Sebastian Korfmann
+* Implemented chained_flags_with, which allows optimizing the bit search by Tatsuhiko Miyagawa
+* [bugfix] flag_options[colmn][:column] is symbol, it causes error undefined method `length' for nil:NilClass by Artem Pisarev
+* Validator raises an error if the validated column is not a flags column. by David DIDIER
+* Allow multiple include by Peter Goldstein
+* fix a deprecation warning in rails4 by Mose
+* Add flag_keys convenience method. by Keith Pitty
+* [bugfix] Column names provided as symbols fully work now, as they are converted to strings by Peter Boling
+* [bugfix issues/28] Since 0.3.0 flags no longer work in a class using an alternative database connection by Peter Boling
+* [bugfix issues/7] Breaks db:create rake task by Peter Boling
+* convenience methods now have default parameter so `all_flags` works with arity 0. by Peter Boling
+* Many more tests, including arity tests by Peter Boling
+
 Version 0.3.2 - NOV.06.2012
 
 * Adds skip column check option :check_for_column - from arturaz
