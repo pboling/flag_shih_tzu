@@ -537,8 +537,8 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
   end
 
-  def test_should_define_an_all_flags_reader_method
-    assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags('flags')
+  def test_should_define_an_all_flags_reader_method_with_default
+    assert_array_similarity [:electrolytes, :warpdrive, :shields], @spaceship.all_flags
   end
 
   def test_should_define_a_selected_flags_reader_method
