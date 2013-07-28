@@ -38,7 +38,7 @@ module FlagShihTzu
       end
       colmn = opts[:column]
       if opts[:check_for_column] && !check_flag_column(colmn)
-        puts "FlagShihTzu says: Flag column #{colmn} appears to be missing!\nTo turn off this warning set check_for_colum: false in has_flags definition here: #{caller.first}"
+        puts "FlagShihTzu says: Flag column #{colmn} appears to be missing!\nTo turn off this warning set check_for_column: false in has_flags definition here: #{caller.first}"
         return
       end
 
@@ -192,7 +192,11 @@ module FlagShihTzu
     end
 
     def chained_flags_with(*args)
-      where(chained_flags_condition(*args))
+      if (ActiveRecord::VERSION::MAJOR >= 3)
+        where(chained_flags_condition(*args))
+      else
+        all(:conditions => chained_flags_condition(*args))
+      end
     end
 
     def chained_flags_condition(colmn, *args)
