@@ -217,7 +217,7 @@ module FlagShihTzu
         val = (1..(2 * max_flag_value_for_column(colmn))).to_a
         args.each do |flag|
           neg = false
-          if flag.match /^not_/
+          if flag.to_s.match /^not_/
             neg = true
             flag = flag.to_s.sub(/^not_/, '').to_sym
           end
