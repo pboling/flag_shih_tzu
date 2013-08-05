@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.licenses    = ['MIT']
   s.email       = 'peter.boling@gmail.com'
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
-  s.homepage    = "https://github.com/xing/flag_shih_tzu"
+  s.authors     = ["Peter Boling", "Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
+  s.homepage    = "https://github.com/pboling/flag_shih_tzu"
   s.summary     = %q{Bit fields for ActiveRecord}
   s.description = <<-EODOC
 Bit fields for ActiveRecord:
