@@ -388,6 +388,25 @@ module FlagShihTzu
     not selected_flags(colmn).empty?
   end
 
+  # returns true if successful
+  # third parameter allows you to specify that `self` should also have its in-memory flag attribute updated.
+  def update_flag!(flag, value, update_instance = false)
+    truthy = FlagShihTzu::TRUE_VALUES.include?(value)
+    sql = self.class.set_flag_sql(flag.to_sym, truthy)
+    if update_instance
+      if truthy
+        self.enable_flag(flag)
+      else
+        self.disable_flag(flag)
+      end
+    end
+    if (ActiveRecord::VERSION::MAJOR <= 3)
+      self.class.update_all(sql, self.class.primary_key => id) == 1
+    else
+      self.class.where("#{self.class.primary_key} = ?", id).update_all(sql) == 1
+    end
+  end
+
   private
 
     def get_bit_for(flag, colmn)

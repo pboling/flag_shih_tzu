@@ -313,8 +313,17 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     spaceship.enable_flag(:electrolytes)
     spaceship.save!
 
-    Spaceship.update_all Spaceship.set_flag_sql(:warpdrive, true),
+    assert_equal false, spaceship.warpdrive
+    assert_equal true, spaceship.shields
+    assert_equal true, spaceship.electrolytes
+
+    if (ActiveRecord::VERSION::MAJOR <= 3)
+      Spaceship.update_all Spaceship.set_flag_sql(:warpdrive, true),
                          ["id=?", spaceship.id]
+    else
+      Spaceship.where("id=?", spaceship.id).update_all Spaceship.set_flag_sql(:warpdrive, true)
+    end
+
     spaceship.reload
 
     assert_equal true, spaceship.warpdrive
@@ -327,8 +336,17 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     spaceship.enable_flag(:electrolytes)
     spaceship.save!
 
-    Spaceship.update_all Spaceship.set_flag_sql(:shields, false),
-                         ["id=?", spaceship.id]
+    assert_equal true, spaceship.warpdrive
+    assert_equal true, spaceship.shields
+    assert_equal true, spaceship.electrolytes
+
+    if (ActiveRecord::VERSION::MAJOR <= 3)
+      Spaceship.update_all Spaceship.set_flag_sql(:shields, false),
+                           ["id=?", spaceship.id]
+    else
+      Spaceship.where("id=?", spaceship.id).update_all Spaceship.set_flag_sql(:shields, false)
+    end
+
     spaceship.reload
 
     assert_equal true, spaceship.warpdrive
@@ -906,6 +924,50 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_equal 'bits', @big_spaceship.class.determine_flag_colmn_for(:warpdrive)
   end
 
+  def test_update_flag_without_updating_instance!
+    my_spaceship = SpaceshipWith2CustomFlagsColumn.new
+    my_spaceship.enable_flag(:jeanlucpicard)
+    my_spaceship.disable_flag(:warpdrive)
+    my_spaceship.save
+
+    assert_equal true, my_spaceship.jeanlucpicard
+    assert_equal false, my_spaceship.warpdrive
+
+    assert_equal true, my_spaceship.update_flag!(:jeanlucpicard, false)
+    assert_equal true, my_spaceship.update_flag!(:warpdrive, true)
+
+    # Not updating the instance here, so it won't reflect the result of the SQL update until after reloaded
+    assert_equal true, my_spaceship.jeanlucpicard
+    assert_equal false, my_spaceship.warpdrive
+
+    my_spaceship.reload
+
+    assert_equal false, my_spaceship.jeanlucpicard
+    assert_equal true, my_spaceship.warpdrive
+  end
+
+  def test_update_flag_with_updating_instance!
+    my_spaceship = SpaceshipWith2CustomFlagsColumn.new
+    my_spaceship.enable_flag(:jeanlucpicard)
+    my_spaceship.disable_flag(:warpdrive)
+    my_spaceship.save
+
+    assert_equal true, my_spaceship.jeanlucpicard
+    assert_equal false, my_spaceship.warpdrive
+
+    assert_equal true, my_spaceship.update_flag!(:jeanlucpicard, false, true)
+    assert_equal true, my_spaceship.update_flag!(:warpdrive, true, true)
+
+    # Updating the instance here, so it will reflect the result of the SQL update before and after reload
+    assert_equal false, my_spaceship.jeanlucpicard
+    assert_equal true, my_spaceship.warpdrive
+
+    my_spaceship.reload
+
+    assert_equal false, my_spaceship.jeanlucpicard
+    assert_equal true, my_spaceship.warpdrive
+  end
+
   # --------------------------------------------------
 
   if (ActiveRecord::VERSION::MAJOR >= 3)
@@ -926,7 +988,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
       spaceship = SpaceshipWithValidationsAndCustomFlagsColumn.new
       spaceship.bits = nil
       assert_equal false, spaceship.valid?
-      error_message = 
+      error_message =
         if spaceship.errors.respond_to?(:messages)
           spaceship.errors.messages[:bits]
         else
@@ -938,7 +1000,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     def test_validation_should_fail_with_a_blank_required_flag
       spaceship = SpaceshipWithValidationsAndCustomFlagsColumn.new
       assert_equal false, spaceship.valid?
-      error_message = 
+      error_message =
         if spaceship.errors.respond_to?(:messages)
           spaceship.errors.messages[:bits]
         else
@@ -956,7 +1018,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     def test_validation_should_fail_with_a_blank_required_flag_among_2
       spaceship = SpaceshipWithValidationsAnd3CustomFlagsColumn.new
       assert_equal false, spaceship.valid?
-      engines_error_message = 
+      engines_error_message =
         if spaceship.errors.respond_to?(:messages)
           spaceship.errors.messages[:engines]
         else
@@ -964,7 +1026,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
         end
       assert_equal ["can't be blank"], engines_error_message
 
-      weapons_error_message = 
+      weapons_error_message =
         if spaceship.errors.respond_to?(:messages)
           spaceship.errors.messages[:weapons]
         else
@@ -975,7 +1037,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
       spaceship.warpdrive = true
       assert_equal false, spaceship.valid?
 
-      weapons_error_message = 
+      weapons_error_message =
         if spaceship.errors.respond_to?(:messages)
           spaceship.errors.messages[:weapons]
         else

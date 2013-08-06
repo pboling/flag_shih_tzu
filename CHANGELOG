@@ -1,3 +1,10 @@
+Version 0.3.5 - AUG.06.2013
+* Fix Travis Build & Add Rails 4 by Peter M. Goldstein
+* Implemented update_flag! by Peter Boling (see https://github.com/pboling/flag_shih_tzu/issues/27)
+  - sets a flag on a record without triggering callbacks or validations
+  - optionally syncs the instance with new flag value
+* Update gemspec by Peter Boling
+
 Version 0.3.4 - JUN.20.2013
 
 * Allow non sequential flag numbers by Thomas Jachmann
