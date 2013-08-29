@@ -1,3 +1,7 @@
+Version 0.3.6 - AUG.29.2013
+* Allow use with any gem manager by Peter Boling
+* No need to alter Ruby's load path by Peter Boling
+
 Version 0.3.5 - AUG.06.2013
 * Fix Travis Build & Add Rails 4 by Peter M. Goldstein
 * Implemented update_flag! by Peter Boling (see https://github.com/pboling/flag_shih_tzu/issues/27)
