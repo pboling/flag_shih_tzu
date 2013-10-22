@@ -396,11 +396,15 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     spaceship_3.enable_flag(:shields)
     spaceship_3.save!
     spaceship_3.reload
+    spaceship_4 = Spaceship.new
+    spaceship_4.save!
+    spaceship_4.reload
     assert_equal 2, Spaceship.chained_flags_with("flags", :warpdrive).count
     assert_equal 1, Spaceship.chained_flags_with("flags", :warpdrive, :shields).count
     assert_equal 1, Spaceship.chained_flags_with("flags", :warpdrive, :not_shields).count
     assert_equal 0, Spaceship.chained_flags_with("flags", :not_warpdrive, :shields, :electrolytes).count
     assert_equal 1, Spaceship.chained_flags_with("flags", :not_warpdrive, :shields, :not_electrolytes).count
+    assert_equal 1, Spaceship.chained_flags_with("flags", :not_warpdrive, :not_shields, :not_electrolytes).count
   end
 
   def test_should_not_define_named_scopes_if_not_wanted
