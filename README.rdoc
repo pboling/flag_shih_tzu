@@ -92,7 +92,7 @@ false).
 
 +has_flags+ takes a hash. The keys must be positive integers and represent
 the position of the bit being used to enable or disable the flag.
-<b>The keys must not be changed once in use, or you will get wrong results.</b>
+<b>The keys must not be changed once in use, or you will get incorrect results.</b>
 That is why the plugin forces you to set them explicitly.
 The values are symbols for the flags being created.
 
@@ -152,7 +152,7 @@ different columns for separate flags:
             :column => 'crew'
 
 
-===Generated instance methods
+===Generated boolean patterned instance methods
 
 Calling +has_flags+ as shown above creates the following instance methods
 on Spaceship:
@@ -190,19 +190,29 @@ on Spaceship:
   Spaceship#selected_electrolytes=
   Spaceship#has_electrolyte?
 
+Optionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
+
+  Spaceship#electrolytes!     # will save the bitwise equivalent of electrolytes = true on the record
+  Spaceship#not_electrolytes! # will save the bitwise equivalent of electrolytes = false on the record
+
+which respectively enables or disables the electrolytes flag.
+
+The <tt>:bang_methods</tt> does not save the records to the database, meaning it cannot engage validations and callbacks.
+
+Alternatively, if you do want to <b>save a flag</b> to the database, while still avoiding validations and callbacks, use <tt>update_flag!</tt> which:
+
+* sets a flag on a database record without triggering callbacks or validations
+* optionally syncs the ruby instance with new flag value, by default it does not.
+
+  update_flag!(flag_name, flag_value, update_instance = false)
+
+
 ===Generated class methods
 
 Calling +has_flags+ as shown above creates the following class methods
 on Spaceship:
 
   Spaceship.flag_columns      # [:features, :crew]
-
-Optionally, you can set the <tt>:bang_methods</tt> option to true to enable the bang methods:
-
-  Spaceship#electrolytes!
-  Spaceship#not_electrolytes!
-
-which respectively enables or disables the electrolytes flag.
 
 
 ===Generated named scopes
@@ -384,14 +394,14 @@ Find out more about XING
 == Versioning
 
 This library aims to adhere to {Semantic Versioning 2.0.0}[http://semver.org/].
-Violations of this scheme should be reported as bugs. Specifically, 
-if a minor or patch version is released that breaks backward 
+Violations of this scheme should be reported as bugs. Specifically,
+if a minor or patch version is released that breaks backward
 compatibility, a new version should be immediately released that
-restores compatibility. Breaking changes to the public API will 
+restores compatibility. Breaking changes to the public API will
 only be introduced with new major versions.
 
-As a result of this policy, you can (and should) specify a 
-dependency on this gem using the {Pessimistic Version Constraint}[http://docs.rubygems.org/read/chapter/16#page74] with two digits of precision. 
+As a result of this policy, you can (and should) specify a
+dependency on this gem using the {Pessimistic Version Constraint}[http://docs.rubygems.org/read/chapter/16#page74] with two digits of precision.
 
 For example:
 
