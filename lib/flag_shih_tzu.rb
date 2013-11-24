@@ -137,7 +137,7 @@ module FlagShihTzu
           EVAL
         end
 
-        # Define bancg methods when requested
+        # Define bang methods when requested
         if flag_options[colmn][:bang_methods]
           class_eval <<-EVAL, __FILE__, __LINE__ + 1
             def #{flag_name}!
