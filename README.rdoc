@@ -1,4 +1,5 @@
 =FlagShihTzu {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu] {<img src="https://codeclimate.com/github/pboling/flag_shih_tzu.png" />}[https://codeclimate.com/github/pboling/flag_shih_tzu] {<img src="http://api.coderwall.com/pboling/endorsecount.png" />}[http://coderwall.com/pboling]
+{<img src="https://coveralls.io/repos/pboling/flag_shih_tzu/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/pboling/flag_shih_tzu] {<img src="https://gemnasium.com/pboling/flag_shih_tzu.png" alt="Dependency Status" />}[https://gemnasium.com/pboling/flag_shih_tzu]
 
 Bit fields for ActiveRecord
 
