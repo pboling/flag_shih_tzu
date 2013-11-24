@@ -1,3 +1,12 @@
+Version 0.3.8 - NOV.24.2013
+* Improved Readme / Documentation by Peter Boling
+* Added Badges by Peter Boling
+* Configured Coveralls by Peter Boling
+* Added Code Climate, Coveralls, Gemnasium, and Version Badges by Peter Boling
+
+Version 0.3.7 - OCT.25.2013
+* Change `sql_in_for_flag` to consider values from the range [0, 2 * max - 1] by Blake Thomson
+
 Version 0.3.6 - AUG.29.2013
 * Allow use with any gem manager by Peter Boling
 * No need to alter Ruby's load path by Peter Boling
