@@ -337,7 +337,10 @@ ActiveRecord version (see +Gemfile.lock+):
 
   $ bundle exec rake test
 
-If you want to run the tests against all supported ActiveRecord versions, you may need to run each bundle once:
+If you want to run the tests against all supported ActiveRecord versions:
+
+* you will need to use ruby 1.9.3 as it is the only version of ruby that bridges the gap between rails 2.3 and rails 4.0
+* you may need to run each bundle once:
 
   $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle --quiet
   $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle --quiet
