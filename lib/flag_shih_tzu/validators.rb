@@ -1,4 +1,15 @@
-if ActiveRecord::VERSION::MAJOR >= 3
+# Active Record is not defined as a runtime dependency in the gemspec.
+unless defined?(::ActiveRecord)
+  begin
+    # If by some miracle it hasn't been loaded yet, try to load it.
+    require 'active_record'
+  rescue LoadError
+    # If it fails to load, then assume the user is try to use flag_shih_tzu with some other database adapter
+    warn "FlagShihTzu probably won't work unless you have some version of Active Record loaded. Versions >= 2.3 are supported."
+  end
+end
+
+if defined?(::ActiveRecord) && ::ActiveRecord::VERSION::MAJOR >= 3
 
   module ActiveModel
     module Validations

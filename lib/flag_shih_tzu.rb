@@ -1,5 +1,4 @@
-#require "active_record"
-#require "active_support/all"
+# Would like to support other database adapters so no more hard dependency on Active Record.
 require "flag_shih_tzu/validators"
 
 module FlagShihTzu
