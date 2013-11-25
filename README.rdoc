@@ -23,11 +23,6 @@ without needing any migration. Just add a new flag to the +has_flags+ call.
 And just in case you are wondering what a "Shih Tzu" is:
 http://en.wikipedia.org/wiki/Shih_Tzu
 
-==Build status
-
-Travis CI: {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
-
-CodeClimate: {<img src="https://codeclimate.com/github/pboling/flag_shih_tzu.png" />}[https://codeclimate.com/github/pboling/flag_shih_tzu]
 
 ==Prerequisites
 
@@ -35,7 +30,7 @@ The gem is actively being tested with:
 
 * ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x
 * MySQL, PostgreSQL and SQLite3 databases
-* Ruby 1.8.7, 1.9.2 and 1.9.3
+* Ruby 1.8.7, 1.9.2, 1.9.3, and 2.0.0
 
 
 ==Installation
