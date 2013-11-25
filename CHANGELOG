@@ -1,3 +1,8 @@
+Version 0.3.9 - NOV.25.2013
+* Removed runtime dependency on active record and active support by Peter Boling
+* Fixed Coveralls Configuration by Peter Boling
+* Improved Readme by Peter Boling
+
 Version 0.3.8 - NOV.24.2013
 * Improved Readme / Documentation by Peter Boling
 * Added Badges by Peter Boling
