@@ -1,6 +1,12 @@
+require "active_record"
 require "test/unit"
 require "yaml"
 require "logger"
+
+# For code coverage, must be required before all application / gem / library code.
+require 'coveralls'
+Coveralls.wear!
+
 require "flag_shih_tzu"
 
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
@@ -8,9 +14,9 @@ ActiveRecord::Migration.verbose = false
 
 configs = YAML.load_file(File.dirname(__FILE__) + "/database.yml")
 if RUBY_PLATFORM == "java"
-  configs['sqlite']['adapter'] = 'jdbcsqlite3' 
-  configs['mysql']['adapter'] = 'jdbcmysql' 
-  configs['postgresql']['adapter'] = 'jdbcpostgresql' 
+  configs['sqlite']['adapter'] = 'jdbcsqlite3'
+  configs['mysql']['adapter'] = 'jdbcmysql'
+  configs['postgresql']['adapter'] = 'jdbcpostgresql'
 end
 ActiveRecord::Base.configurations = configs
 

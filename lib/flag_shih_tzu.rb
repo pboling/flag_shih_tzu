@@ -1,5 +1,5 @@
-require "active_record"
-require "active_support/all"
+#require "active_record"
+#require "active_support/all"
 require "flag_shih_tzu/validators"
 
 module FlagShihTzu

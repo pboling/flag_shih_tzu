@@ -23,17 +23,6 @@ without needing any migration. Just add a new flag to the +has_flags+ call.
 And just in case you are wondering what a "Shih Tzu" is:
 http://en.wikipedia.org/wiki/Shih_Tzu
 
-== Change of Ownership and 0.3.X Release Notes
-
-FlagShihTzu was originally a {XING AG}[http://www.xing.com/] project.  {Peter Boling}[http://peterboling.com] was a long time contributor and watcher of the project.
-In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
-fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
-remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
-well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
-rebase your work onto the current master to make integration easier.
-
-More information on the changes for 0.3.X: {pboling/flag_shih_tzu/wiki/Changes-for-0.3.x}[https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x]
-
 ==Build status
 
 Travis CI: {<img src="https://secure.travis-ci.org/pboling/flag_shih_tzu.png" />}[http://travis-ci.org/pboling/flag_shih_tzu]
@@ -336,7 +325,8 @@ false to avoid it.
             2 => :shields,
             :check_for_column => false
 
-==Running the gem tests
+
+== Running the gem tests
 
 First, make sure all required gems are installed:
 
@@ -347,7 +337,15 @@ ActiveRecord version (see +Gemfile.lock+):
 
   $ bundle exec rake test
 
-If you want to run the tests against all supported ActiveRecord versions:
+If you want to run the tests against all supported ActiveRecord versions, you may need to run each bundle once:
+
+  $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle --quiet
+  $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle --quiet
+  $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle --quiet
+  $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle --quiet
+  $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle --quiet
+
+Then just:
 
   $ bundle exec rake test:all
 
@@ -355,7 +353,6 @@ This will internally use bundler to load specific ActiveRecord versions
 before executing the tests (see +gemfiles/+), e.g.:
 
   $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle exec rake test
-
 
 All tests will use an in-memory sqlite database by default.
 If you want to use a different database, see <tt>test/database.yml</tt>,
@@ -365,7 +362,7 @@ specify which config from <tt>test/database.yml</tt> to use, e.g.:
   $ DB=mysql bundle exec rake
 
 
-==Authors
+== Authors
 
 {Peter Boling}[http://github.com/pboling],
 {Patryk Peszko}[http://github.com/ppeszko],
@@ -381,6 +378,17 @@ Find out more about Peter Boling's work
 
 Find out more about XING
 {Devblog}[http://devblog.xing.com/].
+
+== How you can help!
+
+
+Take a look at the `reek` list which is the file called `REEK` and stat fixing things.  Once you complete a change, run the tests.  See "Running the gem tests".
+
+If the tests pass refresh the `reek` list:
+
+  bundle exec rake reek > REEK
+
+Follow the instructions for "Contributing" below.
 
 == Contributing
 
@@ -406,6 +414,17 @@ dependency on this gem using the {Pessimistic Version Constraint}[http://docs.ru
 For example:
 
     spec.add_dependency 'flag_shih_tzu', '~> 4.0'
+
+== Change of Ownership and 0.3.X Release Notes
+
+FlagShihTzu was originally a {XING AG}[http://www.xing.com/] project.  {Peter Boling}[http://peterboling.com] was a long time contributor and watcher of the project.
+In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
+fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
+remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
+well.  I will continue to monitor other forks for original ideas and improvements. Pull requests are welcome, but please
+rebase your work onto the current master to make integration easier.
+
+More information on the changes for 0.3.X: {pboling/flag_shih_tzu/wiki/Changes-for-0.3.x}[https://github.com/pboling/flag_shih_tzu/wiki/Changes-for-0.3.x]
 
 ==License
 
