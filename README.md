@@ -208,6 +208,9 @@ on Spaceship:
     Spaceship#selected_electrolytes=
     Spaceship#has_electrolyte?
 
+
+### Callbacks and Validations
+
 Optionally, you can set the `:bang_methods` option to true to also define the bang methods:
 
     Spaceship#electrolytes!     # will save the bitwise equivalent of electrolytes = true on the record
@@ -215,13 +218,15 @@ Optionally, you can set the `:bang_methods` option to true to also define the ba
 
 which respectively enables or disables the electrolytes flag.
 
-The `:bang_methods` does not save the records to the database, meaning it cannot engage validations and callbacks.
+The `:bang_methods` does not save the records to the database, meaning it *cannot* engage validations and callbacks.
 
 Alternatively, if you do want to *save a flag* to the database, while still avoiding validations and callbacks, use `update_flag!` which:
 
 * sets a flag on a database record without triggering callbacks or validations
 * optionally syncs the ruby instance with new flag value, by default it does not.
 
+
+Example:
 
     update_flag!(flag_name, flag_value, update_instance = false)
 
@@ -282,7 +287,7 @@ ActiveRecord conditions:
     Spaceship.electrolytes_condition      # "(spaceships.flags in (4,5,6,7))"
     Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
 
-These methods also accept a :table_alias option that can be used when
+These methods also accept a `:table_alias` option that can be used when
 generating SQL that references the same table more than once:
 
     Spaceship.shields_condition(:table_alias => 'evil_spaceships') # "(evil_spaceships.flags in (2,3,6,7))"
@@ -305,7 +310,7 @@ instead of `:in_list`, like so:
               :flag_query_mode => :bit_operator
 
 This will modify the generated condition and named_scope methods to use bit
-operators in the SQL instead of an IN() list:
+operators in the SQL instead of an `IN()` list:
 
     Spaceship.warpdrive_condition     # "(spaceships.flags & 1 = 1)",
     Spaceship.not_warpdrive_condition # "(spaceships.flags & 1 = 0)",
@@ -468,6 +473,7 @@ More information on the changes for 0.3.X: [pboling/flag_shih_tzu/wiki/Changes-f
 MIT License
 
 Copyright (c) 2012-3 [Peter Boling][peterboling] of [RailsBling.com][railsbling]
+
 Copyright (c) 2011 [XING AG](http://www.xing.com/)
 
 Permission is hereby granted, free of charge, to any person obtaining
