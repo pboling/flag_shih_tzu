@@ -1,3 +1,9 @@
+Version 0.3.10 - NOV.26.2013
+* Can run tests without coverage by specifying NOCOVER=true by Peter Boling
+* Improved test coverage by Peter Boling
+* Improved documentation by Peter Boling
+* Readme converted to Markdown by Peter Boling
+
 Version 0.3.9 - NOV.25.2013
 * Removed runtime dependency on active record and active support by Peter Boling
 * Fixed Coveralls Configuration by Peter Boling
