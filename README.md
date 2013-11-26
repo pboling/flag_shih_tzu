@@ -369,7 +369,7 @@ First, make sure all required gems are installed:
 The default rake test task will run the tests against the currently locked
 ActiveRecord version (see `Gemfile.lock`):
 
-    $ bundle exec rake test
+    $ NOCOVER=true bundle exec rake test
 
 If you want to run the tests against all supported ActiveRecord versions:
 
@@ -385,19 +385,19 @@ If you want to run the tests against all supported ActiveRecord versions:
 
 Then just:
 
-    $ bundle exec rake test:all
+    $ NOCOVER=true bundle exec rake test:all
 
 This will internally use bundler to load specific ActiveRecord versions
 before executing the tests (see `gemfiles/`), e.g.:
 
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle exec rake test
+    $ NOCOVER=true BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle exec rake test
 
 All tests will use an in-memory sqlite database by default.
 If you want to use a different database, see `test/database.yml`,
 install the required adapter gem and use the DB environment variable to
 specify which config from `test/database.yml` to use, e.g.:
 
-    $ DB=mysql bundle exec rake
+    $ NOCOVER=true DB=mysql bundle exec rake
 
 
 ## Authors
