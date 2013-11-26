@@ -6,6 +6,7 @@ Bit fields for ActiveRecord
 |------------------------ | ----------------- |
 | gem name                |  flag_shih_tzu    |
 | license                 |  MIT              |
+| moldiness               |  [![Maintainer Status](http://stillmaintained.com/pboling/flag_shih_tzu.png)](http://stillmaintained.com/pboling/flag_shih_tzu) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
 | dependencies            |  [![Dependency Status](https://gemnasium.com/pboling/flag_shih_tzu.png)](https://gemnasium.com/pboling/flag_shih_tzu) |
 | code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) |
