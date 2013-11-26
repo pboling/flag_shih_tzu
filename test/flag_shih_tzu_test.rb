@@ -30,7 +30,7 @@ class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
   has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
 end
 
-class SpaceshipWithColumnNameAsSymol < ActiveRecord::Base
+class SpaceshipWithColumnNameAsSymbol < ActiveRecord::Base
   self.table_name = 'spaceships_with_custom_flags_column'
   include FlagShihTzu
 
@@ -52,6 +52,13 @@ class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
   has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'engines')
   has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
   has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
+end
+
+class SpaceshipWithInListQueryMode < ActiveRecord::Base
+  self.table_name = 'spaceships'
+  include FlagShihTzu
+
+  has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :in_list)
 end
 
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
@@ -250,8 +257,20 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_equal "(spaceships.flags not in (4,5,6,7))", SpaceshipWithMissingFlags.not_electrolytes_condition
   end
 
-  def test_should_define_a_sql_condition_method_for_flag_enabled_with_custom_table_name
+  def test_sql_condition_for_flag_with_custom_table_name_and_default_query_mode
     assert_equal "(custom_spaceships.flags in (1,3,5,7))", Spaceship.send(:sql_condition_for_flag, :warpdrive, 'flags', true, 'custom_spaceships')
+  end
+  def test_sql_condition_for_flag_with_in_list_query_mode
+    assert_equal "(spaceships.flags in (1,3))", SpaceshipWithInListQueryMode.send(:sql_condition_for_flag, :warpdrive, 'flags', true, 'spaceships')
+  end
+  def test_sql_condition_for_flag_with_bit_operator_query_mode
+    assert_equal "(spaceships.flags & 1 = 1)", SpaceshipWithBitOperatorQueryMode.send(:sql_condition_for_flag, :warpdrive, 'flags', true, 'spaceships')
+  end
+  def test_sql_in_for_flag
+    assert_equal [1,3,5,7], Spaceship.send(:sql_in_for_flag, :warpdrive, 'flags')
+  end
+  def test_sql_set_for_flag
+    assert_equal "flags = flags | 1", Spaceship.send(:sql_set_for_flag, :warpdrive, 'flags')
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_2_colmns_not_enabled
@@ -430,7 +449,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_work_with_a_custom_flags_column_name_as_symbol
-    spaceship = SpaceshipWithColumnNameAsSymol.new
+    spaceship = SpaceshipWithColumnNameAsSymbol.new
     spaceship.enable_flag(:warpdrive)
     spaceship.save!
     spaceship.reload
@@ -877,10 +896,10 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_ignore_has_flags_call_if_column_does_not_exist_yet
+  def test_should_ignore_has_flags_call_if_column_does_not_exist_yet_default_check_for_column
     assert_nothing_raised do
       eval(<<-EOF
-        class SpaceshipWithoutFlagsColumn < ActiveRecord::Base
+        class SpaceshipWithoutFlagsColumn1 < ActiveRecord::Base
           self.table_name = 'spaceships_without_flags_column'
           include FlagShihTzu
 
@@ -892,13 +911,13 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
       )
     end
 
-    assert !SpaceshipWithoutFlagsColumn.method_defined?(:warpdrive)
+    assert !SpaceshipWithoutFlagsColumn1.method_defined?(:warpdrive)
   end
 
-  def test_should_ignore_has_flags_call_if_column_not_integer
+  def test_should_ignore_has_flags_call_if_column_not_integer_default_check_for_column
     assert_raises FlagShihTzu::IncorrectFlagColumnException do
       eval(<<-EOF
-        class SpaceshipWithNonIntegerColumn < ActiveRecord::Base
+        class SpaceshipWithNonIntegerColumn1 < ActiveRecord::Base
           self.table_name ='spaceships_with_non_integer_column'
           include FlagShihTzu
 
@@ -910,7 +929,83 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
       )
     end
 
-    assert !SpaceshipWithoutFlagsColumn.method_defined?(:warpdrive)
+    assert !SpaceshipWithNonIntegerColumn1.method_defined?(:warpdrive)
+  end
+
+  def test_should_ignore_has_flags_call_if_column_does_not_exist_yet_and_check_for_column_true
+    assert_nothing_raised do
+      eval(<<-EOF
+        class SpaceshipWithoutFlagsColumn2 < ActiveRecord::Base
+          self.table_name = 'spaceships_without_flags_column'
+          include FlagShihTzu
+
+          has_flags 1 => :warpdrive,
+                    2 => :shields,
+                    3 => :electrolytes,
+                    :check_for_column => true
+        end
+      EOF
+      )
+    end
+
+    assert !SpaceshipWithoutFlagsColumn2.method_defined?(:warpdrive)
+  end
+
+  def test_should_ignore_has_flags_call_if_column_not_integer_and_check_for_column_true
+    assert_raises FlagShihTzu::IncorrectFlagColumnException do
+      eval(<<-EOF
+        class SpaceshipWithNonIntegerColumn2 < ActiveRecord::Base
+          self.table_name ='spaceships_with_non_integer_column'
+          include FlagShihTzu
+
+          has_flags 1 => :warpdrive,
+                    2 => :shields,
+                    3 => :electrolytes,
+                    :check_for_column => true
+        end
+      EOF
+      )
+    end
+
+    assert !SpaceshipWithNonIntegerColumn2.method_defined?(:warpdrive)
+  end
+
+  def test_should_ignore_has_flags_call_if_column_does_not_exist_yet_and_check_for_column_false
+    assert_nothing_raised do
+      eval(<<-EOF
+        class SpaceshipWithoutFlagsColumn3 < ActiveRecord::Base
+          self.table_name = 'spaceships_without_flags_column'
+          include FlagShihTzu
+
+          has_flags 1 => :warpdrive,
+                    2 => :shields,
+                    3 => :electrolytes,
+                    :check_for_column => false
+        end
+      EOF
+      )
+    end
+
+    assert SpaceshipWithoutFlagsColumn3.method_defined?(:warpdrive)
+  end
+
+  def test_should_ignore_has_flags_call_if_column_not_integer_and_check_for_column_false
+    assert_nothing_raised do
+      eval(<<-EOF
+        class SpaceshipWithNonIntegerColumn3 < ActiveRecord::Base
+          self.table_name ='spaceships_with_non_integer_column'
+          include FlagShihTzu
+
+          has_flags 1 => :warpdrive,
+                    2 => :shields,
+                    3 => :electrolytes,
+                    :check_for_column => false
+        end
+      EOF
+      )
+    end
+
+    assert SpaceshipWithNonIntegerColumn3.method_defined?(:warpdrive)
   end
 
   def test_column_guessing_for_default_column_2

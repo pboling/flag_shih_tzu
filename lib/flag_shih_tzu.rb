@@ -25,7 +25,7 @@ module FlagShihTzu
       opts = {
         :named_scopes => true,
         :column => DEFAULT_COLUMN_NAME,
-        :flag_query_mode => :in_list,
+        :flag_query_mode => :in_list, # or :bit_operator
         :strict => false,
         :check_for_column => true
       }.update(opts)
