@@ -504,3 +504,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [homepage]: https://github.com/pboling/flag_shih_tzu
 [bit_field]: http://en.wikipedia.org/wiki/Bit_field
 [bitwise_operation]: http://en.wikipedia.org/wiki/Bitwise_operation
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pboling/flag_shih_tzu/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
