@@ -10,6 +10,7 @@ Bit fields for ActiveRecord
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
 | dependencies            |  [![Dependency Status](https://gemnasium.com/pboling/flag_shih_tzu.png)](https://gemnasium.com/pboling/flag_shih_tzu) |
 | code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) |
+| inline documenation     |  [![Inline docs](http://inch-pages.github.io/github/pboling/flag_shih_tzu.png)](http://inch-pages.github.io/github/pboling/flag_shih_tzu) |
 | continuous integration  |  [![Build Status](https://secure.travis-ci.org/pboling/flag_shih_tzu.png?branch=master)](https://travis-ci.org/pboling/flag_shih_tzu) |
 | test coverage           |  [![Coverage Status](https://coveralls.io/repos/pboling/flag_shih_tzu/badge.png)](https://coveralls.io/r/pboling/flag_shih_tzu) |
 | homepage                |  [https://github.com/pboling/flag_shih_tzu][homepage] |
