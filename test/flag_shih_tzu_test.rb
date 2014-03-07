@@ -302,6 +302,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     assert_where_value "(spaceships.flags not in (4,5,6,7))", Spaceship.not_electrolytes
   end
 
+  def test_should_define_a_dynamic_column_value_helpers_for_flags
+    assert_equal Spaceship.flag_values_for(:warpdrive), [1, 3, 5, 7]
+    assert_equal Spaceship.flag_values_for(:warpdrive, :shields), [3, 7]
+  end
+
   def test_should_define_a_named_scope_for_flag_enabled_with_2_columns
     assert_where_value "(spaceships_with_2_custom_flags_column.bits in (1,3))", SpaceshipWith2CustomFlagsColumn.warpdrive
     assert_where_value "(spaceships_with_2_custom_flags_column.bits in (2,3))", SpaceshipWith2CustomFlagsColumn.hyperspace
