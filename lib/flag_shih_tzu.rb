@@ -100,6 +100,22 @@ module FlagShihTzu
           def self.unset_#{flag_name}_sql
             sql_set_for_flag(:#{flag_name}, '#{colmn}', false)
           end
+
+          def self.#{colmn.singularize}_values_for(*flag_names)
+            values = []
+            flag_names.each do |flag_name|
+              if respond_to?(flag_name)
+                values_for_flag = send(:sql_in_for_flag, flag_name, '#{colmn}')
+                values = if values.present?
+                  values & values_for_flag
+                else
+                  values_for_flag
+                end
+              end
+            end
+
+            values.sort
+          end
         EVAL
 
         if colmn != DEFAULT_COLUMN_NAME
