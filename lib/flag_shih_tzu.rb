@@ -21,7 +21,7 @@ module FlagShihTzu
 
   module ClassMethods
     def has_flags(*args)
-      flag_hash, opts = parse_options(*args)
+      flag_hash, opts = parse_flag_options(*args)
       opts = {
         :named_scopes => true,
         :column => DEFAULT_COLUMN_NAME,
@@ -30,7 +30,7 @@ module FlagShihTzu
         :check_for_column => true
       }.update(opts)
       colmn = opts[:column].to_s
-      if !is_valid_column_name(opts[:column])
+      if !is_valid_flag_column_name(opts[:column])
         puts "FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}"
         opts[:column] = opts[:column].to_s
       end
@@ -247,7 +247,7 @@ module FlagShihTzu
         val
       end
 
-      def parse_options(*args)
+      def parse_flag_options(*args)
         options = args.shift
         if args.size >= 1
           add_options = args.shift
@@ -328,7 +328,7 @@ module FlagShihTzu
         flag_name.is_a?(Symbol)
       end
 
-      def is_valid_column_name(colmn)
+      def is_valid_flag_column_name(colmn)
         colmn.is_a?(String)
       end
 
