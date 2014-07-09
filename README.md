@@ -379,11 +379,11 @@ If you want to run the tests against all supported ActiveRecord versions:
 * you may need to run each bundle once:
 
 
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle --quiet
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle update --quiet
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle update --quiet
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle update --quiet
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
 
 Then just:
 

@@ -1,3 +1,7 @@
+Version 0.3.11 - JUL.09.2014
+* Rename some ambigously-named methods mixed into AR::Base by jdelStrother
+* Add dynamic ".*_values_for" helpers by atipugin
+
 Version 0.3.10 - NOV.26.2013
 * Can run tests without coverage by specifying NOCOVER=true by Peter Boling
 * Improved test coverage by Peter Boling
