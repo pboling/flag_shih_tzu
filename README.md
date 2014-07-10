@@ -375,15 +375,17 @@ ActiveRecord version (see `Gemfile.lock`):
 
 If you want to run the tests against all supported ActiveRecord versions:
 
-* you will need to use ruby 1.9.3 as it is the only version of ruby that bridges the gap between rails 2.3 and rails 4.0
+* you can use ruby 1.9.3 for all but Rails 4.1 as it is the only version of ruby that bridges the gap between rails 2.3 and rails 4.0
 * you may need to run each bundle once:
 
-
+    $ rvm use 1.9.3
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
+    $ rvm use 2.1.2
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle update --quiet
 
 Then just:
 
@@ -392,7 +394,7 @@ Then just:
 This will internally use bundler to load specific ActiveRecord versions
 before executing the tests (see `gemfiles/`), e.g.:
 
-    $ NOCOVER=true BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle exec rake test
+    $ NOCOVER=true BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle exec rake test
 
 All tests will use an in-memory sqlite database by default.
 If you want to use a different database, see `test/database.yml`,
