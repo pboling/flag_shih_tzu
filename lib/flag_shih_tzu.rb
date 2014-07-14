@@ -31,12 +31,12 @@ module FlagShihTzu
       }.update(opts)
       colmn = opts[:column].to_s
       if !is_valid_flag_column_name(opts[:column])
-        puts "FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}"
+        warn "FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}"
         opts[:column] = opts[:column].to_s
       end
       colmn = opts[:column]
       if opts[:check_for_column] && !check_flag_column(colmn)
-        puts "FlagShihTzu says: Flag column #{colmn} appears to be missing!\nTo turn off this warning set check_for_column: false in has_flags definition here: #{caller.first}"
+        warn "FlagShihTzu says: Flag column #{colmn} appears to be missing!\nTo turn off this warning set check_for_column: false in has_flags definition here: #{caller.first}"
         return
       end
 
@@ -276,13 +276,9 @@ module FlagShihTzu
             raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu.") and return false
           end
         else
-          # ActiveRecord gem probably hasn't loaded yet?
-          if respond_to?(:logger)
-            warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") if has_ar
-            return false
-          #else
-          #  puts("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") and return false
-          end
+          # ActiveRecord gem may not have loaded yet?
+          warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") if has_ar
+          return false
         end
 
         true
