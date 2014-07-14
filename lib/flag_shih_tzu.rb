@@ -271,18 +271,14 @@ module FlagShihTzu
           #If you have not yet run the migration that adds the 'flags' column then we don't want to fail, because we need to be able to run the migration
           #If the column is there but is of the wrong type, then we must fail, because flag_shih_tzu will not work
           if found_column.nil?
-            if respond_to?(:logger)
-              logger.warn("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?") and return false
-            else
-              puts("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?") and return false
-            end
+            warn("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?") and return false
           elsif found_column.type != :integer
             raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu.") and return false
           end
         else
           # ActiveRecord gem probably hasn't loaded yet?
           if respond_to?(:logger)
-            logger.warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") if has_ar
+            warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") if has_ar
             return false
           #else
           #  puts("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") and return false
