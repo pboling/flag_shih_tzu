@@ -2,7 +2,7 @@
 
 Bit fields for ActiveRecord
 
-| Project                 |  Sanitize Email   |
+| Project                 |  FlagShihTzu      |
 |------------------------ | ----------------- |
 | gem name                |  flag_shih_tzu    |
 | license                 |  MIT              |
