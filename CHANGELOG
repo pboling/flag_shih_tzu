@@ -1,3 +1,13 @@
+Version 0.3.12 - OCT.01.2014
+* Improve testing instructions in readme by Peter Boling
+* fix check_flag_column to return false after warn by Peter Boling
+* bash script for running complete test suite on Ruby 1.9.3 and Ruby 2.1.2 by Peter Boling
+* Improve documentation in readme by trliner
+* use aliases to make attribute reader methods more DRY by trliner
+* add negative attribute reader and writer methods for improved interoperability with simple_form and formtastic by trliner
+* Adds specs for ActiveRecord version 4.1 by Peter Boling
+* Use Kernel#warn instead of puts by Peter Boling
+
 Version 0.3.11 - JUL.09.2014
 * Rename some ambigously-named methods mixed into AR::Base by jdelStrother
 * Add dynamic ".*_values_for" helpers by atipugin
