@@ -67,10 +67,7 @@ module FlagShihTzu
           def #{flag_name}
             flag_enabled?(:#{flag_name}, '#{colmn}')
           end
-
-          def #{flag_name}?
-            flag_enabled?(:#{flag_name}, '#{colmn}')
-          end
+          alias :#{flag_name}? :#{flag_name}
 
           def #{flag_name}=(value)
             FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}, '#{colmn}') : disable_flag(:#{flag_name}, '#{colmn}')
@@ -79,10 +76,7 @@ module FlagShihTzu
           def not_#{flag_name}
             !#{flag_name}
           end
-
-          def not_#{flag_name}?
-            !#{flag_name}?
-          end
+          alias :not_#{flag_name}? :not_#{flag_name}
 
           def not_#{flag_name}=(value)
             FlagShihTzu::TRUE_VALUES.include?(value) ? disable_flag(:#{flag_name}, '#{colmn}') : enable_flag(:#{flag_name}, '#{colmn}')
