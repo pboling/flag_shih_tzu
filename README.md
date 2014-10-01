@@ -48,9 +48,9 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 The gem is actively being tested with:
 
 * MySQL, PostgreSQL and SQLite3 databases
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x
-* Ruby 1.8.7, 1.9.2, 1.9.3, and 2.0.0 (see .travis.yml for the matrix)
-
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x ;)
+* Ruby 1.9.2, 1.9.3, 2.0.0, 2.1.2 (see .travis.yml for the matrix)
+* Legacy Ruby 1.8.7 compatibility is in the [0.2.X branch](https://github.com/pboling/flag_shih_tzu/tree/0.2.X)
 
 ## Installation
 
