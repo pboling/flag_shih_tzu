@@ -579,6 +579,10 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_equal false, @spaceship.warpdrive
   end
 
+  def test_should_define_a_negative_attribute_reader_method
+    assert_equal true, @spaceship.not_warpdrive
+  end
+
   # --------------------------------------------------
 
   def test_should_define_an_all_flags_reader_method_with_arity_1
@@ -863,8 +867,17 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert_equal false, @spaceship.warpdrive?
   end
 
+  def test_should_define_a_negative_attribute_reader_predicate_method
+    assert_equal true, @spaceship.not_warpdrive?
+  end
+
   def test_should_define_an_attribute_writer_method
     @spaceship.warpdrive = true
+    assert @spaceship.warpdrive
+  end
+
+  def test_should_define_a_negative_attribute_writer_method
+    @spaceship.not_warpdrive = false
     assert @spaceship.warpdrive
   end
 

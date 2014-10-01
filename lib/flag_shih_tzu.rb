@@ -76,6 +76,18 @@ module FlagShihTzu
             FlagShihTzu::TRUE_VALUES.include?(value) ? enable_flag(:#{flag_name}, '#{colmn}') : disable_flag(:#{flag_name}, '#{colmn}')
           end
 
+          def not_#{flag_name}
+            !#{flag_name}
+          end
+
+          def not_#{flag_name}?
+            !#{flag_name}?
+          end
+
+          def not_#{flag_name}=(value)
+            FlagShihTzu::TRUE_VALUES.include?(value) ? disable_flag(:#{flag_name}, '#{colmn}') : enable_flag(:#{flag_name}, '#{colmn}')
+          end
+
           def #{flag_name}_changed?
             if colmn_changes = changes['#{colmn}']
               flag_bit = self.class.flag_mapping['#{colmn}'][:#{flag_name}]
