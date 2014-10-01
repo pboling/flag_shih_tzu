@@ -180,6 +180,9 @@ on Spaceship:
     Spaceship#warpdrive
     Spaceship#warpdrive?
     Spaceship#warpdrive=
+    Spaceship#not_warpdrive
+    Spaceship#not_warpdrive?
+    Spaceship#not_warpdrive=
     Spaceship#warpdrive_changed?
     Spaceship#all_warpdrives
     Spaceship#selected_warpdrives
@@ -191,6 +194,9 @@ on Spaceship:
     Spaceship#shields
     Spaceship#shields?
     Spaceship#shields=
+    Spaceship#not_shields
+    Spaceship#not_shields?
+    Spaceship#not_shields=
     Spaceship#shields_changed?
     Spaceship#all_shields
     Spaceship#selected_shields
@@ -202,6 +208,9 @@ on Spaceship:
     Spaceship#electrolytes
     Spaceship#electrolytes?
     Spaceship#electrolytes=
+    Spaceship#not_electrolytes
+    Spaceship#not_electrolytes?
+    Spaceship#not_electrolytes=
     Spaceship#electrolytes_changed?
     Spaceship#all_electrolytes
     Spaceship#selected_electrolytes
