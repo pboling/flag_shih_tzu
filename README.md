@@ -373,34 +373,26 @@ false to avoid it.
 
 ## Running the gem tests
 
-First, make sure all required gems are installed:
-
-    $ bundle install
-
-The default rake test task will run the tests against the currently locked
-ActiveRecord version (see `Gemfile.lock`):
-
-    $ NOCOVER=true bundle exec rake test
-
-If you want to run the tests against all supported ActiveRecord versions:
-
-* you can use ruby 1.9.3 for all but Rails 4.1 as it is the only version of ruby that bridges the gap between rails 2.3 and rails 4.0
-* you may need to run each bundle once:
+First, run some infrequent setup:
 
     $ rvm use 1.9.3
+    $ bundle install
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
     $ rvm use 2.1.2
+    $ bundle install
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
+    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle update --quiet
 
 Then just:
 
-    $ NOCOVER=true bundle exec rake test:all
+    $ bundle exec rake test:all
 
-This will internally use bundler to load specific ActiveRecord versions
+This will internally use rvm and bundler to load specific ActiveRecord versions
 before executing the tests (see `gemfiles/`), e.g.:
 
     $ NOCOVER=true BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle exec rake test
