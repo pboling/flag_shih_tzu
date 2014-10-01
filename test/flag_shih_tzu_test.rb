@@ -965,7 +965,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
       EOF
       )
     end
-
+    assert !SpaceshipWithoutFlagsColumn2.send(:check_flag_column, 'flags')
     assert !SpaceshipWithoutFlagsColumn2.method_defined?(:warpdrive)
   end
 
