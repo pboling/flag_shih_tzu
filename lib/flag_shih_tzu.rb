@@ -29,7 +29,6 @@ module FlagShihTzu
         :strict => false,
         :check_for_column => true
       }.update(opts)
-      colmn = opts[:column].to_s
       if !is_valid_flag_column_name(opts[:column])
         warn "FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}"
         opts[:column] = opts[:column].to_s
