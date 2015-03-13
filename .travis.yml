@@ -1,8 +1,8 @@
 rvm:
-  - 1.9.2
   - 1.9.3
   - 2.0.0
   - 2.1.2
+  - 2.2.1
 gemfile:
   - gemfiles/Gemfile.activerecord-2.3.x
   - gemfiles/Gemfile.activerecord-3.0.x
@@ -12,6 +12,18 @@ gemfile:
   - gemfiles/Gemfile.activerecord-4.1.x
 matrix:
   exclude:
+    - rvm: 2.2.1
+      gemfile: gemfiles/Gemfile.activerecord-2.3.x
+    - rvm: 2.2.1
+      gemfile: gemfiles/Gemfile.activerecord-3.0.x
+    - rvm: 2.2.1
+      gemfile: gemfiles/Gemfile.activerecord-3.1.x
+    - rvm: 2.1.2
+      gemfile: gemfiles/Gemfile.activerecord-2.3.x
+    - rvm: 2.1.2
+      gemfile: gemfiles/Gemfile.activerecord-3.0.x
+    - rvm: 2.1.2
+      gemfile: gemfiles/Gemfile.activerecord-3.1.x
     - rvm: 2.1.2
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
     - rvm: 2.1.2
