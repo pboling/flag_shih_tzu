@@ -1,4 +1,18 @@
+Version 0.3.13 - MAR.13.2015
+
+* methods for use with form builders like simple_form by Peter Boling
+
+    - chained_flags_with_signature
+    - chained_#{colmn}_with_signature
+    - as_flag_collection
+    - as_#{colmn.singularize}_collection
+    - selected_flags=
+    - selected_#{colmn}= (already existed)
+* Testing on Travis: added Ruby 2.2.1
+* Testing on Travis: removed Ruby 1.9.2
+
 Version 0.3.12 - OCT.01.2014
+
 * Improve testing instructions in readme by Peter Boling
 * fix check_flag_column to return false after warn by Peter Boling
 * bash script for running complete test suite on Ruby 1.9.3 and Ruby 2.1.2 by Peter Boling
@@ -9,34 +23,41 @@ Version 0.3.12 - OCT.01.2014
 * Use Kernel#warn instead of puts by Peter Boling
 
 Version 0.3.11 - JUL.09.2014
+
 * Rename some ambigously-named methods mixed into AR::Base by jdelStrother
 * Add dynamic ".*_values_for" helpers by atipugin
 
 Version 0.3.10 - NOV.26.2013
+
 * Can run tests without coverage by specifying NOCOVER=true by Peter Boling
 * Improved test coverage by Peter Boling
 * Improved documentation by Peter Boling
 * Readme converted to Markdown by Peter Boling
 
 Version 0.3.9 - NOV.25.2013
+
 * Removed runtime dependency on active record and active support by Peter Boling
 * Fixed Coveralls Configuration by Peter Boling
 * Improved Readme by Peter Boling
 
 Version 0.3.8 - NOV.24.2013
+
 * Improved Readme / Documentation by Peter Boling
 * Added Badges by Peter Boling
 * Configured Coveralls by Peter Boling
 * Added Code Climate, Coveralls, Gemnasium, and Version Badges by Peter Boling
 
 Version 0.3.7 - OCT.25.2013
+
 * Change `sql_in_for_flag` to consider values from the range [0, 2 * max - 1] by Blake Thomson
 
 Version 0.3.6 - AUG.29.2013
+
 * Allow use with any gem manager by Peter Boling
 * No need to alter Ruby's load path by Peter Boling
 
 Version 0.3.5 - AUG.06.2013
+
 * Fix Travis Build & Add Rails 4 by Peter M. Goldstein
 * Implemented update_flag! by Peter Boling (see https://github.com/pboling/flag_shih_tzu/issues/27)
   - sets a flag on a record without triggering callbacks or validations
@@ -60,6 +81,7 @@ Version 0.3.4 - JUN.20.2013
 * Many more tests, including arity tests by Peter Boling
 
 Version 0.3.3 - JUN.20.2013
+
 - Does not exist.
 
 Version 0.3.2 - NOV.06.2012
