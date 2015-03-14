@@ -60,7 +60,6 @@ module FlagShihTzu
         raise ArgumentError, "has_flags: flag name #{flag_name} already defined, please choose different name" if method_defined?(flag_name)
 
         flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
-        #puts "Defined: #{flag_key} as #{flag_mapping[colmn][flag_name]}"
 
         class_eval <<-EVAL, __FILE__, __LINE__ + 1
           def #{flag_name}
@@ -143,15 +142,23 @@ module FlagShihTzu
             end
 
             # useful for a form builder
-            def selected_#{colmn}=(selected_flags)
+            def selected_#{colmn}=(chosen_flags)
               unselect_all_flags('#{colmn}')
-              selected_flags.each do |selected_flag|
+              chosen_flags.each do |selected_flag|
                 enable_flag(selected_flag.to_sym, '#{colmn}') if selected_flag.present?
               end
             end
 
             def has_#{colmn.singularize}?
               not selected_#{colmn}.empty?
+            end
+
+            def chained_#{colmn}_with_signature(*args)
+              chained_flags_with_signature('#{colmn}', *args)
+            end
+
+            def as_#{colmn.singularize}_collection(*args)
+              as_flag_collection('#{colmn}', *args)
             end
 
           EVAL
@@ -210,15 +217,15 @@ module FlagShihTzu
       raise NoSuchFlagException.new("determine_flag_colmn_for: Couldn't determine column for your flags!")
     end
 
-    def chained_flags_with(*args)
+    def chained_flags_with(column = DEFAULT_COLUMN_NAME, *args)
       if (ActiveRecord::VERSION::MAJOR >= 3)
-        where(chained_flags_condition(*args))
+        where(chained_flags_condition(column, *args))
       else
-        all(:conditions => chained_flags_condition(*args))
+        all(:conditions => chained_flags_condition(column, *args))
       end
     end
 
-    def chained_flags_condition(colmn, *args)
+    def chained_flags_condition(colmn = DEFAULT_COLUMN_NAME, *args)
       "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(',')}))"
     end
 
@@ -384,6 +391,15 @@ module FlagShihTzu
     all_flags(colmn).map { |flag_name| self.send(flag_name) ? flag_name : nil }.compact
   end
 
+  # Useful for a form builder
+  # use selected_#{column}= for custom column names.
+  def selected_flags=(chosen_flags)
+    unselect_all_flags
+    chosen_flags.each do |selected_flag|
+      enable_flag(selected_flag.to_sym, DEFAULT_COLUMN_NAME) if selected_flag.present?
+    end
+  end
+
   def select_all_flags(colmn = DEFAULT_COLUMN_NAME)
     all_flags(colmn).each do |flag|
       enable_flag(flag, colmn)
@@ -419,7 +435,42 @@ module FlagShihTzu
     end
   end
 
+  # Use with chained_flags_with to find records with specific flags set to the same values as on this record.
+  # For a record that has sent_warm_up_email = true and the other flags false:
+  # user.chained_flags_with_signature
+  #   => [:sent_warm_up_email, :not_follow_up_called, :not_sent_final_email, :not_scheduled_appointment]
+  # User.chained_flags_with('flags', *user.chained_flags_with_signature)
+  # => the set of Users that have the same flags set as user.
+  def chained_flags_with_signature(colmn = DEFAULT_COLUMN_NAME, *args)
+    flags_to_collect = args.empty? ? all_flags(colmn) : args
+    truthy_and_chosen = selected_flags(colmn).select {|x| flags_to_collect.include?(x) }
+    truthy_and_chosen.concat(
+      collect_flags(*flags_to_collect) do |memo, flag|
+        memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)
+      end
+    )
+  end
+
+  # Use with a checkbox form builder, like simple_form's
+  #   # selected_flags, used in the example below, is a method defined by flag_shih_tzu for bulk setting flags
+  #   form_for @user do |f|
+  #     f.collection_check_boxes :selected_flags, f.object.as_flag_collection('flags', :sent_warm_up_email, :not_follow_up_called), :first, :last
+  #   end
+  def as_flag_collection(colmn = DEFAULT_COLUMN_NAME, *args)
+    flags_to_collect = args.empty? ? all_flags(colmn) : args
+    collect_flags(*flags_to_collect) do |memo, flag|
+      memo << [flag, self.flag_enabled?(flag, colmn)]
+    end
+  end
+
   private
+
+    def collect_flags(*args)
+      args.inject([]) do |memo, flag|
+        yield memo, flag
+        memo
+      end
+    end
 
     def get_bit_for(flag, colmn)
       self.flags(colmn) & self.class.flag_mapping[colmn][flag]
