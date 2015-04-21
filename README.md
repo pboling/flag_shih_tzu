@@ -463,7 +463,7 @@ For example:
 
 ## 2012 Change of Ownership and 0.3.X Release Notes
 
-FlagShihTzu was originally a [XING AG][http://www.xing.com/] project.  [Peter Boling](http://peterboling.com) was a long time contributor and watcher of the project.
+FlagShihTzu was originally a [XING AG](http://www.xing.com/) project.  [Peter Boling](http://peterboling.com) was a long time contributor and watcher of the project.
 In September 2012 XING transferred ownership of the project to Peter Boling.  Peter Boling had been maintaining a
 fork with extended capabilities.  These additional features become a part of the 0.3 line.  The 0.2 line of the gem will
 remain true to XING's original.  The 0.3 line aims to maintain complete parity and compatibility with XING's original as
