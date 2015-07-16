@@ -409,9 +409,8 @@ has_flags 1 => :warpdrive,
 
 First, run some infrequent setup:
 
-    $ rvm use 1.9.3
+    $ rvm use 2.0.0
     $ bundle install
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-2.3.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle update --quiet
     $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
