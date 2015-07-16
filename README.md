@@ -58,7 +58,9 @@ The gem is actively being tested with:
 
 In environment.rb:
 
-    config.gem 'flag_shih_tzu'
+```ruby
+config.gem 'flag_shih_tzu'
+```
 
 Then:
 
@@ -68,7 +70,9 @@ Then:
 
 In Gemfile:
 
-    gem 'flag_shih_tzu'
+```ruby
+gem 'flag_shih_tzu'
+```
 
 Then:
 
@@ -92,23 +96,27 @@ should have a default value of `0`.
 
 I like to document the intent of the `flags` column in the migration when I can...
 
-    change_table :spaceships do |t|
-      t.integer     :flags, :null => false, :default => 0 # flag_shih_tzu-managed bit field
-      # Effective booleans which will be stored on the flags column:
-      # t.boolean      :warpdrive
-      # t.boolean      :shields
-      # t.boolean      :electrolytes
-    end
+```ruby
+change_table :spaceships do |t|
+  t.integer     :flags, :null => false, :default => 0 # flag_shih_tzu-managed bit field
+  # Effective booleans which will be stored on the flags column:
+  # t.boolean      :warpdrive
+  # t.boolean      :shields
+  # t.boolean      :electrolytes
+end
+```
 
 ### Adding to the Model
 
-    class Spaceship < ActiveRecord::Base
-      include FlagShihTzu
+```ruby
+class Spaceship < ActiveRecord::Base
+  include FlagShihTzu
 
-      has_flags 1 => :warpdrive,
-                2 => :shields,
-                3 => :electrolytes
-    end
+  has_flags 1 => :warpdrive,
+            2 => :shields,
+            3 => :electrolytes
+end
+```
 
 `has_flags` takes a hash. The keys must be positive integers and represent
 the position of the bit being used to enable or disable the flag.
@@ -161,16 +169,17 @@ The default column name to store the flags is `flags`, but you can provide a
 custom column name using the `:column` option. This allows you to use
 different columns for separate flags:
 
-    has_flags 1 => :warpdrive,
-              2 => :shields,
-              3 => :electrolytes,
-              :column => 'features'
+```ruby
+has_flags 1 => :warpdrive,
+          2 => :shields,
+          3 => :electrolytes,
+          :column => 'features'
 
-    has_flags 1 => :spock,
-              2 => :scott,
-              3 => :kirk,
-              :column => 'crew'
-
+has_flags 1 => :spock,
+          2 => :scott,
+          3 => :kirk,
+          :column => 'crew'
+```
 
 ### Generated boolean patterned instance methods
 
@@ -239,7 +248,9 @@ Alternatively, if you do want to *save a flag* to the database, while still avoi
 
 Example:
 
-    update_flag!(flag_name, flag_value, update_instance = false)
+```ruby
+update_flag!(flag_name, flag_value, update_instance = false)
+```
 
 
 ### Generated class methods
@@ -247,24 +258,30 @@ Example:
 Calling `has_flags` as shown above creates the following class methods
 on Spaceship:
 
-    Spaceship.flag_columns      # [:features, :crew]
+```ruby
+Spaceship.flag_columns      # [:features, :crew]
+```
 
 
 ### Generated named scopes
 
 The following named scopes become available:
 
-    Spaceship.warpdrive         # :conditions => "(spaceships.flags in (1,3,5,7))"
-    Spaceship.not_warpdrive     # :conditions => "(spaceships.flags not in (1,3,5,7))"
-    Spaceship.shields           # :conditions => "(spaceships.flags in (2,3,6,7))"
-    Spaceship.not_shields       # :conditions => "(spaceships.flags not in (2,3,6,7))"
-    Spaceship.electrolytes      # :conditions => "(spaceships.flags in (4,5,6,7))"
-    Spaceship.not_electrolytes  # :conditions => "(spaceships.flags not in (4,5,6,7))"
+```ruby
+Spaceship.warpdrive         # :conditions => "(spaceships.flags in (1,3,5,7))"
+Spaceship.not_warpdrive     # :conditions => "(spaceships.flags not in (1,3,5,7))"
+Spaceship.shields           # :conditions => "(spaceships.flags in (2,3,6,7))"
+Spaceship.not_shields       # :conditions => "(spaceships.flags not in (2,3,6,7))"
+Spaceship.electrolytes      # :conditions => "(spaceships.flags in (4,5,6,7))"
+Spaceship.not_electrolytes  # :conditions => "(spaceships.flags not in (4,5,6,7))"
+```
 
 If you do not want the named scopes to be defined, set the
 `:named_scopes` option to false when calling `has_flags`:
 
-    has_flags 1 => :warpdrive, 2 => :shields, 3 => :electrolytes, :named_scopes => false
+```ruby
+has_flags 1 => :warpdrive, 2 => :shields, 3 => :electrolytes, :named_scopes => false
+```
 
 In a Rails 3+ application, FlagShihTzu will use `scope` internally to generate
 the scopes. The option on `has_flags` is still named `:named_scopes` however.
@@ -272,18 +289,20 @@ the scopes. The option on `has_flags` is still named `:named_scopes` however.
 
 ### Examples for using the generated methods
 
-    enterprise = Spaceship.new
-    enterprise.warpdrive = true
-    enterprise.shields = true
-    enterprise.electrolytes = false
-    enterprise.save
+```ruby
+enterprise = Spaceship.new
+enterprise.warpdrive = true
+enterprise.shields = true
+enterprise.electrolytes = false
+enterprise.save
 
-    if enterprise.shields?
-      # ...
-    end
+if enterprise.shields?
+  # ...
+end
 
-    Spaceship.warpdrive.find(:all)
-    Spaceship.not_electrolytes.count
+Spaceship.warpdrive.find(:all)
+Spaceship.not_electrolytes.count
+```
 
 
 ### Support for manually building conditions
@@ -291,17 +310,20 @@ the scopes. The option on `has_flags` is still named `:named_scopes` however.
 The following class methods may support you when manually building
 ActiveRecord conditions:
 
-    Spaceship.warpdrive_condition         # "(spaceships.flags in (1,3,5,7))"
-    Spaceship.not_warpdrive_condition     # "(spaceships.flags not in (1,3,5,7))"
-    Spaceship.shields_condition           # "(spaceships.flags in (2,3,6,7))"
-    Spaceship.not_shields_condition       # "(spaceships.flags not in (2,3,6,7))"
-    Spaceship.electrolytes_condition      # "(spaceships.flags in (4,5,6,7))"
-    Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
+```ruby
+Spaceship.warpdrive_condition         # "(spaceships.flags in (1,3,5,7))"
+Spaceship.not_warpdrive_condition     # "(spaceships.flags not in (1,3,5,7))"
+Spaceship.shields_condition           # "(spaceships.flags in (2,3,6,7))"
+Spaceship.not_shields_condition       # "(spaceships.flags not in (2,3,6,7))"
+Spaceship.electrolytes_condition      # "(spaceships.flags in (4,5,6,7))"
+Spaceship.not_electrolytes_condition  # "(spaceships.flags not in (4,5,6,7))"
+```
 
 These methods also accept a `:table_alias` option that can be used when
 generating SQL that references the same table more than once:
-
-    Spaceship.shields_condition(:table_alias => 'evil_spaceships') # "(evil_spaceships.flags in (2,3,6,7))"
+```ruby
+Spaceship.shields_condition(:table_alias => 'evil_spaceships') # "(evil_spaceships.flags in (2,3,6,7))"
+```
 
 
 ### Choosing a query mode
@@ -316,22 +338,26 @@ For MySQL, depending on your MySQL settings, this can even hit the
 In this case, consider changing the flag query mode to `:bit_operator`
 instead of `:in_list`, like so:
 
-    has_flags 1 => :warpdrive,
-              2 => :shields,
-              :flag_query_mode => :bit_operator
+```ruby
+has_flags 1 => :warpdrive,
+          2 => :shields,
+          :flag_query_mode => :bit_operator
+```
 
 This will modify the generated condition and named_scope methods to use bit
 operators in the SQL instead of an `IN()` list:
 
-    Spaceship.warpdrive_condition     # "(spaceships.flags & 1 = 1)",
-    Spaceship.not_warpdrive_condition # "(spaceships.flags & 1 = 0)",
-    Spaceship.shields_condition       # "(spaceships.flags & 2 = 2)",
-    Spaceship.not_shields_condition   # "(spaceships.flags & 2 = 0)",
+```ruby
+Spaceship.warpdrive_condition     # "(spaceships.flags & 1 = 1)",
+Spaceship.not_warpdrive_condition # "(spaceships.flags & 1 = 0)",
+Spaceship.shields_condition       # "(spaceships.flags & 2 = 2)",
+Spaceship.not_shields_condition   # "(spaceships.flags & 2 = 0)",
 
-    Spaceship.warpdrive     # :conditions => "(spaceships.flags & 1 = 1)"
-    Spaceship.not_warpdrive # :conditions => "(spaceships.flags & 1 = 0)"
-    Spaceship.shields       # :conditions => "(spaceships.flags & 2 = 2)"
-    Spaceship.not_shields   # :conditions => "(spaceships.flags & 2 = 0)"
+Spaceship.warpdrive     # :conditions => "(spaceships.flags & 1 = 1)"
+Spaceship.not_warpdrive # :conditions => "(spaceships.flags & 1 = 0)"
+Spaceship.shields       # :conditions => "(spaceships.flags & 2 = 2)"
+Spaceship.not_shields   # :conditions => "(spaceships.flags & 2 = 0)"
+```
 
 The drawback is that due to the [bitwise operation][bitwise_operation] being done on the SQL side,
 this query can not use an index on the flags column.
@@ -341,19 +367,25 @@ this query can not use an index on the flags column.
 If you need to do mass updates without initializing object for each row, you can
 use `#set_flag_sql` method on your class. Example:
 
-    Spaceship.set_flag_sql(:warpdrive, true) # "flags = flags | 1"
-    Spaceship.set_flag_sql(:shields, false)  # "flags = flags & ~2"
+```ruby
+Spaceship.set_flag_sql(:warpdrive, true) # "flags = flags | 1"
+Spaceship.set_flag_sql(:shields, false)  # "flags = flags & ~2"
+```
 
 And then use it in:
 
-    Spaceship.update_all Spaceship.set_flag_sql(:shields, false)
+```ruby
+Spaceship.update_all Spaceship.set_flag_sql(:shields, false)
+```
 
 Beware that using multiple flag manipulation sql statements in the same query
 probably will not have the desired effect (at least on sqlite3, not tested
 on other databases), so you *should not* do this:
 
-    Spaceship.update_all "#{Spaceship.set_flag_sql(:shields, false)},#{
-      Spaceship.set_flag_sql(:warpdrive, true)}"
+```ruby
+Spaceship.update_all "#{Spaceship.set_flag_sql(:shields, false)},#{
+  Spaceship.set_flag_sql(:warpdrive, true)}"
+```
 
 General rule of thumb: issue only one flag update per update statement.
 
@@ -366,9 +398,11 @@ Sometimes this may not be a wanted behaviour (e.g. when loading model without
 database connection established) so you can set `:check_for_column` option to
 false to avoid it.
 
-    has_flags 1 => :warpdrive,
-              2 => :shields,
-              :check_for_column => false
+```ruby
+has_flags 1 => :warpdrive,
+          2 => :shields,
+          :check_for_column => false
+```
 
 
 ## Running the gem tests
@@ -458,8 +492,9 @@ dependency on this gem using the [Pessimistic Version Constraint](http://docs.ru
 
 For example:
 
-    spec.add_dependency 'flag_shih_tzu', '~> 4.0'
-
+```ruby
+spec.add_dependency 'flag_shih_tzu', '~> 4.0'
+```
 
 ## 2012 Change of Ownership and 0.3.X Release Notes
 
