@@ -1,9 +1,9 @@
 #!/bin/bash --login
 
-# First run the tests of all versions supported on Ruby 1.9.3
-rvm use 1.9.3
+# First run the tests of all versions supported on Ruby 2.0.0
+rvm use 2.0.0
 bundle install --quiet
-COMPATIBLE_VERSIONS=(2.3.x 3.0.x 3.1.x 3.2.x 4.0.x)
+COMPATIBLE_VERSIONS=(3.0.x 3.1.x 3.2.x 4.0.x)
 count=0
 while [ "x${COMPATIBLE_VERSIONS[count]}" != "x" ]
 do
