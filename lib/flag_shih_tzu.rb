@@ -34,7 +34,7 @@ module FlagShihTzu
         opts[:column] = opts[:column].to_s
       end
       colmn = opts[:column]
-      if opts[:check_for_column] && !check_flag_column(colmn)
+      if opts[:check_for_column] && ( is_active_record_class? && !check_flag_column(colmn) )
         warn "FlagShihTzu says: Flag column #{colmn} appears to be missing!\nTo turn off this warning set check_for_column: false in has_flags definition here: #{caller.first}"
         return
       end
@@ -91,7 +91,7 @@ module FlagShihTzu
 
         EVAL
 
-        if self.class.ancestors.include?(ActiveRecord::Base)
+        if self.ancestors.include?(ActiveRecord::Base)
           class_eval <<-EVAL, __FILE__, __LINE__ + 1
             def self.#{flag_name}_condition(options = {})
               sql_condition_for_flag(:#{flag_name}, '#{colmn}', true, options[:table_alias] || self.table_name)
@@ -349,6 +349,10 @@ module FlagShihTzu
       def named_scope_method
         # Can't use respond_to because both AR 2 and 3 respond to both +scope+ and +named_scope+.
         ActiveRecord::VERSION::MAJOR == 2 ? :named_scope : :scope
+      end
+
+      def is_active_record_class?
+        return self.ancestors.include?(ActiveRecord::Base)
       end
   end
 
