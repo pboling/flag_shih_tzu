@@ -89,38 +89,61 @@ module FlagShihTzu
             end
           end
 
-          def self.#{flag_name}_condition(options = {})
-            sql_condition_for_flag(:#{flag_name}, '#{colmn}', true, options[:table_alias] || self.table_name)
-          end
+        EVAL
 
-          def self.not_#{flag_name}_condition
-            sql_condition_for_flag(:#{flag_name}, '#{colmn}', false)
-          end
-
-          def self.set_#{flag_name}_sql
-            sql_set_for_flag(:#{flag_name}, '#{colmn}', true)
-          end
-
-          def self.unset_#{flag_name}_sql
-            sql_set_for_flag(:#{flag_name}, '#{colmn}', false)
-          end
-
-          def self.#{colmn.singularize}_values_for(*flag_names)
-            values = []
-            flag_names.each do |flag_name|
-              if respond_to?(flag_name)
-                values_for_flag = send(:sql_in_for_flag, flag_name, '#{colmn}')
-                values = if values.present?
-                  values & values_for_flag
-                else
-                  values_for_flag
-                end
-              end
+        if self.class.ancestors.include?(ActiveRecord::Base)
+          class_eval <<-EVAL, __FILE__, __LINE__ + 1
+            def self.#{flag_name}_condition(options = {})
+              sql_condition_for_flag(:#{flag_name}, '#{colmn}', true, options[:table_alias] || self.table_name)
             end
 
-            values.sort
+            def self.not_#{flag_name}_condition
+              sql_condition_for_flag(:#{flag_name}, '#{colmn}', false)
+            end
+
+            def self.set_#{flag_name}_sql
+              sql_set_for_flag(:#{flag_name}, '#{colmn}', true)
+            end
+
+            def self.unset_#{flag_name}_sql
+              sql_set_for_flag(:#{flag_name}, '#{colmn}', false)
+            end
+
+            def self.#{colmn.singularize}_values_for(*flag_names)
+              values = []
+              flag_names.each do |flag_name|
+                if respond_to?(flag_name)
+                  values_for_flag = send(:sql_in_for_flag, flag_name, '#{colmn}')
+                  values = if values.present?
+                    values & values_for_flag
+                  else
+                    values_for_flag
+                  end
+                end
+              end
+
+              values.sort
+            end
+          EVAL
+
+          # Define the named scopes if the user wants them and AR supports it
+          if flag_options[colmn][:named_scopes]
+            if ActiveRecord::VERSION::MAJOR == 2 && respond_to?(:named_scope)
+              # Prevent deprecation notices on Rails 3 when using +named_scope+ instead of +scope+.
+              class_eval <<-EVAL, __FILE__, __LINE__ + 1
+                named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
+                named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
+              EVAL
+            elsif respond_to?(:scope)
+              # Prevent deprecation notices on Rails 4 when using +conditions+ instead of +where+.
+              class_eval <<-EVAL, __FILE__, __LINE__ + 1
+                scope :#{flag_name}, lambda { where(#{flag_name}_condition) }
+                scope :not_#{flag_name}, lambda { where(not_#{flag_name}_condition) }
+              EVAL
+            end
           end
-        EVAL
+
+        end
 
         if colmn != DEFAULT_COLUMN_NAME
           class_eval <<-EVAL, __FILE__, __LINE__ + 1
@@ -177,22 +200,6 @@ module FlagShihTzu
           EVAL
         end
 
-        # Define the named scopes if the user wants them and AR supports it
-        if flag_options[colmn][:named_scopes]
-          if ActiveRecord::VERSION::MAJOR == 2 && respond_to?(:named_scope)
-            # Prevent deprecation notices on Rails 3 when using +named_scope+ instead of +scope+.
-            class_eval <<-EVAL, __FILE__, __LINE__ + 1
-              named_scope :#{flag_name}, lambda { { :conditions => #{flag_name}_condition } }
-              named_scope :not_#{flag_name}, lambda { { :conditions => not_#{flag_name}_condition } }
-            EVAL
-          elsif respond_to?(:scope)
-            # Prevent deprecation notices on Rails 4 when using +conditions+ instead of +where+.
-            class_eval <<-EVAL, __FILE__, __LINE__ + 1
-              scope :#{flag_name}, lambda { where(#{flag_name}_condition) }
-              scope :not_#{flag_name}, lambda { where(not_#{flag_name}_condition) }
-            EVAL
-          end
-        end
       end
 
     end
