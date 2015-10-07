@@ -48,13 +48,13 @@ here: #{caller.first}
 
       # options are stored in a class level hash and apply per-column
       self.flag_options ||= {}
-      self.flag_options[colmn] = opts
+      flag_options[colmn] = opts
 
       # the mappings are stored in this class level hash and apply per-column
       self.flag_mapping ||= {}
       #If we already have an instance of the same column in the flag_mapping, then there is a double definition on a column
       raise DuplicateFlagColumnException if opts[:strict] && !self.flag_mapping[colmn].nil?
-      self.flag_mapping[colmn] ||= {}
+      flag_mapping[colmn] ||= {}
 
       # keep track of which flag columns are defined on this class
       self.flag_columns ||= []
@@ -117,7 +117,7 @@ has_flags: flag name #{flag_name} already defined, please choose different name
                 :#{flag_name},
                 "#{colmn}",
                 true,
-                options[:table_alias] || self.table_name
+                options[:table_alias] || table_name
               )
             end
 
@@ -247,14 +247,14 @@ Invalid flag "#{flag}"
 
     # Returns SQL statement to enable/disable flag.
     # Automatically determines the correct column.
-    def set_flag_sql(flag, value, colmn = nil, custom_table_name = self.table_name)
+    def set_flag_sql(flag, value, colmn = nil, custom_table_name = table_name)
       colmn = determine_flag_colmn_for(flag) if colmn.nil?
       sql_set_for_flag(flag, colmn, value, custom_table_name)
     end
 
     def determine_flag_colmn_for(flag)
-      return DEFAULT_COLUMN_NAME if self.flag_mapping.nil?
-      self.flag_mapping.each_pair do |colmn, mapping|
+      return DEFAULT_COLUMN_NAME if flag_mapping.nil?
+      flag_mapping.each_pair do |colmn, mapping|
         return colmn if mapping.include?(flag)
       end
       raise NoSuchFlagException.new(
@@ -271,7 +271,7 @@ Invalid flag "#{flag}"
     end
 
     def chained_flags_condition(colmn = DEFAULT_COLUMN_NAME, *args)
-      "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(",")}))"
+      "(#{table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(",")}))"
     end
 
     def flag_keys(colmn = DEFAULT_COLUMN_NAME)
@@ -320,10 +320,10 @@ Invalid flag "#{flag}"
       return options, add_options
     end
 
-    def check_flag_column(colmn, custom_table_name = self.table_name)
+    def check_flag_column(colmn, custom_table_name = table_name)
       # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
       # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration
-      has_ar = (!!defined?(ActiveRecord) && self.respond_to?(:descends_from_active_record?))
+      has_ar = (!!defined?(ActiveRecord) && respond_to?(:descends_from_active_record?))
       # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
       has_table = has_ar ? connection.tables.include?(custom_table_name) : true
       if has_table
@@ -352,7 +352,7 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
       true
     end
 
-    def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
+    def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
       check_flag(flag, colmn)
 
       if flag_options[colmn][:flag_query_mode] == :bit_operator
@@ -372,10 +372,10 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
     # returns an array of integers suitable for a SQL IN statement.
     def sql_in_for_flag(flag, colmn)
       val = flag_mapping[colmn][flag]
-      flag_value_range_for_column(colmn).select {|i| i & val == val}
+      flag_value_range_for_column(colmn).select { |i| i & val == val }
     end
 
-    def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = self.table_name)
+    def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
       check_flag(flag, colmn)
       "#{colmn} = #{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
     end
@@ -409,7 +409,7 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
-    set_flags(self.flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
+    set_flags(flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
   end
 
   # Performs the bitwise operation so the flag will return +false+.
@@ -417,7 +417,7 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
-    set_flags(self.flags(colmn) & ~self.class.flag_mapping[colmn][flag], colmn)
+    set_flags(flags(colmn) & ~self.class.flag_mapping[colmn][flag], colmn)
   end
 
   def flag_enabled?(flag, colmn = nil)
@@ -482,9 +482,9 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
     sql = self.class.set_flag_sql(flag.to_sym, truthy)
     if update_instance
       if truthy
-        self.enable_flag(flag)
+        enable_flag(flag)
       else
-        self.disable_flag(flag)
+        disable_flag(flag)
       end
     end
     if (ActiveRecord::VERSION::MAJOR <= 3)
@@ -532,7 +532,7 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
   def as_flag_collection(colmn = DEFAULT_COLUMN_NAME, *args)
     flags_to_collect = args.empty? ? all_flags(colmn) : args
     collect_flags(*flags_to_collect) do |memo, flag|
-      memo << [flag, self.flag_enabled?(flag, colmn)]
+      memo << [flag, flag_enabled?(flag, colmn)]
     end
   end
 
@@ -546,7 +546,7 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
   end
 
   def get_bit_for(flag, colmn)
-    self.flags(colmn) & self.class.flag_mapping[colmn][flag]
+    flags(colmn) & self.class.flag_mapping[colmn][flag]
   end
 
   def determine_flag_colmn_for(flag)
