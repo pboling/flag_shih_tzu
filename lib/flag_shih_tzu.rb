@@ -242,10 +242,14 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
 
     def check_flag(flag, colmn)
-      raise ArgumentError,
-            %[Column name "#{colmn}" for flag "#{flag}" is not a string] unless colmn.is_a?(String)
-      raise ArgumentError,
-            %[Invalid flag "#{flag}"] if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
+      unless colmn.is_a?(String)
+        raise ArgumentError,
+              %[Column name "#{colmn}" for flag "#{flag}" is not a string]
+      end
+      if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
+        raise ArgumentError,
+              %[Invalid flag "#{flag}"]
+      end
     end
 
     # Returns SQL statement to enable/disable flag.
@@ -324,13 +328,16 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
 
     def check_flag_column(colmn, custom_table_name = table_name)
-      # If you aren't using ActiveRecord (eg. you are outside rails) then do not fail here
-      # If you are using ActiveRecord then you only want to check for the table if the table exists so it won't fail pre-migration
+      # If you aren't using ActiveRecord (eg. you are outside rails)
+      #   then do not fail here
+      # If you are using ActiveRecord then you only want to check for the
+      #   table if the table exists so it won't fail pre-migration
       has_ar = (!!defined?(ActiveRecord) && respond_to?(:descends_from_active_record?))
-      # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
+      # Supposedly Rails 2.3 takes care of this, but this precaution
+      #   is needed for backwards compatibility
       has_table = has_ar ? connection.tables.include?(custom_table_name) : true
       if has_table
-        found_column = columns.find { |column| column.name == colmn }
+        found_column = columns.detect { |column| column.name == colmn }
         # If you have not yet run the migration that adds the 'flags' column
         #   then we don't want to fail,
         #   because we need to be able to run the migration
@@ -399,9 +406,11 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
 
     # Returns the correct method to create a named scope.
-    # Use to prevent deprecation notices on Rails 3 when using +named_scope+ instead of +scope+.
+    # Use to prevent deprecation notices on Rails 3
+    #   when using +named_scope+ instead of +scope+.
     def named_scope_method
-      # Can't use respond_to because both AR 2 and 3 respond to both +scope+ and +named_scope+.
+      # Can't use respond_to because both AR 2 and 3
+      #   respond to both +scope+ and +named_scope+.
       ActiveRecord::VERSION::MAJOR == 2 ? :named_scope : :scope
     end
 
@@ -453,7 +462,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
   end
 
   def selected_flags(colmn = DEFAULT_COLUMN_NAME)
-    all_flags(colmn).map { |flag_name| self.send(flag_name) ? flag_name : nil }.compact
+    all_flags(colmn).
+      map { |flag_name| self.send(flag_name) ? flag_name : nil }.
+      compact
   end
 
   # Useful for a form builder
@@ -461,7 +472,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
   def selected_flags=(chosen_flags)
     unselect_all_flags
     chosen_flags.each do |selected_flag|
-      enable_flag(selected_flag.to_sym, DEFAULT_COLUMN_NAME) if selected_flag.present?
+      if selected_flag.present?
+        enable_flag(selected_flag.to_sym, DEFAULT_COLUMN_NAME)
+      end
     end
   end
 
@@ -482,7 +495,8 @@ To turn off this warning set check_for_column: false in has_flags definition her
   end
 
   # returns true if successful
-  # third parameter allows you to specify that `self` should also have its in-memory flag attribute updated.
+  # third parameter allows you to specify that `self` should
+  #   also have its in-memory flag attribute updated.
   def update_flag!(flag, value, update_instance = false)
     truthy = FlagShihTzu::TRUE_VALUES.include?(value)
     sql = self.class.set_flag_sql(flag.to_sym, truthy)
@@ -494,9 +508,12 @@ To turn off this warning set check_for_column: false in has_flags definition her
       end
     end
     if (ActiveRecord::VERSION::MAJOR <= 3)
-      self.class.update_all(sql, self.class.primary_key => id) == 1
+      self.class.
+        update_all(sql, self.class.primary_key => id) == 1
     else
-      self.class.where("#{self.class.primary_key} = ?", id).update_all(sql) == 1
+      self.class.
+        where("#{self.class.primary_key} = ?", id).
+        update_all(sql) == 1
     end
   end
 
@@ -514,7 +531,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
   #
   def chained_flags_with_signature(colmn = DEFAULT_COLUMN_NAME, *args)
     flags_to_collect = args.empty? ? all_flags(colmn) : args
-    truthy_and_chosen = selected_flags(colmn).select { |x| flags_to_collect.include?(x) }
+    truthy_and_chosen =
+      selected_flags(colmn).
+        select { |x| flags_to_collect.include?(x) }
     truthy_and_chosen.concat(
       collect_flags(*flags_to_collect) do |memo, flag|
         memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)
