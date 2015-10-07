@@ -61,15 +61,20 @@ To turn off this warning set check_for_column: false in has_flags definition her
       self.flag_columns << colmn
 
       flag_hash.each do |flag_key, flag_name|
-        raise ArgumentError,
-              %[has_flags: flag keys should be positive integers, and #{flag_key} is not] unless valid_flag_key?(flag_key)
-
-        raise ArgumentError,
-              %[has_flags: flag names should be symbols, and #{flag_name} is not] unless valid_flag_name?(flag_name)
+        unless valid_flag_key?(flag_key)
+          raise ArgumentError,
+                %[has_flags: flag keys should be positive integers, and #{flag_key} is not]
+        end
+        unless valid_flag_name?(flag_name)
+          raise ArgumentError,
+                %[has_flags: flag names should be symbols, and #{flag_name} is not]
+        end
         # next if method already defined by flag_shih_tzu
         next if flag_mapping[colmn][flag_name] & (1 << (flag_key - 1))
-        raise ArgumentError,
-              %[has_flags: flag name #{flag_name} already defined, please choose different name] if method_defined?(flag_name)
+        if method_defined?(flag_name)
+          raise ArgumentError,
+                %[has_flags: flag name #{flag_name} already defined, please choose different name]
+        end
 
         flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
 
@@ -307,9 +312,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
                       args.shift
                     else
                       options.
-                        keys.
-                        select { |key| !key.is_a?(Fixnum) }.
-                        inject({}) do |hash, key|
+                      keys.
+                      select { |key| !key.is_a?(Fixnum) }.
+                      inject({}) do |hash, key|
                         hash[key] = options.delete(key)
                         hash
                       end
