@@ -78,14 +78,14 @@ has_flags: flag name #{flag_name} already defined, please choose different name
 
         class_eval <<-EVAL, __FILE__, __LINE__ + 1
           def #{flag_name}
-            flag_enabled?(:#{flag_name}, '#{colmn}')
+            flag_enabled?(:#{flag_name}, "#{colmn}")
           end
           alias :#{flag_name}? :#{flag_name}
 
           def #{flag_name}=(value)
             FlagShihTzu::TRUE_VALUES.include?(value) ?
-              enable_flag(:#{flag_name}, '#{colmn}') :
-              disable_flag(:#{flag_name}, '#{colmn}')
+              enable_flag(:#{flag_name}, "#{colmn}") :
+              disable_flag(:#{flag_name}, "#{colmn}")
           end
 
           def not_#{flag_name}
@@ -95,13 +95,13 @@ has_flags: flag name #{flag_name} already defined, please choose different name
 
           def not_#{flag_name}=(value)
             FlagShihTzu::TRUE_VALUES.include?(value) ?
-              disable_flag(:#{flag_name}, '#{colmn}') :
-              enable_flag(:#{flag_name}, '#{colmn}')
+              disable_flag(:#{flag_name}, "#{colmn}") :
+              enable_flag(:#{flag_name}, "#{colmn}")
           end
 
           def #{flag_name}_changed?
-            if colmn_changes = changes['#{colmn}']
-              flag_bit = self.class.flag_mapping['#{colmn}'][:#{flag_name}]
+            if colmn_changes = changes["#{colmn}"]
+              flag_bit = self.class.flag_mapping["#{colmn}"][:#{flag_name}]
               (colmn_changes[0] & flag_bit) != (colmn_changes[1] & flag_bit)
             else
               false
@@ -115,29 +115,29 @@ has_flags: flag name #{flag_name} already defined, please choose different name
             def self.#{flag_name}_condition(options = {})
               sql_condition_for_flag(
                 :#{flag_name},
-                '#{colmn}',
+                "#{colmn}",
                 true,
                 options[:table_alias] || self.table_name
               )
             end
 
             def self.not_#{flag_name}_condition
-              sql_condition_for_flag(:#{flag_name}, '#{colmn}', false)
+              sql_condition_for_flag(:#{flag_name}, "#{colmn}", false)
             end
 
             def self.set_#{flag_name}_sql
-              sql_set_for_flag(:#{flag_name}, '#{colmn}', true)
+              sql_set_for_flag(:#{flag_name}, "#{colmn}", true)
             end
 
             def self.unset_#{flag_name}_sql
-              sql_set_for_flag(:#{flag_name}, '#{colmn}', false)
+              sql_set_for_flag(:#{flag_name}, "#{colmn}", false)
             end
 
             def self.#{colmn.singularize}_values_for(*flag_names)
               values = []
               flag_names.each do |flag_name|
                 if respond_to?(flag_name)
-                  values_for_flag = send(:sql_in_for_flag, flag_name, '#{colmn}')
+                  values_for_flag = send(:sql_in_for_flag, flag_name, "#{colmn}")
                   values = if values.present?
                     values & values_for_flag
                   else
@@ -181,26 +181,26 @@ has_flags: flag name #{flag_name} already defined, please choose different name
           class_eval <<-EVAL, __FILE__, __LINE__ + 1
 
             def all_#{colmn}
-              all_flags('#{colmn}')
+              all_flags("#{colmn}")
             end
 
             def selected_#{colmn}
-              selected_flags('#{colmn}')
+              selected_flags("#{colmn}")
             end
 
             def select_all_#{colmn}
-              select_all_flags('#{colmn}')
+              select_all_flags("#{colmn}")
             end
 
             def unselect_all_#{colmn}
-              unselect_all_flags('#{colmn}')
+              unselect_all_flags("#{colmn}")
             end
 
             # useful for a form builder
             def selected_#{colmn}=(chosen_flags)
-              unselect_all_flags('#{colmn}')
+              unselect_all_flags("#{colmn}")
               chosen_flags.each do |selected_flag|
-                enable_flag(selected_flag.to_sym, '#{colmn}') if selected_flag.present?
+                enable_flag(selected_flag.to_sym, "#{colmn}") if selected_flag.present?
               end
             end
 
@@ -209,11 +209,11 @@ has_flags: flag name #{flag_name} already defined, please choose different name
             end
 
             def chained_#{colmn}_with_signature(*args)
-              chained_flags_with_signature('#{colmn}', *args)
+              chained_flags_with_signature("#{colmn}", *args)
             end
 
             def as_#{colmn.singularize}_collection(*args)
-              as_flag_collection('#{colmn}', *args)
+              as_flag_collection("#{colmn}", *args)
             end
 
           EVAL
@@ -223,11 +223,11 @@ has_flags: flag name #{flag_name} already defined, please choose different name
         if flag_options[colmn][:bang_methods]
           class_eval <<-EVAL, __FILE__, __LINE__ + 1
             def #{flag_name}!
-              enable_flag(:#{flag_name}, '#{colmn}')
+              enable_flag(:#{flag_name}, "#{colmn}")
             end
 
             def not_#{flag_name}!
-              disable_flag(:#{flag_name}, '#{colmn}')
+              disable_flag(:#{flag_name}, "#{colmn}")
             end
           EVAL
         end
@@ -238,10 +238,10 @@ has_flags: flag name #{flag_name} already defined, please choose different name
 
     def check_flag(flag, colmn)
       raise ArgumentError, %[
-Column name '#{colmn}' for flag '#{flag}' is not a string
+Column name "#{colmn}" for flag "#{flag}" is not a string
 ] unless colmn.is_a?(String)
       raise ArgumentError, %[
-Invalid flag '#{flag}'
+Invalid flag "#{flag}"
 ] if flag_mapping[colmn].nil? || !flag_mapping[colmn].include?(flag)
     end
 
@@ -271,7 +271,7 @@ Invalid flag '#{flag}'
     end
 
     def chained_flags_condition(colmn = DEFAULT_COLUMN_NAME, *args)
-      "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(',')}))"
+      "(#{self.table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(",")}))"
     end
 
     def flag_keys(colmn = DEFAULT_COLUMN_NAME)
@@ -291,7 +291,7 @@ Invalid flag '#{flag}'
         neg = false
         if flag.to_s.match /^not_/
           neg = true
-          flag = flag.to_s.sub(/^not_/, '').to_sym
+          flag = flag.to_s.sub(/^not_/, "").to_sym
         end
         check_flag(flag, colmn)
         flag_values = sql_in_for_flag(flag, colmn)
@@ -331,14 +331,21 @@ Invalid flag '#{flag}'
         # If you have not yet run the migration that adds the 'flags' column then we don't want to fail, because we need to be able to run the migration
         # If the column is there but is of the wrong type, then we must fail, because flag_shih_tzu will not work
         if found_column.nil?
-          warn("Error: Column '#{colmn}' doesn't exist on table '#{custom_table_name}'.  Did you forget to run migrations?")
+          warn(%[
+Error: Column "#{colmn}" doesn't exist on table "#{custom_table_name}". /
+Did you forget to run migrations?
+])
           return false
         elsif found_column.type != :integer
-          raise IncorrectFlagColumnException.new("Table '#{custom_table_name}' must have an integer column named '#{colmn}' in order to use FlagShihTzu.")
+          raise IncorrectFlagColumnException.new(%[
+Table "#{custom_table_name}" must have an integer column named "#{colmn}" in order to use FlagShihTzu.
+])
         end
       else
         # ActiveRecord gem may not have loaded yet?
-        warn("FlagShihTzu#has_flags: Table '#{custom_table_name}' doesn't exist.  Have all migrations been run?") if has_ar
+        warn(%[
+FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all migrations been run?
+]) if has_ar
         return false
       end
 
@@ -356,7 +363,7 @@ Invalid flag '#{flag}'
         # use IN() operator in the SQL query.
         # This has the drawback of becoming a big query when you have lots of flags.
         neg = enabled ? "" : "not "
-        "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(',')}))"
+        "(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(",")}))"
       else
         raise NoSuchFlagQueryModeException
       end
@@ -496,7 +503,7 @@ Invalid flag '#{flag}'
   #         :not_follow_up_called,
   #         :not_sent_final_email,
   #         :not_scheduled_appointment]
-  #     User.chained_flags_with('flags', *user.chained_flags_with_signature)
+  #     User.chained_flags_with("flags", *user.chained_flags_with_signature)
   #     => the set of Users that have the same flags set as user.
   #
   def chained_flags_with_signature(colmn = DEFAULT_COLUMN_NAME, *args)
@@ -515,7 +522,7 @@ Invalid flag '#{flag}'
   #
   #     form_for @user do |f|
   #       f.collection_check_boxes(:selected_flags,
-  #         f.object.as_flag_collection('flags',
+  #         f.object.as_flag_collection("flags",
   #             :sent_warm_up_email,
   #             :not_follow_up_called),
   #         :first,
