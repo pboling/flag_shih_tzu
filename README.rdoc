@@ -1,5 +1,9 @@
 =FlagShihTzu
 
+* 0.2.X is a maintenance branch and will only receive patch updates.
+* No further releases are planned from this branch.
+* **Please Upgrade To Latest Release!**
+
 Bit fields for ActiveRecord
 
 An extension for {ActiveRecord}[https://rubygems.org/gems/activerecord]
