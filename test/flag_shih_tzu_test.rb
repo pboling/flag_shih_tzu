@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper.rb')
 
 class Spaceship < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags 1 => :warpdrive,
@@ -10,73 +10,73 @@ class Spaceship < ActiveRecord::Base
 end
 
 class SpaceshipWithoutNamedScopes < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, :named_scopes => false)
 end
 
 class SpaceshipWithoutNamedScopesOldStyle < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags({1 => :warpdrive}, :named_scopes => false)
 end
 
 class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
-  self.table_name = 'spaceships_with_custom_flags_column'
+  self.table_name = "spaceships_with_custom_flags_column"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
+  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => "bits")
 end
 
 class SpaceshipWithColumnNameAsSymbol < ActiveRecord::Base
-  self.table_name = 'spaceships_with_custom_flags_column'
+  self.table_name = "spaceships_with_custom_flags_column"
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :hyperspace, :column => :bits)
 end
 
 class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
-  self.table_name = 'spaceships_with_2_custom_flags_column'
+  self.table_name = "spaceships_with_2_custom_flags_column"
   include FlagShihTzu
 
-  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'bits')
-  has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => 'commanders')
+  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => "bits")
+  has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => "commanders")
 end
 
 class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
-  self.table_name = 'spaceships_with_3_custom_flags_column'
+  self.table_name = "spaceships_with_3_custom_flags_column"
   include FlagShihTzu
 
-  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'engines')
-  has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
-  has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
+  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => "engines")
+  has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => "weapons")
+  has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => "hal3000")
 end
 
 class SpaceshipWithInListQueryMode < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :in_list)
 end
 
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
 end
 
 class SpaceshipWithBangMethods < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags(1 => :warpdrive, 2 => :shields, :bang_methods => true)
 end
 
 class SpaceshipWithMissingFlags < ActiveRecord::Base
-  self.table_name = 'spaceships'
+  self.table_name = "spaceships"
   include FlagShihTzu
 
   has_flags 1 => :warpdrive,
@@ -88,39 +88,39 @@ end
 
 if (ActiveRecord::VERSION::MAJOR >= 3)
   class SpaceshipWithSymbolAndStringFlagColumns < ActiveRecord::Base
-    self.table_name = 'spaceships_with_symbol_and_string_flag_columns'
+    self.table_name = "spaceships_with_symbol_and_string_flag_columns"
     include FlagShihTzu
 
     has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => :peace, :check_for_column => true)
     has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => :love, :check_for_column => true)
-    has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'happiness', :check_for_column => true)
+    has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => "happiness", :check_for_column => true)
     validates_presence_of_flags :peace, :love
   end
 
   class SpaceshipWithValidationsAndCustomFlagsColumn < ActiveRecord::Base
-    self.table_name = 'spaceships_with_custom_flags_column'
+    self.table_name = "spaceships_with_custom_flags_column"
     include FlagShihTzu
 
-    has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
+    has_flags(1 => :warpdrive, 2 => :hyperspace, :column => "bits")
     validates_presence_of_flags :bits
   end
 
   class SpaceshipWithValidationsAnd3CustomFlagsColumn < ActiveRecord::Base
-    self.table_name = 'spaceships_with_3_custom_flags_column'
+    self.table_name = "spaceships_with_3_custom_flags_column"
     include FlagShihTzu
 
-    has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => 'engines')
-    has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => 'weapons')
-    has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => 'hal3000')
+    has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => "engines")
+    has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => "weapons")
+    has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => "hal3000")
 
     validates_presence_of_flags :engines, :weapons
   end
 
   class SpaceshipWithValidationsOnNonFlagsColumn < ActiveRecord::Base
-    self.table_name = 'spaceships_with_custom_flags_column'
+    self.table_name = "spaceships_with_custom_flags_column"
     include FlagShihTzu
 
-    has_flags(1 => :warpdrive, 2 => :hyperspace, :column => 'bits')
+    has_flags(1 => :warpdrive, 2 => :hyperspace, :column => "bits")
     validates_presence_of_flags :id
   end
 end
@@ -144,8 +144,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
           has_flags({ -1 => :error })
         end
-           EOF
-          )
+      EOF
+      )
     end
   end
 
@@ -159,8 +159,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           has_flags({ 1 => :jeanluckpicard }, :column => "bits")
           has_flags({ 1 => :jeanluckpicard }, :column => "commanders")
         end
-           EOF
-          )
+      EOF
+      )
     end
   end
 
@@ -175,8 +175,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
           has_flags({ 1 => :jeanluckpicard }, :column => "bits")
         end
-           EOF
-          )
+      EOF
+      )
     end
   end
 
@@ -190,8 +190,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           has_flags({ 1 => :jeanluckpicard }, :column => "bits", :strict => true)
           has_flags({ 1 => :jeanluckpicard }, :column => "bits", :strict => true)
         end
-           EOF
-          )
+      EOF
+      )
     end
   end
 
@@ -205,8 +205,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           has_flags({ 1 => :jeanluckpicard }, :column => "bits")
           has_flags({ 1 => :jeanluckpicard }, :column => "bits")
         end
-           EOF
-          )
+      EOF
+      )
     end
   end
 
@@ -219,8 +219,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
           has_flags({ 1 => "error" })
         end
-           EOF
-          )
+      EOF
+      )
     end
   end
 
@@ -343,7 +343,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
     if (ActiveRecord::VERSION::MAJOR <= 3)
       Spaceship.update_all Spaceship.set_flag_sql(:warpdrive, true),
-                         ["id=?", spaceship.id]
+                           ["id=?", spaceship.id]
     else
       Spaceship.where("id=?", spaceship.id).update_all Spaceship.set_flag_sql(:warpdrive, true)
     end
@@ -486,7 +486,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
   def assert_where_value(expected, scope)
     assert_equal expected,
-      ActiveRecord::VERSION::MAJOR == 2 ? scope.proxy_options[:conditions] : scope.where_values.first
+                 ActiveRecord::VERSION::MAJOR == 2 ? scope.proxy_options[:conditions] : scope.where_values.first
   end
 
 end
