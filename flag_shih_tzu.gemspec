@@ -32,4 +32,5 @@ ActiveRecord object.
   s.add_development_dependency "rake"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "test-unit"
 end
