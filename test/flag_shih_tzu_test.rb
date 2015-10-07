@@ -560,21 +560,13 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
                  SpaceshipWithCustomFlagsColumn.hyperspace_condition
     assert_equal "(spaceships_with_custom_flags_column.bits not in (2,3))",
                  SpaceshipWithCustomFlagsColumn.not_hyperspace_condition
-    assert_where_value %[
-(spaceships_with_custom_flags_column.bits in (1,3))
-                        ],
+    assert_where_value %[(spaceships_with_custom_flags_column.bits in (1,3))],
                        SpaceshipWithCustomFlagsColumn.warpdrive
-    assert_where_value %[
-(spaceships_with_custom_flags_column.bits not in (1,3))
-                        ],
+    assert_where_value %[(spaceships_with_custom_flags_column.bits not in (1,3))],
                        SpaceshipWithCustomFlagsColumn.not_warpdrive
-    assert_where_value %[
-(spaceships_with_custom_flags_column.bits in (2,3))
-                        ],
+    assert_where_value %[(spaceships_with_custom_flags_column.bits in (2,3))],
                        SpaceshipWithCustomFlagsColumn.hyperspace
-    assert_where_value %[
-(spaceships_with_custom_flags_column.bits not in (2,3))
-                        ],
+    assert_where_value %[(spaceships_with_custom_flags_column.bits not in (2,3))],
                        SpaceshipWithCustomFlagsColumn.not_hyperspace
   end
 

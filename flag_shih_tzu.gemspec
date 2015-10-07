@@ -26,10 +26,10 @@ ActiveRecord object.
   s.add_development_dependency "activerecord", ">= 2.3.0"
 
   s.add_development_dependency "bundler"
-  s.add_development_dependency "rdoc", ">= 2.4.2"
-  s.add_development_dependency(%q<reek>, [">= 1.2.8"])
-  s.add_development_dependency(%q<roodi>, [">= 2.1.0"])
   s.add_development_dependency "rake"
+  s.add_development_dependency "rdoc", ">= 2.4.2"
+  s.add_development_dependency "reek", ">= 2.2.1" # Last version to support Ruby 1.9
+  s.add_development_dependency "roodi", ">= 5"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "test-unit"
