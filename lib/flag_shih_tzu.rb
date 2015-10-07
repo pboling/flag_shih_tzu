@@ -24,11 +24,11 @@ module FlagShihTzu
     def has_flags(*args)
       flag_hash, opts = parse_flag_options(*args)
       opts = {
-          :named_scopes => true,
-          :column => DEFAULT_COLUMN_NAME,
-          :flag_query_mode => :in_list, # or :bit_operator
-          :strict => false,
-          :check_for_column => true
+        :named_scopes => true,
+        :column => DEFAULT_COLUMN_NAME,
+        :flag_query_mode => :in_list, # or :bit_operator
+        :strict => false,
+        :check_for_column => true
       }.update(opts)
       if !valid_flag_column_name?(opts[:column])
         warn %[
@@ -258,7 +258,7 @@ Invalid flag "#{flag}"
         return colmn if mapping.include?(flag)
       end
       raise NoSuchFlagException.new(
-          "determine_flag_colmn_for: Couldn't determine column for your flags!"
+        "determine_flag_colmn_for: Couldn't determine column for your flags!"
       )
     end
 
@@ -310,9 +310,9 @@ Invalid flag "#{flag}"
                       args.shift
                     else
                       options.
-                          keys.
-                          select { |key| !key.is_a?(Fixnum) }.
-                          inject({}) do |hash, key|
+                        keys.
+                        select { |key| !key.is_a?(Fixnum) }.
+                        inject({}) do |hash, key|
                         hash[key] = options.delete(key)
                         hash
                       end
@@ -510,9 +510,9 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
     flags_to_collect = args.empty? ? all_flags(colmn) : args
     truthy_and_chosen = selected_flags(colmn).select { |x| flags_to_collect.include?(x) }
     truthy_and_chosen.concat(
-        collect_flags(*flags_to_collect) do |memo, flag|
-          memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)
-        end
+      collect_flags(*flags_to_collect) do |memo, flag|
+        memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)
+      end
     )
   end
 
