@@ -23,13 +23,14 @@ module FlagShihTzu
   module ClassMethods
     def has_flags(*args)
       flag_hash, opts = parse_flag_options(*args)
-      opts = {
-        :named_scopes => true,
-        :column => DEFAULT_COLUMN_NAME,
-        :flag_query_mode => :in_list, # or :bit_operator
-        :strict => false,
-        :check_for_column => true
-      }.update(opts)
+      opts =
+        {
+          named_scopes: true,
+          column: DEFAULT_COLUMN_NAME,
+          flag_query_mode: :in_list, # or :bit_operator
+          strict: false,
+          check_for_column: true
+        }.update(opts)
       if !valid_flag_column_name?(opts[:column])
         warn %[FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}]
         opts[:column] = opts[:column].to_s
@@ -151,10 +152,10 @@ To turn off this warning set check_for_column: false in has_flags definition her
             if ActiveRecord::VERSION::MAJOR == 2 && respond_to?(:named_scope)
               class_eval <<-EVAL, __FILE__, __LINE__ + 1
                 named_scope :#{flag_name}, lambda {
-                  { :conditions => #{flag_name}_condition }
+                  { conditions: #{flag_name}_condition }
                 }
                 named_scope :not_#{flag_name}, lambda {
-                  { :conditions => not_#{flag_name}_condition }
+                  { conditions: not_#{flag_name}_condition }
                 }
               EVAL
             elsif respond_to?(:scope)
@@ -262,7 +263,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
       if (ActiveRecord::VERSION::MAJOR >= 3)
         where(chained_flags_condition(column, *args))
       else
-        all(:conditions => chained_flags_condition(column, *args))
+        all(conditions: chained_flags_condition(column, *args))
       end
     end
 

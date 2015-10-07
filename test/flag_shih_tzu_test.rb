@@ -13,36 +13,46 @@ class SpaceshipWithoutNamedScopes < ActiveRecord::Base
   self.table_name = "spaceships"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, :named_scopes => false)
+  has_flags(1 => :warpdrive,
+            named_scopes: false)
 end
 
 class SpaceshipWithoutNamedScopesOldStyle < ActiveRecord::Base
   self.table_name = "spaceships"
   include FlagShihTzu
 
-  has_flags({1 => :warpdrive}, :named_scopes => false)
+  has_flags({1 => :warpdrive},
+            named_scopes: false)
 end
 
 class SpaceshipWithCustomFlagsColumn < ActiveRecord::Base
   self.table_name = "spaceships_with_custom_flags_column"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => "bits")
+  has_flags(1 => :warpdrive,
+            2 => :hyperspace,
+            column: "bits")
 end
 
 class SpaceshipWithColumnNameAsSymbol < ActiveRecord::Base
   self.table_name = "spaceships_with_custom_flags_column"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, 2 => :hyperspace, :column => :bits)
+  has_flags(1 => :warpdrive,
+            2 => :hyperspace,
+            column: :bits)
 end
 
 class SpaceshipWith2CustomFlagsColumn < ActiveRecord::Base
   self.table_name = "spaceships_with_2_custom_flags_column"
   include FlagShihTzu
 
-  has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => "bits")
-  has_flags({ 1 => :jeanlucpicard, 2 => :dajanatroj }, :column => "commanders")
+  has_flags(
+    { 1 => :warpdrive, 2 => :hyperspace },
+    column: "bits")
+  has_flags(
+    { 1 => :jeanlucpicard, 2 => :dajanatroj },
+    column: "commanders")
 end
 
 class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
@@ -51,36 +61,36 @@ class SpaceshipWith3CustomFlagsColumn < ActiveRecord::Base
 
   has_flags({ 1 => :warpdrive,
               2 => :hyperspace },
-            :column => "engines")
+            column: "engines")
   has_flags({ 1 => :photon,
               2 => :laser,
               3 => :ion_cannon,
               4 => :particle_beam },
-            :column => "weapons")
+            column: "weapons")
   has_flags({ 1 => :power,
               2 => :anti_ax_routine },
-            :column => "hal3000")
+            column: "hal3000")
 end
 
 class SpaceshipWithInListQueryMode < ActiveRecord::Base
   self.table_name = "spaceships"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :in_list)
+  has_flags(1 => :warpdrive, 2 => :shields, flag_query_mode: :in_list)
 end
 
 class SpaceshipWithBitOperatorQueryMode < ActiveRecord::Base
   self.table_name = "spaceships"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, 2 => :shields, :flag_query_mode => :bit_operator)
+  has_flags(1 => :warpdrive, 2 => :shields, flag_query_mode: :bit_operator)
 end
 
 class SpaceshipWithBangMethods < ActiveRecord::Base
   self.table_name = "spaceships"
   include FlagShihTzu
 
-  has_flags(1 => :warpdrive, 2 => :shields, :bang_methods => true)
+  has_flags(1 => :warpdrive, 2 => :shields, bang_methods: true)
 end
 
 class SpaceshipWithMissingFlags < ActiveRecord::Base
@@ -101,18 +111,18 @@ if (ActiveRecord::VERSION::MAJOR >= 3)
 
     has_flags({ 1 => :warpdrive,
                 2 => :hyperspace },
-              :column => :peace,
-              :check_for_column => true)
+              column: :peace,
+              check_for_column: true)
     has_flags({ 1 => :photon,
                 2 => :laser,
                 3 => :ion_cannon,
                 4 => :particle_beam },
-              :column => :love,
-              :check_for_column => true)
+              column: :love,
+              check_for_column: true)
     has_flags({ 1 => :power,
                 2 => :anti_ax_routine },
-              :column => "happiness",
-              :check_for_column => true)
+              column: "happiness",
+              check_for_column: true)
     validates_presence_of_flags :peace, :love
   end
 
@@ -128,9 +138,15 @@ if (ActiveRecord::VERSION::MAJOR >= 3)
     self.table_name = "spaceships_with_3_custom_flags_column"
     include FlagShihTzu
 
-    has_flags({ 1 => :warpdrive, 2 => :hyperspace }, :column => "engines")
-    has_flags({ 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam }, :column => "weapons")
-    has_flags({ 1 => :power, 2 => :anti_ax_routine }, :column => "hal3000")
+    has_flags(
+      { 1 => :warpdrive, 2 => :hyperspace },
+      column: "engines")
+    has_flags(
+      { 1 => :photon, 2 => :laser, 3 => :ion_cannon, 4 => :particle_beam },
+      column: "weapons")
+    has_flags(
+      { 1 => :power, 2 => :anti_ax_routine },
+      column: "hal3000")
 
     validates_presence_of_flags :engines, :weapons
   end
@@ -139,12 +155,13 @@ if (ActiveRecord::VERSION::MAJOR >= 3)
     self.table_name = "spaceships_with_custom_flags_column"
     include FlagShihTzu
 
-    has_flags(1 => :warpdrive, 2 => :hyperspace, :column => "bits")
+    has_flags(1 => :warpdrive, 2 => :hyperspace, column: "bits")
     validates_presence_of_flags :id
   end
 end
 
-# table planets is missing intentionally to see if flagshihtzu handles missing tables gracefully
+# table planets is missing intentionally to see if
+#   flag_shih_tzu handles missing tables gracefully
 class Planet < ActiveRecord::Base
 end
 
@@ -175,8 +192,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           self.table_name = "spaceships_with_2_custom_flags_column"
           include FlagShihTzu
 
-          has_flags({ 1 => :jeanluckpicard }, :column => "bits")
-          has_flags({ 1 => :jeanluckpicard }, :column => "commanders")
+          has_flags({ 1 => :jeanluckpicard }, column: "bits")
+          has_flags({ 1 => :jeanluckpicard }, column: "commanders")
         end
       EOF
       )
@@ -192,7 +209,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
           def jeanluckpicard; end
 
-          has_flags({ 1 => :jeanluckpicard }, :column => "bits")
+          has_flags({ 1 => :jeanluckpicard }, column: "bits")
         end
       EOF
       )
@@ -206,8 +223,16 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           self.table_name = "spaceships_with_2_custom_flags_column"
           include FlagShihTzu
 
-          has_flags({ 1 => :jeanluckpicard }, :column => "bits", :strict => true)
-          has_flags({ 1 => :jeanluckpicard }, :column => "bits", :strict => true)
+          has_flags(
+            { 1 => :jeanluckpicard },
+            column: "bits",
+            strict: true
+          )
+          has_flags(
+            { 1 => :jeanluckpicard },
+            column: "bits",
+            strict: true
+          )
         end
       EOF
       )
@@ -221,8 +246,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
           self.table_name = "spaceships_with_2_custom_flags_column"
           include FlagShihTzu
 
-          has_flags({ 1 => :jeanluckpicard }, :column => "bits")
-          has_flags({ 1 => :jeanluckpicard }, :column => "bits")
+          has_flags({ 1 => :jeanluckpicard }, column: "bits")
+          has_flags({ 1 => :jeanluckpicard }, column: "bits")
         end
       EOF
       )
@@ -261,7 +286,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
 
   def test_should_accept_a_table_alias_option_for_sql_condition_method
     assert_equal "(old_spaceships.flags in (1,3,5,7))",
-                 Spaceship.warpdrive_condition(:table_alias => "old_spaceships")
+                 Spaceship.warpdrive_condition(table_alias: "old_spaceships")
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_2_colmns
@@ -595,8 +620,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
         include FlagShihTzu
 
         has_flags({ 1 => :warpdrive, 2 => :hyperspace },
-                  :column => :i_do_not_exist,
-                  :check_for_column => true)
+                  column: :i_do_not_exist,
+                  check_for_column: true)
       end
     end
   end
@@ -1097,7 +1122,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
           has_flags 1 => :warpdrive,
                     2 => :shields,
                     3 => :electrolytes,
-                    :check_for_column => true
+                    check_for_column: true
         end
       EOF
       )
@@ -1116,7 +1141,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
           has_flags 1 => :warpdrive,
                     2 => :shields,
                     3 => :electrolytes,
-                    :check_for_column => true
+                    check_for_column: true
         end
       EOF
       )
@@ -1135,7 +1160,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
           has_flags 1 => :warpdrive,
                     2 => :shields,
                     3 => :electrolytes,
-                    :check_for_column => false
+                    check_for_column: false
         end
       EOF
       )
@@ -1154,7 +1179,7 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
           has_flags 1 => :warpdrive,
                     2 => :shields,
                     3 => :electrolytes,
-                    :check_for_column => false
+                    check_for_column: false
         end
       EOF
       )

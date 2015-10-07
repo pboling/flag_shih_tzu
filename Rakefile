@@ -6,7 +6,7 @@ require 'bundler'
 Bundler::GemHelper.install_tasks
 
 desc 'Default: run unit tests.'
-task :default => :test
+task default: :test
 
 desc 'Test the flag_shih_tzu plugin.'
 Rake::TestTask.new(:test) do |t|
