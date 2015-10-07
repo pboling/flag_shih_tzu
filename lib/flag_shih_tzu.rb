@@ -42,7 +42,7 @@ here: #{caller.first}]
 FlagShihTzu says: Flag column #{colmn} appears to be missing!
 To turn off this warning set check_for_column: false in has_flags definition /
 here: #{caller.first}
-]
+             ]
         return
       end
 
@@ -306,17 +306,17 @@ Invalid flag "#{flag}"
 
     def parse_flag_options(*args)
       options = args.shift
-      if args.size >= 1
-        add_options = args.shift
-      else
-        add_options =
-          options.keys.
-            select {|key| !key.is_a?(Fixnum)}.
-            inject({}) do |hash, key|
-              hash[key] = options.delete(key)
-              hash
-            end
-      end
+      add_options = if args.size >= 1
+                      args.shift
+                    else
+                      options.
+                          keys.
+                          select { |key| !key.is_a?(Fixnum) }.
+                          inject({}) do |hash, key|
+                        hash[key] = options.delete(key)
+                        hash
+                      end
+                    end
       return options, add_options
     end
 
@@ -327,7 +327,7 @@ Invalid flag "#{flag}"
       # Supposedly Rails 2.3 takes care of this, but this precaution is needed for backwards compatibility
       has_table = has_ar ? connection.tables.include?(custom_table_name) : true
       if has_table
-        found_column = columns.find {|column| column.name == colmn}
+        found_column = columns.find { |column| column.name == colmn }
         # If you have not yet run the migration that adds the 'flags' column then we don't want to fail, because we need to be able to run the migration
         # If the column is there but is of the wrong type, then we must fail, because flag_shih_tzu will not work
         if found_column.nil?
@@ -508,7 +508,7 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
   #
   def chained_flags_with_signature(colmn = DEFAULT_COLUMN_NAME, *args)
     flags_to_collect = args.empty? ? all_flags(colmn) : args
-    truthy_and_chosen = selected_flags(colmn).select {|x| flags_to_collect.include?(x) }
+    truthy_and_chosen = selected_flags(colmn).select { |x| flags_to_collect.include?(x) }
     truthy_and_chosen.concat(
         collect_flags(*flags_to_collect) do |memo, flag|
           memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)
