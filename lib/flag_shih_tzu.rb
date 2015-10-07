@@ -317,7 +317,7 @@ Invalid flag "#{flag}"
                         hash
                       end
                     end
-      return options, add_options
+      [options, add_options]
     end
 
     def check_flag_column(colmn, custom_table_name = table_name)
