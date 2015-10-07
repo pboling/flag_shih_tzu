@@ -30,7 +30,7 @@ module FlagShihTzu
           :strict => false,
           :check_for_column => true
       }.update(opts)
-      if !is_valid_flag_column_name(opts[:column])
+      if !valid_flag_column_name?(opts[:column])
         warn %[
 FlagShihTzu says: Please use a String to designate column names! I see you /
 here: #{caller.first}]
@@ -63,11 +63,11 @@ here: #{caller.first}
       flag_hash.each do |flag_key, flag_name|
         raise ArgumentError, %[
 has_flags: flag keys should be positive integers, and #{flag_key} is not
-] unless is_valid_flag_key(flag_key)
+] unless valid_flag_key?(flag_key)
 
         raise ArgumentError, %[
 has_flags: flag names should be symbols, and #{flag_name} is not
-] unless is_valid_flag_name(flag_name)
+] unless valid_flag_name?(flag_name)
         # next if method already defined by flag_shih_tzu
         next if flag_mapping[colmn][flag_name] & (1 << (flag_key - 1))
         raise ArgumentError, %[
@@ -380,15 +380,15 @@ FlagShihTzu#has_flags: Table "#{custom_table_name}" doesn't exist.  Have all mig
       "#{colmn} = #{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
     end
 
-    def is_valid_flag_key(flag_key)
+    def valid_flag_key?(flag_key)
       flag_key > 0 && flag_key == flag_key.to_i
     end
 
-    def is_valid_flag_name(flag_name)
+    def valid_flag_name?(flag_name)
       flag_name.is_a?(Symbol)
     end
 
-    def is_valid_flag_column_name(colmn)
+    def valid_flag_column_name?(colmn)
       colmn.is_a?(String)
     end
 
