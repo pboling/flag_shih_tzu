@@ -629,12 +629,12 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   private
 
   def assert_where_value(expected, scope)
-    actual =
-      ActiveRecord::VERSION::MAJOR == 2 ?
-        scope.proxy_options[:conditions] :
-        scope.where_values.first
+    actual = if ActiveRecord::VERSION::MAJOR == 2
+               scope.proxy_options[:conditions]
+             else
+               scope.where_values.first
+             end
     assert_equal expected, actual
-
   end
 
 end

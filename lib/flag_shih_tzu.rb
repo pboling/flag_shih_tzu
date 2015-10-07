@@ -52,8 +52,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
       self.flag_mapping ||= {}
       # If we already have an instance of the same column in the flag_mapping,
       #   then there is a double definition on a column
-      raise DuplicateFlagColumnException if opts[:strict] &&
-        !self.flag_mapping[colmn].nil?
+      if opts[:strict] && !self.flag_mapping[colmn].nil?
+        raise DuplicateFlagColumnException
+      end
       flag_mapping[colmn] ||= {}
 
       # keep track of which flag columns are defined on this class
