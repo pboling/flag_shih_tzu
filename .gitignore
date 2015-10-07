@@ -8,4 +8,5 @@ Gemfile.lock
 gemfiles/*.lock
 pkg/*
 rdoc/*
-.rvmrc
+.ruby-version
+.ruby-gemset
