@@ -21,7 +21,7 @@ class SpaceshipWithoutNamedScopesOldStyle < ActiveRecord::Base
   self.table_name = "spaceships"
   include FlagShihTzu
 
-  has_flags({1 => :warpdrive},
+  has_flags({ 1 => :warpdrive },
             named_scopes: false)
 end
 
@@ -629,10 +629,12 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   private
 
   def assert_where_value(expected, scope)
-    assert_equal expected,
-                 ActiveRecord::VERSION::MAJOR == 2 ?
-                   scope.proxy_options[:conditions] :
-                   scope.where_values.first
+    actual =
+      ActiveRecord::VERSION::MAJOR == 2 ?
+        scope.proxy_options[:conditions] :
+        scope.where_values.first
+    assert_equal expected, actual
+
   end
 
 end
