@@ -5,6 +5,9 @@ require 'rdoc/task'
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
+# Now rake tasks do not need to be prefixed with bundle exec
+require 'bundler/setup'
+
 desc 'Default: run unit tests.'
 task :default => :test
 

@@ -407,23 +407,12 @@ has_flags 1 => :warpdrive,
 
 ## Running the gem tests
 
-First, run some infrequent setup:
+WARNING: You may want to read bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash) first.
+Running the test script will install rubies, create gemsets, install gems, and get a lil' crazy with the hips.
 
-    $ rvm use 2.0.0
-    $ bundle install
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
-    $ rvm use 2.2.3
-    $ bundle install
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle update --quiet
+Just:
 
-Then just:
-
-    $ bundle exec rake test:all
+    $ rake test:all
 
 This will internally use rvm and bundler to load specific ActiveRecord versions
 before executing the tests (see `gemfiles/`), e.g.:
