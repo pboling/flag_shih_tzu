@@ -48,9 +48,14 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 The gem is actively being tested with:
 
 * MySQL, PostgreSQL and SQLite3 databases
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x ;)
-* Ruby 1.9.2, 1.9.3, 2.0.0, 2.1.2 (see .travis.yml for the matrix)
-* Legacy Ruby 1.8.7 compatibility is in the [0.2.X branch](https://github.com/pboling/flag_shih_tzu/tree/0.2.X)
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x ;)
+* Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.3
+* Travis tests the most important builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
+* All of the supported builds are run locally by me.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
+
+**Legacy**
+
+* Ruby 1.8.7 compatibility is in the [0.2.X branch](https://github.com/pboling/flag_shih_tzu/tree/0.2.X) and no further releases are expected.  If you need a patch submit a pull request.
 
 ## Installation
 
@@ -407,23 +412,12 @@ has_flags 1 => :warpdrive,
 
 ## Running the gem tests
 
-First, run some infrequent setup:
+WARNING: You may want to read [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash) first.
+Running the test script will switch rubies, create gemsets, install gems, and get a lil' crazy with the hips.
 
-    $ rvm use 2.0.0
-    $ bundle install
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.0.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.1.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
-    $ rvm use 2.1.2
-    $ bundle install
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-3.2.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.0.x' bundle update --quiet
-    $ BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle update --quiet
+Just:
 
-Then just:
-
-    $ bundle exec rake test:all
+    $ rake test:all
 
 This will internally use rvm and bundler to load specific ActiveRecord versions
 before executing the tests (see `gemfiles/`), e.g.:

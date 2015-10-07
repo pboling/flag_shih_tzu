@@ -8,13 +8,13 @@ ActiveRecord::Migration.verbose = false
 
 configs = YAML.load_file(File.dirname(__FILE__) + "/database.yml")
 if RUBY_PLATFORM == "java"
-  configs['sqlite']['adapter'] = 'jdbcsqlite3'
-  configs['mysql']['adapter'] = 'jdbcmysql'
-  configs['postgresql']['adapter'] = 'jdbcpostgresql'
+  configs["sqlite"]["adapter"] = "jdbcsqlite3"
+  configs["mysql"]["adapter"] = "jdbcmysql"
+  configs["postgresql"]["adapter"] = "jdbcpostgresql"
 end
 ActiveRecord::Base.configurations = configs
 
-db_name = ENV["DB"] || "sqlite"
+db_name = (ENV["DB"] || "sqlite").to_sym
 ActiveRecord::Base.establish_connection(db_name)
 
 load(File.dirname(__FILE__) + "/schema.rb")
@@ -29,8 +29,8 @@ class Test::Unit::TestCase
 end
 
 # For code coverage, must be required before all application / gem / library code.
-unless ENV['NOCOVER']
-  require 'coveralls'
+unless ENV["NOCOVER"]
+  require "coveralls"
   Coveralls.wear!
 end
 
