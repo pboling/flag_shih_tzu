@@ -419,7 +419,7 @@ Just:
 
     $ rake test:all
 
-This will internally use rvm and bundler to load specific ActiveRecord versions
+This will internally use rvm and bundler to load specific Rubies and ActiveRecord versions
 before executing the tests (see `gemfiles/`), e.g.:
 
     $ NOCOVER=true BUNDLE_GEMFILE='gemfiles/Gemfile.activerecord-4.1.x' bundle exec rake test
@@ -431,6 +431,16 @@ specify which config from `test/database.yml` to use, e.g.:
 
     $ NOCOVER=true DB=mysql bundle exec rake
 
+You will also need to create, and configure access to, the test databases for any adapters you want to test, e.g. mysql:
+
+    mysql> CREATE USER 'foss'@'localhost';
+    Query OK, 0 rows affected (0.00 sec)
+    
+    mysql> GRANT ALL PRIVILEGES ON *.* TO 'foss'@'localhost';
+    Query OK, 0 rows affected (0.00 sec)
+    
+    mysql> CREATE DATABASE flag_shih_tzu_test;
+    Query OK, 1 row affected (0.00 sec)
 
 ## Authors
 

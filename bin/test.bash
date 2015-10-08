@@ -10,7 +10,7 @@ gem_installed() {
     return 0
 }
 
-# First run the tests of all versions supported on Ruby 1.9.3
+# First run the tests for all versions supported on Ruby 1.9.3
 COMPATIBLE_VERSIONS=(2.3.x 3.0.x 3.1.x 3.2.x)
 count=0
 while [ "x${COMPATIBLE_VERSIONS[count]}" != "x" ]
@@ -23,7 +23,7 @@ do
   count=$(( $count + 1 ))
 done
 
-# Then run the tests of all versions supported on Ruby 2.0.0
+# Then run the tests for all versions supported on Ruby 2.0.0
 COMPATIBLE_VERSIONS=(3.0.x 3.1.x 3.2.x 4.0.x 4.1.x)
 count=0
 while [ "x${COMPATIBLE_VERSIONS[count]}" != "x" ]
@@ -36,7 +36,7 @@ do
   count=$(( $count + 1 ))
 done
 
-# Then run the tests of all versions supported on Ruby 2.1.5
+# Then run the tests for all versions supported on Ruby 2.1.5
 COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
 count=0
 while [ "x${COMPATIBLE_VERSIONS[count]}" != "x" ]
@@ -49,13 +49,27 @@ do
   count=$(( $count + 1 ))
 done
 
-# Then run the tests of all versions supported on Ruby 2.2.3
+# Then run the tests for all versions supported on Ruby 2.2.3
 COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
 count=0
 while [ "x${COMPATIBLE_VERSIONS[count]}" != "x" ]
 do
   version=${COMPATIBLE_VERSIONS[count]}
   rvm use 2.2.3@flag_shih_tzu-$version --create
+  gem_installed "bundler"
+  BUNDLE_GEMFILE="gemfiles/Gemfile.activerecord-$version" bundle install --quiet
+  NOCOVER=true BUNDLE_GEMFILE="gemfiles/Gemfile.activerecord-$version" bundle exec rake test
+  count=$(( $count + 1 ))
+done
+
+# Then run the tests for all versions supported on jruby-9.0.1.0
+#   (which should be the same as the Ruby 2.2.3 compatibility set)
+COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
+count=0
+while [ "x${COMPATIBLE_VERSIONS[count]}" != "x" ]
+do
+  version=${COMPATIBLE_VERSIONS[count]}
+  rvm use jruby-9.0.1.0@flag_shih_tzu-$version --create
   gem_installed "bundler"
   BUNDLE_GEMFILE="gemfiles/Gemfile.activerecord-$version" bundle install --quiet
   NOCOVER=true BUNDLE_GEMFILE="gemfiles/Gemfile.activerecord-$version" bundle exec rake test

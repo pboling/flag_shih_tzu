@@ -3,6 +3,7 @@ rvm:
   - 2.0.0
   - 2.1.5
   - 2.2.3
+  - jruby
 gemfile:
   - gemfiles/Gemfile.activerecord-2.3.x
   - gemfiles/Gemfile.activerecord-3.0.x
@@ -13,6 +14,16 @@ gemfile:
   - gemfiles/Gemfile.activerecord-4.2.x
 matrix:
   exclude:
+    - rvm: jruby
+      gemfile: gemfiles/Gemfile.activerecord-2.3.x
+    - rvm: jruby
+      gemfile: gemfiles/Gemfile.activerecord-3.0.x
+    - rvm: jruby
+      gemfile: gemfiles/Gemfile.activerecord-3.1.x
+    - rvm: jruby
+      gemfile: gemfiles/Gemfile.activerecord-3.2.x
+    - rvm: jruby
+      gemfile: gemfiles/Gemfile.activerecord-4.0.x
     - rvm: 2.2.3
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
     - rvm: 2.2.3

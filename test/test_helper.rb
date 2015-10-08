@@ -14,6 +14,12 @@ if RUBY_PLATFORM == "java"
 end
 ActiveRecord::Base.configurations = configs
 
+# Run specific adapter tests like:
+#
+#   DB=sqlite rake test:all
+#   DB=mysql rake test:all
+#   DB=postgresql rake test:all
+#
 db_name = (ENV["DB"] || "sqlite").to_sym
 ActiveRecord::Base.establish_connection(db_name)
 
