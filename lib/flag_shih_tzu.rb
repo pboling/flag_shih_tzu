@@ -385,7 +385,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
     # returns an array of integers suitable for a SQL IN statement.
     def sql_in_for_flag(flag, colmn)
       val = flag_mapping[colmn][flag]
-      flag_value_range_for_column(colmn).select { |i| i & val == val }
+      flag_value_range_for_column(colmn).select { |bits| bits & val == val }
     end
 
     def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
@@ -533,7 +533,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
     flags_to_collect = args.empty? ? all_flags(colmn) : args
     truthy_and_chosen =
       selected_flags(colmn).
-        select { |x| flags_to_collect.include?(x) }
+        select { |flag| flags_to_collect.include?(flag) }
     truthy_and_chosen.concat(
       collect_flags(*flags_to_collect) do |memo, flag|
         memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)

@@ -2,7 +2,7 @@
 unless defined?(::ActiveRecord)
   begin
     # If by some miracle it hasn't been loaded yet, try to load it.
-    require 'active_record'
+    require "active_record"
   rescue LoadError
     # If it fails to load, then assume the user is try to use flag_shih_tzu with some other database adapter
     warn "FlagShihTzu probably won't work unless you have some version of Active Record loaded. Versions >= 2.3 are supported."
@@ -12,13 +12,15 @@ end
 if defined?(::ActiveRecord) && ::ActiveRecord::VERSION::MAJOR >= 3
 
   module ActiveModel
+    # Open ActiveModel::Validations to define some additional ones
     module Validations
 
+      # A simple EachValidator that will check for the presence of the flags specified
       class PresenceOfFlagsValidator < EachValidator
         def validate_each(record, attribute, value)
           value = record.send(:read_attribute_for_validation, attribute)
           check_flag(record, attribute)
-          record.errors.add(attribute, :blank, options) if value.blank? or value == 0
+          record.errors.add(attribute, :blank, options) if value.blank? || value == 0
         end
 
         private
@@ -30,6 +32,7 @@ if defined?(::ActiveRecord) && ::ActiveRecord::VERSION::MAJOR >= 3
         end
       end
 
+      # Use these validators in your model
       module HelperMethods
         # Validates that the specified attributes are flags and are not blank.
         # Happens by default on save. Example:

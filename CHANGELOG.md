@@ -1,4 +1,16 @@
-Version 0.3.13 - MAR.13.2015
+# HEAD - UNRELEASED
+
+* Work merged into master branch goes here until it is released.
+
+# Version 0.3.14 - OCT.08.2015
+
+* Allow use without ActiveRecord (experimental) by jfcaiceo
+* Many net-zero code cleanups to follow Ruby Style Guide
+* Improved local testing script rake test:all
+* Testing on Travis: added Ruby 1.9.3, 2.1.5, 2.2.3, jruby
+* Testing on Travis: removed Ruby 2.1.2
+
+# Version 0.3.13 - MAR.13.2015
 
 * methods for use with form builders like simple_form by Peter Boling
 
@@ -11,7 +23,7 @@ Version 0.3.13 - MAR.13.2015
 * Testing on Travis: added Ruby 2.2.1
 * Testing on Travis: removed Ruby 1.9.2
 
-Version 0.3.12 - OCT.01.2014
+# Version 0.3.12 - OCT.01.2014
 
 * Improve testing instructions in readme by Peter Boling
 * fix check_flag_column to return false after warn by Peter Boling
@@ -22,41 +34,41 @@ Version 0.3.12 - OCT.01.2014
 * Adds specs for ActiveRecord version 4.1 by Peter Boling
 * Use Kernel#warn instead of puts by Peter Boling
 
-Version 0.3.11 - JUL.09.2014
+# Version 0.3.11 - JUL.09.2014
 
 * Rename some ambigously-named methods mixed into AR::Base by jdelStrother
 * Add dynamic ".*_values_for" helpers by atipugin
 
-Version 0.3.10 - NOV.26.2013
+# Version 0.3.10 - NOV.26.2013
 
 * Can run tests without coverage by specifying NOCOVER=true by Peter Boling
 * Improved test coverage by Peter Boling
 * Improved documentation by Peter Boling
 * Readme converted to Markdown by Peter Boling
 
-Version 0.3.9 - NOV.25.2013
+# Version 0.3.9 - NOV.25.2013
 
 * Removed runtime dependency on active record and active support by Peter Boling
 * Fixed Coveralls Configuration by Peter Boling
 * Improved Readme by Peter Boling
 
-Version 0.3.8 - NOV.24.2013
+# Version 0.3.8 - NOV.24.2013
 
 * Improved Readme / Documentation by Peter Boling
 * Added Badges by Peter Boling
 * Configured Coveralls by Peter Boling
 * Added Code Climate, Coveralls, Gemnasium, and Version Badges by Peter Boling
 
-Version 0.3.7 - OCT.25.2013
+# Version 0.3.7 - OCT.25.2013
 
 * Change `sql_in_for_flag` to consider values from the range [0, 2 * max - 1] by Blake Thomson
 
-Version 0.3.6 - AUG.29.2013
+# Version 0.3.6 - AUG.29.2013
 
 * Allow use with any gem manager by Peter Boling
 * No need to alter Ruby's load path by Peter Boling
 
-Version 0.3.5 - AUG.06.2013
+# Version 0.3.5 - AUG.06.2013
 
 * Fix Travis Build & Add Rails 4 by Peter M. Goldstein
 * Implemented update_flag! by Peter Boling (see https://github.com/pboling/flag_shih_tzu/issues/27)
@@ -64,7 +76,7 @@ Version 0.3.5 - AUG.06.2013
   - optionally syncs the instance with new flag value, by default it does not.
 * Update gemspec by Peter Boling
 
-Version 0.3.4 - JUN.20.2013
+# Version 0.3.4 - JUN.20.2013
 
 * Allow non sequential flag numbers by Thomas Jachmann
 * Report correct source location for class_evaled methods. by Sebastian Korfmann
@@ -80,11 +92,11 @@ Version 0.3.4 - JUN.20.2013
 * convenience methods now have default parameter so `all_flags` works with arity 0. by Peter Boling
 * Many more tests, including arity tests by Peter Boling
 
-Version 0.3.3 - JUN.20.2013
+# Version 0.3.3 - JUN.20.2013
 
 - Does not exist.
 
-Version 0.3.2 - NOV.06.2012
+# Version 0.3.2 - NOV.06.2012
 
 * Adds skip column check option :check_for_column - from arturaz
 * Adds a 'smart' set_flag_sql method which will auto determine the correct column for the given flag - from arturaz
@@ -93,12 +105,12 @@ Version 0.3.2 - NOV.06.2012
   - Now there is a test ensuring that the generated SQL can be executed by a real DB
   - This improved sql_set_for_flag underlies the public set_flag_sql method
 
-Version 0.3.1 - NOV.06.2012
+# Version 0.3.1 - NOV.06.2012
 
 * Adds new methods (for a flag column named 'bar', with many individual flags within) - from ddidier
   - all_bar, selected_bar, select_all_bar, unselect_all_bar, selected_bar=(selected_flags), has_bar?
 
-Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
+# Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
 
 * ClassWithHasFlags.set_#{flag_name}_sql # Returns the sql string for setting a flag for use in customized SQL
 * ClassWithHasFlags.unset_#{flag_name}_sql # Returns the sql string for unsetting a flag for use in customized SQL
@@ -106,12 +118,12 @@ Version 0.3.0 - NOV.05.2012 - first version maintained by Peter Boling
 * has_flags :strict => true # DuplicateFlagColumnException raised when a single DB column is declared as a flag column twice
 * Less verbosity for expected conditions when the DB connection for the class is unavailable.
 * Tests for additional features, but does not change any behavior of 0.2.3 / 0.2.4 by default.
-* Easily migrate from 0.2.3 / 0.2.4. Goal is no code changes required. Minor version bump to encourage caution.
+* Easily migrate from 0.2.3 and 0.2.4. Goal is no code changes required. Minor version bump to encourage caution.
 
-Version 0.2.4 - NOV.05.2012 - released last few changes from XING master
+# Version 0.2.4 - NOV.05.2012 - released last few changes from XING master
 
 * Fix deprecation warning for set_table_name
 * Optional bang methods
 * Complete Ruby 1.9(\.[^1]) and Rails 3.2.X compatibility
 
-Version 0.2.3 - last version maintained by XING AG
+# Version 0.2.3 - last version maintained by XING AG
