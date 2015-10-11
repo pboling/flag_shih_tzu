@@ -24,49 +24,49 @@ run_all_tests_for() {
   Count=$(( $Count + 1 ))
 }
 
-## First run the tests for all versions supported on Ruby 1.9.3
-##COMPATIBLE_VERSIONS=(2.3.x)
-#COMPATIBLE_VERSIONS=(2.3.x 3.0.x 3.1.x 3.2.x)
-#Count=0
-#while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
-#do
-#  rvm_ruby_version=1.9.3
-#  rails_version=${COMPATIBLE_VERSIONS[Count]}
-#  run_all_tests_for $rvm_ruby_version $rails_version
-#done
+# First run the tests for all versions supported on Ruby 1.9.3
+#COMPATIBLE_VERSIONS=(2.3.x)
+COMPATIBLE_VERSIONS=(2.3.x 3.0.x 3.1.x 3.2.x)
+Count=0
+while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
+do
+  rvm_ruby_version=1.9.3
+  rails_version=${COMPATIBLE_VERSIONS[Count]}
+  run_all_tests_for $rvm_ruby_version $rails_version
+done
 
 # Then run the tests for all versions supported on Ruby 2.0.0
-#COMPATIBLE_VERSIONS=(3.0.x 3.1.x 3.2.x 4.0.x 4.1.x)
-#Count=0
-#while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
-#do
-#  rvm_ruby_version=2.0.0
-#  rails_version=${COMPATIBLE_VERSIONS[Count]}
-#  run_all_tests_for $rvm_ruby_version $rails_version
-#done
-#
-## Then run the tests for all versions supported on Ruby 2.1.5
-#COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
-#Count=0
-#while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
-#do
-#  rvm_ruby_version=2.1.5
-#  rails_version=${COMPATIBLE_VERSIONS[Count]}
-#  run_all_tests_for $rvm_ruby_version $rails_version
-#done
+COMPATIBLE_VERSIONS=(3.0.x 3.1.x 3.2.x 4.0.x 4.1.x)
+Count=0
+while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
+do
+  rvm_ruby_version=2.0.0
+  rails_version=${COMPATIBLE_VERSIONS[Count]}
+  run_all_tests_for $rvm_ruby_version $rails_version
+done
+
+# Then run the tests for all versions supported on Ruby 2.1.5
+COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
+Count=0
+while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
+do
+  rvm_ruby_version=2.1.5
+  rails_version=${COMPATIBLE_VERSIONS[Count]}
+  run_all_tests_for $rvm_ruby_version $rails_version
+done
 
 # Then run the tests for all versions supported on Ruby 2.2.3
-#COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
-#Count=0
-#while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
-#do
-#  rvm_ruby_version=2.2.3
-#  rails_version=${COMPATIBLE_VERSIONS[Count]}
-#  run_all_tests_for $rvm_ruby_version $rails_version
-#done
-#
-## Then run the tests for all versions supported on jruby-9.0.1.0
-##   (which should be the same as the Ruby 2.2.3 compatibility set)
+COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
+Count=0
+while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
+do
+  rvm_ruby_version=2.2.3
+  rails_version=${COMPATIBLE_VERSIONS[Count]}
+  run_all_tests_for $rvm_ruby_version $rails_version
+done
+
+# Then run the tests for all versions supported on jruby-9.0.1.0
+#   (which should be the same as the Ruby 2.2.3 compatibility set)
 COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
