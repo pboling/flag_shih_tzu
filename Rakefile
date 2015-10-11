@@ -24,17 +24,20 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-require 'reek/rake/task'
-Reek::Rake::Task.new do |t|
-  t.fail_on_error = true
-  t.verbose = false
-  t.source_files = 'lib/**/*.rb'
+if defined?(Reek) # No Reek on JRuby
+  require 'reek/rake/task'
+  Reek::Rake::Task.new do |t|
+    t.fail_on_error = true
+    t.verbose = false
+    t.source_files = 'lib/**/*.rb'
+  end
 end
 
-require 'roodi'
-require 'roodi_task'
-RoodiTask.new do |t|
-  t.verbose = false
+if defined?(Roodi) # No Roodi on JRuby
+  require 'roodi_task'
+  RoodiTask.new do |t|
+    t.verbose = false
+  end
 end
 
 namespace :test do
