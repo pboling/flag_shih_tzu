@@ -2,12 +2,18 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.15 - OCT.11.2015
+
+* Fixed testing for all supported environments by Peter Boling
+* Testing on Travis: added Ruby jruby-9.0.1.0 by Peter Boling
+* Documented compatibility matrix in table in README by Peter Boling
+
 # Version 0.3.14 - OCT.08.2015
 
 * Allow use without ActiveRecord (experimental) by jfcaiceo
 * Many net-zero code cleanups to follow Ruby Style Guide
 * Improved local testing script rake test:all
-* Testing on Travis: added Ruby 1.9.3, 2.1.5, 2.2.3, jruby
+* Testing on Travis: added Ruby 1.9.3, 2.1.5, 2.2.3, jruby-1.7.0
 * Testing on Travis: removed Ruby 2.1.2
 
 # Version 0.3.13 - MAR.13.2015
