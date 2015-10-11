@@ -47,11 +47,21 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 
 The gem is actively being tested with:
 
-* MySQL, PostgreSQL and SQLite3 databases
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x ;)
-* Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.3
-* Travis tests the most important builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
-* All of the supported builds are run locally by me.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
+* MySQL, PostgreSQL and SQLite3 databases (Both Ruby and JRuby adapters)
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x
+* Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.3, jruby-1.7.22, jruby-9.0.1.0
+* Travis tests the supportedt builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
+* All of the supported builds can also be run locally.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
+
+### Compatibility Matrix
+
+| Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x |
+| 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     |       |
+| 2.1.5                 |       |       |       | ✓     | ✓     | ✓     | ✓     |
+| 2.2.3                 |       |       |       | ✓     | ✓     | ✓     | ✓     |
+| jruby-1.7.22          |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| jruby-9.0.1.0         |       |       |       | ✓     | ✓     | ✓     | ✓     |
 
 **Legacy**
 
