@@ -65,6 +65,20 @@ do
   run_all_tests_for $rvm_ruby_version $rails_version
 done
 
+# Then run the tests for all versions supported on jruby-1.7.22
+#   (which appears to pass for 3.1 - 4.2 inclusive)
+# TODO: Investigate 2 failures on Rails 2.3 and 3.0
+#       assert_equal true, my_spaceship.update_flag!(:jeanlucpicard, false, true)
+#       assert_equal true, my_spaceship.update_flag!(:jeanlucpicard, false)
+COMPATIBLE_VERSIONS=(3.1.x 3.2.x 4.0.x 4.1.x 4.2.x)
+Count=0
+while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
+do
+  rvm_ruby_version=jruby-1.7.22
+  rails_version=${COMPATIBLE_VERSIONS[Count]}
+  run_all_tests_for $rvm_ruby_version $rails_version
+done
+
 # Then run the tests for all versions supported on jruby-9.0.1.0
 #   (which should be the same as the Ruby 2.2.3 compatibility set)
 COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
