@@ -1,5 +1,7 @@
 # FlagShihTzu
 
+[![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Bit fields for ActiveRecord
 
 | Project                 |  FlagShihTzu      |
