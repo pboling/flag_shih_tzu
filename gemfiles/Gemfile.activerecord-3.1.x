@@ -15,3 +15,6 @@ gem "activerecord-jdbcpostgresql-adapter", :platforms => [:jruby]
 
 gem "reek", "~> 2.2.1", :platforms => [:ruby]
 gem "roodi", "~> 5.0.0", :platforms => [:ruby]
+
+# unparser 0.2.5 requires Ruby >= 2.1
+gem "unparser", "0.2.4", :platforms => [:ruby_20]
