@@ -1,14 +1,12 @@
 # FlagShihTzu
 
-[![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Bit fields for ActiveRecord
 
 | Project                 |  FlagShihTzu      |
 |------------------------ | ----------------- |
 | gem name                |  flag_shih_tzu    |
 | license                 |  MIT              |
-| moldiness               |  [![Maintainer Status](http://stillmaintained.com/pboling/flag_shih_tzu.png)](http://stillmaintained.com/pboling/flag_shih_tzu) |
+| maintainer              |  [![Get help on Codementor](https://cdn.codementor.io/badges/get_help_github.svg)](https://www.codementor.io/peterboling?utm_source=github&utm_medium=button&utm_term=peterboling&utm_campaign=github) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
 | dependencies            |  [![Dependency Status](https://gemnasium.com/pboling/flag_shih_tzu.png)](https://gemnasium.com/pboling/flag_shih_tzu) |
 | code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) |
@@ -17,6 +15,7 @@ Bit fields for ActiveRecord
 | test coverage           |  [![Coverage Status](https://coveralls.io/repos/pboling/flag_shih_tzu/badge.png)](https://coveralls.io/r/pboling/flag_shih_tzu) |
 | homepage                |  [https://github.com/pboling/flag_shih_tzu][homepage] |
 | documentation           |  [http://rdoc.info/github/pboling/flag_shih_tzu/frames][documentation] |
+| live chat               |  [![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
 | author                  |  [Peter Boling](https://coderbits.com/pboling) |
 | Spread ~♡ⓛⓞⓥⓔ♡~      |  [![Endorse Me](https://api.coderwall.com/pboling/endorsecount.png)](http://coderwall.com/pboling) |
 
