@@ -3,7 +3,10 @@ require "flag_shih_tzu/validators"
 
 module FlagShihTzu
   # taken from ActiveRecord::ConnectionAdapters::Column
-  TRUE_VALUES = [true, 1, "1", "t", "T", "true", "TRUE"]
+  TRUE_VALUES = [true, 1, "1", "t", "T", "true", "TRUE"].freeze
+  FALSE_VALUES = [false, 0, "0", "f", "F", "false", "FALSE"].freeze
+  NIL_VALUES = [nil, ""].freeze
+  NIL_RETURN_VALUE = nil
 
   DEFAULT_COLUMN_NAME = "flags"
 
@@ -18,6 +21,7 @@ module FlagShihTzu
   class IncorrectFlagColumnException < Exception; end
   class NoSuchFlagQueryModeException < Exception; end
   class NoSuchFlagException < Exception; end
+  class InvalidValueForFlagException < Exception; end
   class DuplicateFlagColumnException < Exception; end
 
   module ClassMethods
@@ -27,7 +31,7 @@ module FlagShihTzu
         {
           named_scopes: true,
           column: DEFAULT_COLUMN_NAME,
-          flag_query_mode: :in_list, # or :bit_operator
+          flag_query_mode: :bit_operator, # or :in_list
           strict: false,
           check_for_column: true
         }.update(opts)
@@ -39,7 +43,8 @@ module FlagShihTzu
       if opts[:check_for_column] && (active_record_class? && !check_flag_column(colmn))
         warn(
           %[FlagShihTzu says: Flag column #{colmn} appears to be missing!
-To turn off this warning set check_for_column: false in has_flags definition here: #{caller.first}]
+            To turn off this warning set check_for_column:
+              false in has_flags definition here: #{caller.first}]
         )
         return
       end
@@ -50,6 +55,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
       # the mappings are stored in this class level hash and apply per-column
       self.flag_mapping ||= {}
+
       # If we already have an instance of the same column in the flag_mapping,
       #   then there is a double definition on a column
       if opts[:strict] && !self.flag_mapping[colmn].nil?
@@ -71,35 +77,53 @@ To turn off this warning set check_for_column: false in has_flags definition her
                 %[has_flags: flag names should be symbols, and #{flag_name} is not]
         end
         # next if method already defined by flag_shih_tzu
-        next if flag_mapping[colmn][flag_name] & (1 << (flag_key - 1))
+        next if flag_mapping[colmn][flag_name] & (3 << 2 * (flag_key - 1))
         if method_defined?(flag_name)
           raise ArgumentError,
                 %[has_flags: flag name #{flag_name} already defined, please choose different name]
         end
 
-        flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
+        flag_mapping[colmn][flag_name] = 3 << 2 * (flag_key - 1)
 
         class_eval <<-EVAL, __FILE__, __LINE__ + 1
           def #{flag_name}
-            flag_enabled?(:#{flag_name}, "#{colmn}")
+            flag_enabled(:#{flag_name}, "#{colmn}")
           end
-          alias :#{flag_name}? :#{flag_name}
+
+          def #{flag_name}?
+            [true, false].include?(#{flag_name}) ? true : false
+          end
 
           def #{flag_name}=(value)
-            FlagShihTzu::TRUE_VALUES.include?(value) ?
-              enable_flag(:#{flag_name}, "#{colmn}") :
+            if FlagShihTzu::TRUE_VALUES.include?(value)
+              enable_flag(:#{flag_name}, "#{colmn}")
+            elsif FlagShihTzu::FALSE_VALUES.include?(value)
               disable_flag(:#{flag_name}, "#{colmn}")
+            elsif FlagShihTzu::NIL_VALUES.include?(value)
+              clear_flag(:#{flag_name}, "#{colmn}")
+            else
+              raise_invalid_error_value(value)
+            end
           end
 
           def not_#{flag_name}
-            !#{flag_name}
+            [true, false].include?(#{flag_name}) ? !#{flag_name} : #{flag_name}
           end
-          alias :not_#{flag_name}? :not_#{flag_name}
+
+          def not_#{flag_name}?
+            !#{flag_name}?
+          end
 
           def not_#{flag_name}=(value)
-            FlagShihTzu::TRUE_VALUES.include?(value) ?
-              disable_flag(:#{flag_name}, "#{colmn}") :
+            if FlagShihTzu::TRUE_VALUES.include?(value)
+              disable_flag(:#{flag_name}, "#{colmn}")
+            elsif FlagShihTzu::FALSE_VALUES.include?(value)
               enable_flag(:#{flag_name}, "#{colmn}")
+            elsif FlagShihTzu::NIL_VALUES.include?(value)
+              clear_flag(:#{flag_name}, "#{colmn}")
+            else
+              raise_invalid_error_value(value)
+            end
           end
 
           def #{flag_name}_changed?
@@ -128,6 +152,10 @@ To turn off this warning set check_for_column: false in has_flags definition her
               sql_condition_for_flag(:#{flag_name}, "#{colmn}", false)
             end
 
+            def self.#{flag_name}_nil_condition
+              sql_condition_for_flag(:#{flag_name}, "#{colmn}", nil)
+            end
+
             def self.set_#{flag_name}_sql
               sql_set_for_flag(:#{flag_name}, "#{colmn}", true)
             end
@@ -136,21 +164,25 @@ To turn off this warning set check_for_column: false in has_flags definition her
               sql_set_for_flag(:#{flag_name}, "#{colmn}", false)
             end
 
-            def self.#{colmn.singularize}_values_for(*flag_names)
-              values = []
-              flag_names.each do |flag_name|
-                if respond_to?(flag_name)
-                  values_for_flag = send(:sql_in_for_flag, flag_name, "#{colmn}")
-                  values = if values.present?
-                    values & values_for_flag
-                  else
-                    values_for_flag
-                  end
-                end
-              end
-
-              values.sort
+            def self.clear_#{flag_name}_sql
+              sql_set_for_flag(:#{flag_name}, "#{colmn}", nil)
             end
+
+            # def self.#{colmn.singularize}_values_for(*flag_names)
+            #   values = []
+            #   flag_names.each do |flag_name|
+            #     if respond_to?(flag_name)
+            #       values_for_flag = send(:sql_in_for_flag, flag_name, "#{colmn}", true)
+            #       values = if values.present?
+            #         values & values_for_flag
+            #       else
+            #         values_for_flag
+            #       end
+            #     end
+            #   end
+            #
+            #   values.sort
+            # end
           EVAL
 
           # Define the named scopes if the user wants them and AR supports it
@@ -162,6 +194,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
                 }
                 named_scope :not_#{flag_name}, lambda {
                   { conditions: not_#{flag_name}_condition }
+                }
+                named_scope :#{flag_name}_nil, lambda {
+                  { conditions: #{flag_name}_nil_condition }
                 }
               EVAL
             elsif respond_to?(:scope)
@@ -175,6 +210,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
                 }
                 scope :not_#{flag_name}, lambda {
                   where(not_#{flag_name}_condition)
+                }
+                scope :#{flag_name}_nil, lambda {
+                  where(#{flag_name}_nil_condition)
                 }
               EVAL
             end
@@ -201,6 +239,10 @@ To turn off this warning set check_for_column: false in has_flags definition her
               unselect_all_flags("#{colmn}")
             end
 
+            def clear_all_#{colmn}
+              clear_all_flags("#{colmn}")
+            end
+
             # useful for a form builder
             def selected_#{colmn}=(chosen_flags)
               unselect_all_flags("#{colmn}")
@@ -213,9 +255,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
               not selected_#{colmn}.empty?
             end
 
-            def chained_#{colmn}_with_signature(*args)
-              chained_flags_with_signature("#{colmn}", *args)
-            end
+            # def chained_#{colmn}_with_signature(*args)
+            #   chained_flags_with_signature("#{colmn}", *args)
+            # end
 
             def as_#{colmn.singularize}_collection(*args)
               as_flag_collection("#{colmn}", *args)
@@ -233,6 +275,10 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
             def not_#{flag_name}!
               disable_flag(:#{flag_name}, "#{colmn}")
+            end
+
+            def #{flag_name}_nil!
+              clear_flag(:#{flag_name}, "#{colmn}")
             end
           EVAL
         end
@@ -287,6 +333,10 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
     private
 
+    def flag_key(flag, colmn)
+      flag_keys(colmn).index(flag) + 1
+    end
+
     def flag_value_range_for_column(colmn)
       max = flag_mapping[colmn].values.max
       Range.new(0, (2 * max) - 1)
@@ -301,7 +351,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
           flag = flag.to_s.sub(/^not_/, "").to_sym
         end
         check_flag(flag, colmn)
-        flag_values = sql_in_for_flag(flag, colmn)
+        flag_values = sql_in_for_flag(flag, colmn, true)
         if neg
           val = val - flag_values
         else
@@ -317,9 +367,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
                       args.shift
                     else
                       options.
-                      keys.
-                      select { |key| !key.is_a?(Fixnum) }.
-                      inject({}) do |hash, key|
+                        keys.
+                        select { |key| !key.is_a?(Fixnum) }.
+                        inject({}) do |hash, key|
                         hash[key] = options.delete(key)
                         hash
                       end
@@ -368,29 +418,57 @@ To turn off this warning set check_for_column: false in has_flags definition her
       check_flag(flag, colmn)
 
       if flag_options[colmn][:flag_query_mode] == :bit_operator
+        sql_condition_value = case enabled
+                              when true
+                                1 << 2 * (flag_key(flag, colmn) - 1)
+                              when false
+                                0
+                              when nil
+                                flag_mapping[colmn][flag]
+                              end
         # use & bit operator directly in the SQL query.
         # This has the drawback of not using an index on the flags colum.
-        %[(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})]
+        %[(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} =
+          #{sql_condition_value})]
       elsif flag_options[colmn][:flag_query_mode] == :in_list
         # use IN() operator in the SQL query.
         # This has the drawback of becoming a big query
         #   when you have lots of flags.
-        neg = enabled ? "" : "not "
-        %[(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(",")}))]
+        %[(#{custom_table_name}.#{colmn} in
+          (#{sql_in_for_flag(flag, colmn, enabled).join(',')}))]
       else
         raise NoSuchFlagQueryModeException
       end
     end
 
     # returns an array of integers suitable for a SQL IN statement.
-    def sql_in_for_flag(flag, colmn)
-      val = flag_mapping[colmn][flag]
-      flag_value_range_for_column(colmn).select { |bits| bits & val == val }
+    def sql_in_for_flag(flag, colmn, enabled)
+      val = case enabled
+            when true
+              1 << 2 * (flag_key(flag, colmn) - 1)
+            when false
+              0
+            when nil
+              flag_mapping[colmn][flag]
+            end
+      flag_value_range_for_column(colmn).select do |bits|
+        bits & flag_mapping[colmn][flag] == val
+      end
     end
 
     def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
       check_flag(flag, colmn)
-      "#{colmn} = #{colmn} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
+
+      val = case enabled
+            when true
+              "& ~#{flag_mapping[colmn][flag]} |
+               #{(1 << 2 * (flag_key(flag, colmn) - 1))}"
+            when false
+              "& ~#{flag_mapping[colmn][flag]}"
+            when nil
+              "| #{flag_mapping[colmn][flag]}"
+            end
+      "#{colmn} = #{colmn} #{val}"
     end
 
     def valid_flag_key?(flag_key)
@@ -424,7 +502,8 @@ To turn off this warning set check_for_column: false in has_flags definition her
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
-    set_flags(flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
+    set_flags((flags(colmn) & ~self.class.flag_mapping[colmn][flag]) |
+    (1 << 2 * (flag_key(flag, colmn) - 1)), colmn)
   end
 
   # Performs the bitwise operation so the flag will return +false+.
@@ -435,18 +514,40 @@ To turn off this warning set check_for_column: false in has_flags definition her
     set_flags(flags(colmn) & ~self.class.flag_mapping[colmn][flag], colmn)
   end
 
-  def flag_enabled?(flag, colmn = nil)
+  # Performs the bitwise operation to clear the flag's set value
+  def clear_flag(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
-    get_bit_for(flag, colmn) == 0 ? false : true
+    set_flags(flags(colmn) | self.class.flag_mapping[colmn][flag], colmn)
+  end
+
+  def raise_invalid_error_value(value)
+    raise InvalidValueForFlagException.new(
+      %[Invalid value "#{value}" entered for the flag!]
+    )
+  end
+
+  def flag_enabled(flag, colmn = nil)
+    colmn = determine_flag_colmn_for(flag) if colmn.nil?
+    self.class.check_flag(flag, colmn)
+
+    bit = get_bit_for(flag, colmn)
+    case bit
+    when 0
+      false
+    when 1
+      true
+    else
+      NIL_RETURN_VALUE
+    end
   end
 
   def flag_disabled?(flag, colmn = nil)
     colmn = determine_flag_colmn_for(flag) if colmn.nil?
     self.class.check_flag(flag, colmn)
 
-    !flag_enabled?(flag, colmn)
+    !flag_enabled(flag, colmn)
   end
 
   def flags(colmn = DEFAULT_COLUMN_NAME)
@@ -490,6 +591,12 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
   end
 
+  def clear_all_flags(colmn = DEFAULT_COLUMN_NAME)
+    all_flags(colmn).each do |flag|
+      clear_flag(flag, colmn)
+    end
+  end
+
   def has_flag?(colmn = DEFAULT_COLUMN_NAME)
     not selected_flags(colmn).empty?
   end
@@ -498,15 +605,19 @@ To turn off this warning set check_for_column: false in has_flags definition her
   # third parameter allows you to specify that `self` should
   #   also have its in-memory flag attribute updated.
   def update_flag!(flag, value, update_instance = false)
-    truthy = FlagShihTzu::TRUE_VALUES.include?(value)
-    sql = self.class.set_flag_sql(flag.to_sym, truthy)
-    if update_instance
-      if truthy
-        enable_flag(flag)
-      else
-        disable_flag(flag)
-      end
+    if FlagShihTzu::TRUE_VALUES.include?(value)
+      sql = self.class.set_flag_sql(flag.to_sym, true)
+      enable_flag(flag) if update_instance
+    elsif FlagShihTzu::FALSE_VALUES.include?(value)
+      sql = self.class.set_flag_sql(flag.to_sym, false)
+      disable_flag(flag) if update_instance
+    elsif FlagShihTzu::NIL_VALUES.include?(value)
+      sql = self.class.set_flag_sql(flag.to_sym, nil)
+      clear_flag(flag) if update_instance
+    else
+      raise_invalid_error_value(value)
     end
+
     if (ActiveRecord::VERSION::MAJOR <= 3)
       self.class.
         update_all(sql, self.class.primary_key => id) == 1
@@ -534,9 +645,14 @@ To turn off this warning set check_for_column: false in has_flags definition her
     truthy_and_chosen =
       selected_flags(colmn).
         select { |flag| flags_to_collect.include?(flag) }
-    truthy_and_chosen.concat(
+    untruthy_and_unchosen = (
+    collect_flags(*flags_to_collect) do |memo, flag|
+      memo << "not_#{flag}".to_sym if self.send(flag) == false
+    end
+    )
+    truthy_and_chosen.concat(untruthy_and_unchosen).concat(
       collect_flags(*flags_to_collect) do |memo, flag|
-        memo << "not_#{flag}".to_sym unless truthy_and_chosen.include?(flag)
+        memo << "nil_#{flag}".to_sym if self.send(flag) == false
       end
     )
   end
@@ -557,7 +673,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
   def as_flag_collection(colmn = DEFAULT_COLUMN_NAME, *args)
     flags_to_collect = args.empty? ? all_flags(colmn) : args
     collect_flags(*flags_to_collect) do |memo, flag|
-      memo << [flag, flag_enabled?(flag, colmn)]
+      memo << [flag, flag_enabled(flag, colmn)]
     end
   end
 
@@ -571,11 +687,15 @@ To turn off this warning set check_for_column: false in has_flags definition her
   end
 
   def get_bit_for(flag, colmn)
-    flags(colmn) & self.class.flag_mapping[colmn][flag]
+    (flags(colmn) & self.class.flag_mapping[colmn][flag]) >>
+      2 * (flag_key(flag, colmn) - 1)
   end
 
   def determine_flag_colmn_for(flag)
     self.class.determine_flag_colmn_for(flag)
   end
 
+  def flag_key(flag, colmn)
+    flag_mapping[colmn].keys.index(flag) + 1
+  end
 end
