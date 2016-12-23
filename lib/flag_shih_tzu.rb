@@ -336,11 +336,14 @@ To turn off this warning set check_for_column: false in has_flags definition her
       # Supposedly Rails 2.3 takes care of this, but this precaution
       #   is needed for backwards compatibility
       has_table = if has_ar
-        sources = ::ActiveRecord::VERSION::MAJOR >= 5 ? connection.data_sources : connection.tables
-        sources.include?(custom_table_name)
-      else
-        true
-      end
+                    if ::ActiveRecord::VERSION::MAJOR >= 5
+                      connection.data_sources
+                    else
+                      connection.tables.include?(custom_table_name)
+                    end
+                  else
+                    true
+                  end
       if has_table
         found_column = columns.detect { |column| column.name == colmn }
         # If you have not yet run the migration that adds the 'flags' column
@@ -582,5 +585,4 @@ To turn off this warning set check_for_column: false in has_flags definition her
   def determine_flag_colmn_for(flag)
     self.class.determine_flag_colmn_for(flag)
   end
-
 end
