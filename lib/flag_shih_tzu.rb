@@ -335,7 +335,12 @@ To turn off this warning set check_for_column: false in has_flags definition her
       has_ar = (!!defined?(ActiveRecord) && respond_to?(:descends_from_active_record?))
       # Supposedly Rails 2.3 takes care of this, but this precaution
       #   is needed for backwards compatibility
-      has_table = has_ar ? connection.tables.include?(custom_table_name) : true
+      has_table = if has_ar
+        sources = ::ActiveRecord::VERSION::MAJOR >= 5 ? connection.data_sources : connection.tables
+        sources.include?(custom_table_name)
+      else
+        true
+      end
       if has_table
         found_column = columns.detect { |column| column.name == colmn }
         # If you have not yet run the migration that adds the 'flags' column
