@@ -2,6 +2,11 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.16 - JAN.16.2017
+
+* Fix complex custom sql queries with multiple references to the column by vegetaras
+* Improved documentation and compatibility matrix by pboling
+
 # Version 0.3.15 - OCT.11.2015
 
 * Fixed testing for all supported environments by Peter Boling
