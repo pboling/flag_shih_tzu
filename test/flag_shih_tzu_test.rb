@@ -631,6 +631,8 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   def assert_where_value(expected, scope)
     actual = if ActiveRecord::VERSION::MAJOR == 2
                scope.proxy_options[:conditions]
+             elsif ActiveRecord::VERSION::MAJOR >= 5
+               scope.where_clause.ast.children.first.expr
              else
                scope.where_values.first
              end
