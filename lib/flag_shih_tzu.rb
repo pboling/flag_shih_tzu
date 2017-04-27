@@ -292,7 +292,12 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
 
     def flag_full_column_name_for_assignment(table, column)
-      connection.quote_table_name_for_assignment(table, column)
+      if (ActiveRecord::VERSION::MAJOR <= 3)
+        # If you're trying to do multi-table updates with Rails < 4, sorry - you're out of luck.
+        connection.quote_column_name(column)
+      else
+        connection.quote_table_name_for_assignment(table, column)
+      end
     end
 
     def flag_value_range_for_column(colmn)
