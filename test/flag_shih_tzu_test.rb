@@ -269,55 +269,55 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled
-    assert_equal "(spaceships.flags in (1,3,5,7))",
+    assert_equal '("spaceships"."flags" in (1,3,5,7))',
                  Spaceship.warpdrive_condition
-    assert_equal "(spaceships.flags in (2,3,6,7))",
+    assert_equal '("spaceships"."flags" in (2,3,6,7))',
                  Spaceship.shields_condition
-    assert_equal "(spaceships.flags in (4,5,6,7))",
+    assert_equal '("spaceships"."flags" in (4,5,6,7))',
                  Spaceship.electrolytes_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_missing_flags
-    assert_equal "(spaceships.flags in (1,3,5,7))",
+    assert_equal '("spaceships"."flags" in (1,3,5,7))',
                  SpaceshipWithMissingFlags.warpdrive_condition
-    assert_equal "(spaceships.flags in (4,5,6,7))",
+    assert_equal '("spaceships"."flags" in (4,5,6,7))',
                  SpaceshipWithMissingFlags.electrolytes_condition
   end
 
   def test_should_accept_a_table_alias_option_for_sql_condition_method
-    assert_equal "(old_spaceships.flags in (1,3,5,7))",
+    assert_equal '("old_spaceships"."flags" in (1,3,5,7))',
                  Spaceship.warpdrive_condition(table_alias: "old_spaceships")
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_2_colmns
-    assert_equal "(spaceships_with_2_custom_flags_column.bits in (1,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."bits" in (1,3))',
                  SpaceshipWith2CustomFlagsColumn.warpdrive_condition
-    assert_equal "(spaceships_with_2_custom_flags_column.bits in (2,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."bits" in (2,3))',
                  SpaceshipWith2CustomFlagsColumn.hyperspace_condition
-    assert_equal "(spaceships_with_2_custom_flags_column.commanders in (1,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."commanders" in (1,3))',
                  SpaceshipWith2CustomFlagsColumn.jeanlucpicard_condition
-    assert_equal "(spaceships_with_2_custom_flags_column.commanders in (2,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."commanders" in (2,3))',
                  SpaceshipWith2CustomFlagsColumn.dajanatroj_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_not_enabled
-    assert_equal "(spaceships.flags not in (1,3,5,7))",
+    assert_equal '("spaceships"."flags" not in (1,3,5,7))',
                  Spaceship.not_warpdrive_condition
-    assert_equal "(spaceships.flags not in (2,3,6,7))",
+    assert_equal '("spaceships"."flags" not in (2,3,6,7))',
                  Spaceship.not_shields_condition
-    assert_equal "(spaceships.flags not in (4,5,6,7))",
+    assert_equal '("spaceships"."flags" not in (4,5,6,7))',
                  Spaceship.not_electrolytes_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_not_enabled_with_missing_flags
-    assert_equal "(spaceships.flags not in (1,3,5,7))",
+    assert_equal '("spaceships"."flags" not in (1,3,5,7))',
                  SpaceshipWithMissingFlags.not_warpdrive_condition
-    assert_equal "(spaceships.flags not in (4,5,6,7))",
+    assert_equal '("spaceships"."flags" not in (4,5,6,7))',
                  SpaceshipWithMissingFlags.not_electrolytes_condition
   end
 
   def test_sql_condition_for_flag_with_custom_table_name_and_default_query_mode
-    assert_equal "(custom_spaceships.flags in (1,3,5,7))",
+    assert_equal '("custom_spaceships"."flags" in (1,3,5,7))',
                  Spaceship.send(:sql_condition_for_flag,
                                 :warpdrive,
                                 "flags",
@@ -325,7 +325,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
                                 "custom_spaceships")
   end
   def test_sql_condition_for_flag_with_in_list_query_mode
-    assert_equal "(spaceships.flags in (1,3))",
+    assert_equal '("spaceships"."flags" in (1,3))',
                  SpaceshipWithInListQueryMode.send(:sql_condition_for_flag,
                                                    :warpdrive,
                                                    "flags",
@@ -333,7 +333,7 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
                                                    "spaceships")
   end
   def test_sql_condition_for_flag_with_bit_operator_query_mode
-    assert_equal "(spaceships.flags & 1 = 1)",
+    assert_equal '("spaceships"."flags" & 1 = 1)',
                  SpaceshipWithBitOperatorQueryMode.send(:sql_condition_for_flag,
                                                         :warpdrive,
                                                         "flags",
@@ -345,50 +345,50 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
                  Spaceship.send(:sql_in_for_flag, :warpdrive, "flags")
   end
   def test_sql_set_for_flag
-    assert_equal "flags = spaceships.flags | 1",
+    assert_equal '"flags" = "spaceships"."flags" | 1',
                  Spaceship.send(:sql_set_for_flag, :warpdrive, "flags")
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_with_2_colmns_not_enabled
-    assert_equal "(spaceships_with_2_custom_flags_column.bits not in (1,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."bits" not in (1,3))',
                  SpaceshipWith2CustomFlagsColumn.not_warpdrive_condition
-    assert_equal "(spaceships_with_2_custom_flags_column.bits not in (2,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."bits" not in (2,3))',
                  SpaceshipWith2CustomFlagsColumn.not_hyperspace_condition
-    assert_equal "(spaceships_with_2_custom_flags_column.commanders not in (1,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."commanders" not in (1,3))',
                  SpaceshipWith2CustomFlagsColumn.not_jeanlucpicard_condition
-    assert_equal "(spaceships_with_2_custom_flags_column.commanders not in (2,3))",
+    assert_equal '("spaceships_with_2_custom_flags_column"."commanders" not in (2,3))',
                  SpaceshipWith2CustomFlagsColumn.not_dajanatroj_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_enabled_using_bit_operators
-    assert_equal "(spaceships.flags & 1 = 1)",
+    assert_equal '("spaceships"."flags" & 1 = 1)',
                  SpaceshipWithBitOperatorQueryMode.warpdrive_condition
-    assert_equal "(spaceships.flags & 2 = 2)",
+    assert_equal '("spaceships"."flags" & 2 = 2)',
                  SpaceshipWithBitOperatorQueryMode.shields_condition
   end
 
   def test_should_define_a_sql_condition_method_for_flag_not_enabled_using_bit_operators
-    assert_equal "(spaceships.flags & 1 = 0)",
+    assert_equal '("spaceships"."flags" & 1 = 0)',
                  SpaceshipWithBitOperatorQueryMode.not_warpdrive_condition
-    assert_equal "(spaceships.flags & 2 = 0)",
+    assert_equal '("spaceships"."flags" & 2 = 0)',
                  SpaceshipWithBitOperatorQueryMode.not_shields_condition
   end
 
   def test_should_define_a_named_scope_for_flag_enabled
-    assert_where_value "(spaceships.flags in (1,3,5,7))",
+    assert_where_value '("spaceships"."flags" in (1,3,5,7))',
                        Spaceship.warpdrive
-    assert_where_value "(spaceships.flags in (2,3,6,7))",
+    assert_where_value '("spaceships"."flags" in (2,3,6,7))',
                        Spaceship.shields
-    assert_where_value "(spaceships.flags in (4,5,6,7))",
+    assert_where_value '("spaceships"."flags" in (4,5,6,7))',
                        Spaceship.electrolytes
   end
 
   def test_should_define_a_named_scope_for_flag_not_enabled
-    assert_where_value "(spaceships.flags not in (1,3,5,7))",
+    assert_where_value '("spaceships"."flags" not in (1,3,5,7))',
                        Spaceship.not_warpdrive
-    assert_where_value "(spaceships.flags not in (2,3,6,7))",
+    assert_where_value '("spaceships"."flags" not in (2,3,6,7))',
                        Spaceship.not_shields
-    assert_where_value "(spaceships.flags not in (4,5,6,7))",
+    assert_where_value '("spaceships"."flags" not in (4,5,6,7))',
                        Spaceship.not_electrolytes
   end
 
@@ -398,38 +398,38 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_define_a_named_scope_for_flag_enabled_with_2_columns
-    assert_where_value "(spaceships_with_2_custom_flags_column.bits in (1,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."bits" in (1,3))',
                        SpaceshipWith2CustomFlagsColumn.warpdrive
-    assert_where_value "(spaceships_with_2_custom_flags_column.bits in (2,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."bits" in (2,3))',
                        SpaceshipWith2CustomFlagsColumn.hyperspace
-    assert_where_value "(spaceships_with_2_custom_flags_column.commanders in (1,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."commanders" in (1,3))',
                        SpaceshipWith2CustomFlagsColumn.jeanlucpicard
-    assert_where_value "(spaceships_with_2_custom_flags_column.commanders in (2,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."commanders" in (2,3))',
                        SpaceshipWith2CustomFlagsColumn.dajanatroj
   end
 
   def test_should_define_a_named_scope_for_flag_not_enabled_with_2_columns
-    assert_where_value "(spaceships_with_2_custom_flags_column.bits not in (1,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."bits" not in (1,3))',
                        SpaceshipWith2CustomFlagsColumn.not_warpdrive
-    assert_where_value "(spaceships_with_2_custom_flags_column.bits not in (2,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."bits" not in (2,3))',
                        SpaceshipWith2CustomFlagsColumn.not_hyperspace
-    assert_where_value "(spaceships_with_2_custom_flags_column.commanders not in (1,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."commanders" not in (1,3))',
                        SpaceshipWith2CustomFlagsColumn.not_jeanlucpicard
-    assert_where_value "(spaceships_with_2_custom_flags_column.commanders not in (2,3))",
+    assert_where_value '("spaceships_with_2_custom_flags_column"."commanders" not in (2,3))',
                        SpaceshipWith2CustomFlagsColumn.not_dajanatroj
   end
 
   def test_should_define_a_named_scope_for_flag_enabled_using_bit_operators
-    assert_where_value "(spaceships.flags & 1 = 1)",
+    assert_where_value '("spaceships"."flags" & 1 = 1)',
                        SpaceshipWithBitOperatorQueryMode.warpdrive
-    assert_where_value "(spaceships.flags & 2 = 2)",
+    assert_where_value '("spaceships"."flags" & 2 = 2)',
                        SpaceshipWithBitOperatorQueryMode.shields
   end
 
   def test_should_define_a_named_scope_for_flag_not_enabled_using_bit_operators
-    assert_where_value "(spaceships.flags & 1 = 0)",
+    assert_where_value '("spaceships"."flags" & 1 = 0)',
                        SpaceshipWithBitOperatorQueryMode.not_warpdrive
-    assert_where_value "(spaceships.flags & 2 = 0)",
+    assert_where_value '("spaceships"."flags" & 2 = 0)',
                        SpaceshipWithBitOperatorQueryMode.not_shields
   end
 
@@ -511,16 +511,16 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
   end
 
   def test_should_return_the_correct_condition_with_chained_flags
-    assert_equal "(spaceships.flags in (3,7))",
+    assert_equal '("spaceships"."flags" in (3,7))',
                  Spaceship.chained_flags_condition("flags",
                                                    :warpdrive,
                                                    :shields)
-    assert_equal "(spaceships.flags in (7))",
+    assert_equal '("spaceships"."flags" in (7))',
                  Spaceship.chained_flags_condition("flags",
                                                    :warpdrive,
                                                    :shields,
                                                    :electrolytes)
-    assert_equal "(spaceships.flags in (2,6))",
+    assert_equal '("spaceships"."flags" in (2,6))',
                  Spaceship.chained_flags_condition("flags",
                                                    :not_warpdrive,
                                                    :shields)
@@ -577,21 +577,21 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
     spaceship.save!
     spaceship.reload
     assert_equal 3, spaceship.flags("bits")
-    assert_equal "(spaceships_with_custom_flags_column.bits in (1,3))",
+    assert_equal '("spaceships_with_custom_flags_column"."bits" in (1,3))',
                  SpaceshipWithCustomFlagsColumn.warpdrive_condition
-    assert_equal "(spaceships_with_custom_flags_column.bits not in (1,3))",
+    assert_equal '("spaceships_with_custom_flags_column"."bits" not in (1,3))',
                  SpaceshipWithCustomFlagsColumn.not_warpdrive_condition
-    assert_equal "(spaceships_with_custom_flags_column.bits in (2,3))",
+    assert_equal '("spaceships_with_custom_flags_column"."bits" in (2,3))',
                  SpaceshipWithCustomFlagsColumn.hyperspace_condition
-    assert_equal "(spaceships_with_custom_flags_column.bits not in (2,3))",
+    assert_equal '("spaceships_with_custom_flags_column"."bits" not in (2,3))',
                  SpaceshipWithCustomFlagsColumn.not_hyperspace_condition
-    assert_where_value %[(spaceships_with_custom_flags_column.bits in (1,3))],
+    assert_where_value '("spaceships_with_custom_flags_column"."bits" in (1,3))',
                        SpaceshipWithCustomFlagsColumn.warpdrive
-    assert_where_value %[(spaceships_with_custom_flags_column.bits not in (1,3))],
+    assert_where_value '("spaceships_with_custom_flags_column"."bits" not in (1,3))',
                        SpaceshipWithCustomFlagsColumn.not_warpdrive
-    assert_where_value %[(spaceships_with_custom_flags_column.bits in (2,3))],
+    assert_where_value '("spaceships_with_custom_flags_column"."bits" in (2,3))',
                        SpaceshipWithCustomFlagsColumn.hyperspace
-    assert_where_value %[(spaceships_with_custom_flags_column.bits not in (2,3))],
+    assert_where_value '("spaceships_with_custom_flags_column"."bits" not in (2,3))',
                        SpaceshipWithCustomFlagsColumn.not_hyperspace
   end
 
@@ -1421,9 +1421,9 @@ class FlagShihTzuDerivedClassTest < Test::Unit::TestCase
   end
 
   def test_should_return_a_sql_set_method_for_flag
-    assert_equal "flags = spaceships.flags | 1",
+    assert_equal '"flags" = "spaceships"."flags" | 1',
                  Spaceship.send(:sql_set_for_flag, :warpdrive, "flags", true)
-    assert_equal "flags = spaceships.flags & ~1",
+    assert_equal '"flags" = "spaceships"."flags" & ~1',
                  Spaceship.send(:sql_set_for_flag, :warpdrive, "flags", false)
   end
 
