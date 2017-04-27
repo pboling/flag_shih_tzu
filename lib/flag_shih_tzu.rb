@@ -399,7 +399,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
     def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
       check_flag(flag, colmn)
       full_name = "#{custom_table_name}.#{colmn}"
-      "#{full_name} = #{full_name} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
+      "#{colmn} = #{full_name} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
     end
 
     def valid_flag_key?(flag_key)
