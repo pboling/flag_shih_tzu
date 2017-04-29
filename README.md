@@ -49,8 +49,8 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 The gem is actively being tested with:
 
 * MySQL, PostgreSQL and SQLite3 databases (Both Ruby and JRuby adapters)
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x
-* Ruby 1.9.3, 2.0.0, 2.1.7, 2.2.3, jruby-1.7.22, jruby-9.0.1.0
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x
+* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.22, jruby-9.0.1.0, and ruby-head
 * Travis tests the supportedt builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
 * All of the supported builds can also be run locally.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
 
