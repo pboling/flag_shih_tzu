@@ -331,7 +331,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
                     else
                       options.
                       keys.
-                      select { |key| !key.is_a?(Fixnum) }.
+                      select { |key| !key.is_a?(Integer) }.
                       inject({}) do |hash, key|
                         hash[key] = options.delete(key)
                         hash
