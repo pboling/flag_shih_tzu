@@ -309,7 +309,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
       val = flag_value_range_for_column(colmn).to_a
       args.each do |flag|
         neg = false
-        if flag.to_s.match /^not_/
+        if flag.to_s.match(/^not_/)
           neg = true
           flag = flag.to_s.sub(/^not_/, "").to_sym
         end
