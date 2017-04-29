@@ -17,7 +17,7 @@ Bit fields for ActiveRecord
 | homepage                |  [https://github.com/pboling/flag_shih_tzu][homepage] |
 | documentation           |  [http://rdoc.info/github/pboling/flag_shih_tzu/frames][documentation] |
 | live chat               |  [![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
-| Spread ~♡ⓛⓞⓥⓔ♡~                     |  [on Coderbits](https://coderbits.com/pboling), [on Coderwall](http://coderwall.com/pboling) |
+| Spread ~♡ⓛⓞⓥⓔ♡~      |  [on AngelList](https://angel.co/peter-boling), [on Coderwall](http://coderwall.com/pboling) |
 
 ## Summary
 
