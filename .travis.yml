@@ -22,7 +22,7 @@ gemfile:
 matrix:
   allow_failures:
     - rvm: ruby-head
-    - rvm: 1.9.3
+    - rvm: 1.9.3-p551
   exclude:
     - rvm: jruby-9.0.1.0
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
