@@ -278,7 +278,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
 
     def chained_flags_condition(colmn = DEFAULT_COLUMN_NAME, *args)
-      %[(#{table_name}.#{colmn} in (#{chained_flags_values(colmn, *args).join(",")}))]
+      %[(#{flag_full_column_name(table_name, colmn)} in (#{chained_flags_values(colmn, *args).join(",")}))]
     end
 
     def flag_keys(colmn = DEFAULT_COLUMN_NAME)
@@ -286,6 +286,19 @@ To turn off this warning set check_for_column: false in has_flags definition her
     end
 
     private
+
+    def flag_full_column_name(table, column)
+      "#{connection.quote_table_name(table)}.#{connection.quote_column_name(column)}"
+    end
+
+    def flag_full_column_name_for_assignment(table, column)
+      if (ActiveRecord::VERSION::MAJOR <= 3)
+        # If you're trying to do multi-table updates with Rails < 4, sorry - you're out of luck.
+        connection.quote_column_name(column)
+      else
+        connection.quote_table_name_for_assignment(table, column)
+      end
+    end
 
     def flag_value_range_for_column(colmn)
       max = flag_mapping[colmn].values.max
@@ -378,13 +391,13 @@ To turn off this warning set check_for_column: false in has_flags definition her
       if flag_options[colmn][:flag_query_mode] == :bit_operator
         # use & bit operator directly in the SQL query.
         # This has the drawback of not using an index on the flags colum.
-        %[(#{custom_table_name}.#{colmn} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})]
+        %[(#{flag_full_column_name(custom_table_name, colmn)} & #{flag_mapping[colmn][flag]} = #{enabled ? flag_mapping[colmn][flag] : 0})]
       elsif flag_options[colmn][:flag_query_mode] == :in_list
         # use IN() operator in the SQL query.
         # This has the drawback of becoming a big query
         #   when you have lots of flags.
         neg = enabled ? "" : "not "
-        %[(#{custom_table_name}.#{colmn} #{neg}in (#{sql_in_for_flag(flag, colmn).join(",")}))]
+        %[(#{flag_full_column_name(custom_table_name, colmn)} #{neg}in (#{sql_in_for_flag(flag, colmn).join(",")}))]
       else
         raise NoSuchFlagQueryModeException
       end
@@ -398,8 +411,9 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
     def sql_set_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
       check_flag(flag, colmn)
-      full_name = "#{custom_table_name}.#{colmn}"
-      "#{full_name} = #{full_name} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
+      lhs_name = flag_full_column_name_for_assignment(custom_table_name, colmn)
+      rhs_name = flag_full_column_name(custom_table_name, colmn)
+      "#{lhs_name} = #{rhs_name} #{enabled ? "| " : "& ~" }#{flag_mapping[colmn][flag]}"
     end
 
     def valid_flag_key?(flag_key)
