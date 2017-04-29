@@ -2,12 +2,13 @@ language: ruby
 cache: bundler
 sudo: false
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.7
-  - 2.2.3
+  - 1.9.3-p551
+  - 2.0.0-p648
+  - 2.1.10
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
   - ruby-head
-  - jruby-1.7.22
   - jruby-9.0.1.0
 gemfile:
   - gemfiles/Gemfile.activerecord-2.3.x
@@ -35,51 +36,61 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
     - rvm: jruby-9.0.1.0
       gemfile: gemfiles/Gemfile.activerecord-5.0.x
-    - rvm: jruby-1.7.22
+
+    - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: jruby-1.7.22
+    - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
-    - rvm: jruby-1.7.22
+    - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
-    - rvm: jruby-1.7.22
+    - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-3.2.x
-    - rvm: jruby-1.7.22
+    - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
-    - rvm: jruby-1.7.22
-      gemfile: gemfiles/Gemfile.activerecord-4.1.x
-    - rvm: jruby-1.7.22
-      gemfile: gemfiles/Gemfile.activerecord-4.2.x
-    - rvm: jruby-1.7.22
-      gemfile: gemfiles/Gemfile.activerecord-5.0.x
-    - rvm: 2.2.3
+
+    - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: 2.2.3
+    - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
-    - rvm: 2.2.3
+    - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
-    - rvm: 2.2.3
+    - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-3.2.x
-    - rvm: 2.2.3
+    - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
-    - rvm: 2.1.7
+
+    - rvm: 2.2.7
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: 2.1.7
+    - rvm: 2.2.7
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
-    - rvm: 2.1.7
+    - rvm: 2.2.7
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
-    - rvm: 2.1.7
-      gemfile: gemfiles/Gemfile.activerecord-5.0.x
-    - rvm: 2.0.0
+    - rvm: 2.2.7
+      gemfile: gemfiles/Gemfile.activerecord-3.2.x
+    - rvm: 2.2.7
+      gemfile: gemfiles/Gemfile.activerecord-4.0.x
+
+    - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: 2.0.0
-      gemfile: gemfiles/Gemfile.activerecord-4.2.x
-    - rvm: 2.0.0
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.activerecord-3.0.x
+    - rvm: 2.1.10
+      gemfile: gemfiles/Gemfile.activerecord-3.1.x
+    - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.activerecord-5.0.x
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.activerecord-5.0.x
-    - rvm: 1.9.3
+
+    - rvm: 2.0.0-p648
+      gemfile: gemfiles/Gemfile.activerecord-2.3.x
+    - rvm: 2.0.0-p648
       gemfile: gemfiles/Gemfile.activerecord-4.2.x
-    - rvm: 1.9.3
+    - rvm: 2.0.0-p648
+      gemfile: gemfiles/Gemfile.activerecord-5.0.x
+
+    - rvm: 1.9.3-p551
+      gemfile: gemfiles/Gemfile.activerecord-5.0.x
+    - rvm: 1.9.3-p551
+      gemfile: gemfiles/Gemfile.activerecord-4.2.x
+    - rvm: 1.9.3-p551
       gemfile: gemfiles/Gemfile.activerecord-4.1.x
-    - rvm: 1.9.3
+    - rvm: 1.9.3-p551
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
