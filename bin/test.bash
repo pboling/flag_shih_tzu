@@ -25,7 +25,7 @@ run_all_tests_for() {
 }
 
 # First run the tests for all versions supported on Ruby 1.9.3
-COMPATIBLE_VERSIONS=(2.3.x 3.0.x 3.1.x 3.2.x)
+COMPATIBLE_VERSIONS=(3.0.x 3.1.x 3.2.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
 do
@@ -66,7 +66,7 @@ done
 
 # Then run the tests for all versions supported on jruby-1.7.26
 #   (which appears to pass for 3.1 - 4.2 inclusive)
-# TODO: Investigate 2 failures on Rails 2.3 and 3.0
+# TODO: Investigate 2 failures on Rails 3.0
 #       assert_equal true, my_spaceship.update_flag!(:jeanlucpicard, false, true)
 #       assert_equal true, my_spaceship.update_flag!(:jeanlucpicard, false)
 COMPATIBLE_VERSIONS=(3.1.x 3.2.x 4.0.x 4.1.x 4.2.x)

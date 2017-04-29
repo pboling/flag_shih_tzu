@@ -49,24 +49,24 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 The gem is actively being tested with:
 
 * MySQL, PostgreSQL and SQLite3 databases (Both Ruby and JRuby adapters)
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x
-* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.x, jruby-9.1.x, and ruby-head
+* ActiveRecord versions 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x
+* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.22, jruby-9.0.1.0, and ruby-head
 * Travis tests the supportedt builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
 * All of the supported builds can also be run locally.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
 
 ### Compatibility Matrix
 
-| Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x |
-|:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |       |
-| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| 2.1.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
-| 2.2.0-2.2.1           |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
-| 2.2.2+                |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
-| 2.3.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
-| 2.4.x                 |       |       |       |       |       |       | ✓     | ✓     |
-| jruby-1.7.x           | ?     | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| jruby-9.x             |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| Ruby / Active Record  | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x |
+|:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| 1.9.3                 | ✓     | ✓     | ✓     |       |       |       |       |
+| 2.0.0                 | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
+| 2.1.x                 |       |       | ✓     | ✓     | ✓     | ✓     |       |
+| 2.2.0-2.2.1           |       |       | ✓     | ✓     | ✓     | ✓     |       |
+| 2.2.2+                |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| 2.3.x                 |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| 2.4.x                 |       |       |       |       |       | ✓     | ✓     |
+| jruby-1.7.x           | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
+| jruby-9.x             |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
 
 * Notes
   - JRuby 1.7.x aims for MRI 1.9.3 compatibility
@@ -80,18 +80,6 @@ The gem is actively being tested with:
 * Ruby 1.9.3, 2.0.0, and 2.1.0 compatibility is still current on master, and the 0.3.x series releases, but those EOL'd Rubies, and any others that become EOL'd in the meantime, will not be supported in the next major release, version 1.0.
 
 ## Installation
-
-### Rails 2.x
-
-In environment.rb:
-
-```ruby
-config.gem 'flag_shih_tzu'
-```
-
-Then:
-
-    $ rake gems:install # use sudo if necessary
 
 ### Rails 3
 
