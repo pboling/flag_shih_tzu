@@ -2,6 +2,13 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.17 - APR.29.2017
+* Improved compatibility with Rails 5.0
+* Fixed warnings about Fixnums
+* Fixed compatibility with SQLlite
+* Added Ruby 2.3, and 2.4 to the Travis Matrix
+* Removed JRuby 1.7 from the Travis Matrix
+
 # Version 0.3.16 - JAN.16.2017
 
 * Fix complex custom sql queries with multiple references to the column by vegetaras
