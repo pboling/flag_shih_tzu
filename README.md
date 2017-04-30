@@ -50,7 +50,7 @@ The gem is actively being tested with:
 
 * MySQL, PostgreSQL and SQLite3 databases (Both Ruby and JRuby adapters)
 * ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x
-* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.22, jruby-9.0.1.0, and ruby-head
+* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.x, jruby-9.1.x, and ruby-head
 * Travis tests the supportedt builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
 * All of the supported builds can also be run locally.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
 
@@ -59,18 +59,25 @@ The gem is actively being tested with:
 | Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x |
 |:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
 | 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |       |
-| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     |       |       |
+| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
 | 2.1.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
 | 2.2.0-2.2.1           |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
 | 2.2.2+                |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
 | 2.3.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
 | 2.4.x                 |       |       |       |       |       |       | ✓     | ✓     |
-| jruby-1.7.x           |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| jruby-9.0.x           |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| jruby-1.7.x           | ?     | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
+| jruby-9.x             |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+
+* Notes
+  - JRuby 1.7.x aims for MRI 1.9.3 compatibility
+    - `?` indicates incompatible due to 2 failures in the test suite.
+  - JRuby 9.x aims for MRI 2.x compatibility
 
 **Legacy**
 
 * Ruby 1.8.7 compatibility is in the [0.2.X branch](https://github.com/pboling/flag_shih_tzu/tree/0.2.X) and no further releases are expected.  If you need a patch submit a pull request.
+
+* Ruby 1.9.3, 2.0.0, and 2.1.0 compatibility is still current on master, and the 0.3.x series releases, but those EOL'd Rubies, and any others that become EOL'd in the meantime, will not be supported in the next major release, version 1.0.
 
 ## Installation
 
