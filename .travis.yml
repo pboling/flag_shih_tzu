@@ -23,7 +23,21 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: 1.9.3-p551
+    - rvm: jruby-9.0.1.0
   exclude:
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.activerecord-2.3.x
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.activerecord-3.0.x
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.activerecord-3.1.x
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.activerecord-3.2.x
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.activerecord-4.0.x
+    - rvm: ruby-head
+      gemfile: gemfiles/Gemfile.activerecord-4.1.x
+
     - rvm: jruby-9.0.1.0
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
     - rvm: jruby-9.0.1.0
@@ -34,8 +48,6 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-3.2.x
     - rvm: jruby-9.0.1.0
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
-    - rvm: jruby-9.0.1.0
-      gemfile: gemfiles/Gemfile.activerecord-5.0.x
 
     - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-2.3.x
