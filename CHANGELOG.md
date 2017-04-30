@@ -2,6 +2,10 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.18 - APR.30.2017
+* Switched from Fixnum to Integer for Ruby 2.4 happiness
+* Fixed build for all supported Ruby and Rails versions in supported matrix
+
 # Version 0.3.17 - APR.29.2017
 * Improved compatibility with Rails 5.0
 * Fixed warnings about Fixnums
