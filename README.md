@@ -472,11 +472,11 @@ Find out more about XING
 
 ## How you can help!
 
-Take a look at the `reek` list, which is the file called `REEK`, and stat fixing things.  Once you complete a change, run the tests.  See "Running the gem tests".
+Take a look at the `reek` list, which is the file called `.todo.reek`, and stat fixing things.  Once you complete a change, run the tests.  See "Running the gem tests".
 
 If the tests pass refresh the `reek` list:
 
-    bundle exec rake reek > REEK
+    bundle exec rake reek --todo
 
 Follow the instructions for "Contributing" below.
 
