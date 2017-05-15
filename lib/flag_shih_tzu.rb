@@ -350,7 +350,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
       #   is needed for backwards compatibility
       has_table = if has_ar
                     if ::ActiveRecord::VERSION::MAJOR >= 5
-                      connection.data_sources
+                      connection.data_sources.include?(custom_table_name)
                     else
                       connection.tables.include?(custom_table_name)
                     end
