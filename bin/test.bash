@@ -29,7 +29,7 @@ COMPATIBLE_VERSIONS=(2.3.x 3.0.x 3.1.x 3.2.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
 do
-  rvm_ruby_version=1.9.3
+  rvm_ruby_version=1.9.3-p551
   rails_version=${COMPATIBLE_VERSIONS[Count]}
   run_all_tests_for $rvm_ruby_version $rails_version
 done
@@ -39,7 +39,7 @@ COMPATIBLE_VERSIONS=(3.0.x 3.1.x 3.2.x 4.0.x 4.1.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
 do
-  rvm_ruby_version=2.0.0
+  rvm_ruby_version=2.0.0-p648
   rails_version=${COMPATIBLE_VERSIONS[Count]}
   run_all_tests_for $rvm_ruby_version $rails_version
 done
@@ -49,7 +49,7 @@ COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
 do
-  rvm_ruby_version=2.1.5
+  rvm_ruby_version=2.1.10
   rails_version=${COMPATIBLE_VERSIONS[Count]}
   run_all_tests_for $rvm_ruby_version $rails_version
 done
@@ -59,7 +59,7 @@ COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
 do
-  rvm_ruby_version=2.2.3
+  rvm_ruby_version=2.2.7
   rails_version=${COMPATIBLE_VERSIONS[Count]}
   run_all_tests_for $rvm_ruby_version $rails_version
 done
@@ -78,9 +78,9 @@ do
   run_all_tests_for $rvm_ruby_version $rails_version
 done
 
-# Then run the tests for all versions supported on jruby-9.1.8.0 (which is 9.1.5.0 in travis.yml)
-#   (which should be the same as the Ruby 2.2.3 compatibility set)
-COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x 5.0.x)
+ Then run the tests for all versions supported on jruby-9.1.8.0 (which is 9.1.5.0 in travis.yml)
+   (which should be the same as the Ruby 2.2.3 compatibility set)
+COMPATIBLE_VERSIONS=(3.2.x 4.0.x 4.1.x 4.2.x 5.0.x 5.1.x)
 Count=0
 while [ "x${COMPATIBLE_VERSIONS[Count]}" != "x" ]
 do
