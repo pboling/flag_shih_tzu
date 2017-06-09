@@ -1,0 +1,181 @@
+---
+DuplicateMethodCall:
+  exclude:
+  - FlagShihTzuClassMethodsTest#test_should_return_the_correct_number_of_items_from_a_named_scope
+  - FlagShihTzuClassMethodsTest#test_should_work_with_raw_sql
+  - FlagShihTzuDerivedClassTest#test_should_define_bang_methods
+  - FlagShihTzuDerivedClassTest#test_should_respect_true_values_like_active_record
+  - FlagShihTzuInstanceMethodsTest#test_column_guessing_for_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_has_flag_method
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_has_flag_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_reader_method
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_reader_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_writer_method
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_writer_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_selected_flags_reader_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_selected_flags_reader_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_has_flag_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_has_flag_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_dirty_suffix_changed?
+  - FlagShihTzuInstanceMethodsTest#test_should_respect_true_values_like_active_record
+  - FlagShihTzuInstanceMethodsTest#test_update_flag_with_updating_instance!
+  - FlagShihTzuInstanceMethodsTest#test_update_flag_without_updating_instance!
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag_among_2
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_nil_required_flag
+  - ActiveModel::Validations::PresenceOfFlagsValidator#check_flag
+  - FlagShihTzu#disable_flag
+  - FlagShihTzu#enable_flag
+  - FlagShihTzu#update_flag!
+  - FlagShihTzu::ClassMethods#chained_flags_values
+  - FlagShihTzu::ClassMethods#chained_flags_with
+  - FlagShihTzu::ClassMethods#check_flag
+  - FlagShihTzu::ClassMethods#has_flags
+  - FlagShihTzu::ClassMethods#parse_flag_options
+  - FlagShihTzu::ClassMethods#sql_condition_for_flag
+FeatureEnvy:
+  exclude:
+  - FlagShihTzuClassMethodsTest#assert_where_value
+  - FlagShihTzuClassMethodsTest#test_should_work_with_a_custom_flags_column_name_as_symbol
+  - FlagShihTzuClassMethodsTest#test_should_work_with_raw_sql
+  - FlagShihTzuDerivedClassTest#test_should_define_bang_methods
+  - FlagShihTzuInstanceMethodsTest#test_update_flag_with_updating_instance!
+  - FlagShihTzuInstanceMethodsTest#test_update_flag_without_updating_instance!
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag_among_2
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_nil_required_flag
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_succeed_with_a_set_required_flag
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_succeed_with_a_set_required_flag_among_2
+  - ActiveModel::Validations::PresenceOfFlagsValidator#check_flag
+InstanceVariableAssumption:
+  exclude:
+  - FlagShihTzuDerivedClassTest
+  - FlagShihTzuInstanceMethodsTest
+IrresponsibleModule:
+  exclude:
+  - FlagShihTzuClassMethodsTest
+  - FlagShihTzuDerivedClassTest
+  - FlagShihTzuInstanceMethodsTest
+  - SpaceCarrier
+  - Test::Unit::TestCase
+  - FlagShihTzu
+  - FlagShihTzu::ClassMethods
+  - FlagShihTzu::DuplicateFlagColumnException
+  - FlagShihTzu::NoSuchFlagException
+  - FlagShihTzu::NoSuchFlagQueryModeException
+ManualDispatch:
+  exclude:
+  - FlagShihTzuClassMethodsTest#test_should_not_define_named_scopes_if_not_wanted
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag_among_2
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_nil_required_flag
+  - FlagShihTzu::ClassMethods#check_flag_column
+  - FlagShihTzu::ClassMethods#has_flags
+PrimaDonnaMethod:
+  exclude:
+  - FlagShihTzuInstanceMethodsTest
+RepeatedConditional:
+  exclude:
+  - FlagShihTzuInstanceMethodsTest
+TooManyMethods:
+  exclude:
+  - FlagShihTzuClassMethodsTest
+  - FlagShihTzuInstanceMethodsTest
+TooManyStatements:
+  exclude:
+  - initialize
+  - FlagShihTzuClassMethodsTest#test_should_return_the_correct_number_of_items_from_a_named_scope
+  - FlagShihTzuClassMethodsTest#test_should_return_the_correct_number_of_items_with_chained_flags_with
+  - FlagShihTzuClassMethodsTest#test_should_work_with_a_custom_flags_column
+  - FlagShihTzuClassMethodsTest#test_should_work_with_raw_sql
+  - FlagShihTzuDerivedClassTest#test_should_respect_true_values_like_active_record
+  - FlagShihTzuDerivedClassTest#test_should_store_the_flags_correctly
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_has_flag_method
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_has_flag_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_select_all_flags_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_reader_method
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_reader_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_writer_method
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_selected_flags_writer_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_customized_unselect_all_flags_method_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_selected_flags_reader_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_selected_flags_reader_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_has_flag_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_has_flag_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_unselect_all_flags_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_unselect_all_flags_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_dirty_suffix_changed?
+  - FlagShihTzuInstanceMethodsTest#test_should_disable_flag_with_2_columns
+  - FlagShihTzuInstanceMethodsTest#test_should_respect_true_values_like_active_record
+  - FlagShihTzuInstanceMethodsTest#test_should_store_the_flags_correctly
+  - FlagShihTzuInstanceMethodsTest#test_should_store_the_flags_correctly_wiht_2_colmns
+  - FlagShihTzuInstanceMethodsTest#test_update_flag_with_updating_instance!
+  - FlagShihTzuInstanceMethodsTest#test_update_flag_without_updating_instance!
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag_among_2
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_nil_required_flag
+  - FlagShihTzu#chained_flags_with_signature
+  - FlagShihTzu#update_flag!
+  - FlagShihTzu::ClassMethods#chained_flags_values
+  - FlagShihTzu::ClassMethods#check_flag_column
+  - FlagShihTzu::ClassMethods#has_flags
+  - FlagShihTzu::ClassMethods#parse_flag_options
+  - FlagShihTzu::ClassMethods#sql_condition_for_flag
+UncommunicativeMethodName:
+  exclude:
+  - FlagShihTzuClassMethodsTest#test_should_track_columns_used_by_FlagShihTzu
+  - FlagShihTzuInstanceMethodsTest#test_column_guessing_for_default_column_1
+  - FlagShihTzuInstanceMethodsTest#test_column_guessing_for_default_column_2
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_select_all_flags_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_select_all_flags_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_selected_flags_reader_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_a_selected_flags_reader_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_all_flags_reader_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_all_flags_reader_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_has_flag_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_has_flag_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_unselect_all_flags_method_with_arity_0
+  - FlagShihTzuInstanceMethodsTest#test_should_define_an_unselect_all_flags_method_with_arity_1
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_fail_with_a_blank_required_flag_among_2
+  - FlagShihTzuInstanceMethodsTest#test_validation_should_succeed_with_a_set_required_flag_among_2
+UncommunicativeVariableName:
+  exclude:
+  - FlagShihTzuClassMethodsTest#test_should_return_the_correct_number_of_items_from_a_named_scope
+  - FlagShihTzuClassMethodsTest#test_should_return_the_correct_number_of_items_with_chained_flags_with
+UtilityFunction:
+  exclude:
+  - FlagShihTzuClassMethodsTest#setup
+  - FlagShihTzu#collect_flags
+  - FlagShihTzu::ClassMethods#parse_flag_options
+  - FlagShihTzu::ClassMethods#valid_flag_column_name?
+  - FlagShihTzu::ClassMethods#valid_flag_key?
+  - FlagShihTzu::ClassMethods#valid_flag_name?
+BooleanParameter:
+  exclude:
+  - FlagShihTzu#update_flag!
+  - FlagShihTzu::ClassMethods#sql_condition_for_flag
+  - FlagShihTzu::ClassMethods#sql_set_for_flag
+ControlParameter:
+  exclude:
+  - FlagShihTzu#update_flag!
+  - FlagShihTzu::ClassMethods#sql_condition_for_flag
+  - FlagShihTzu::ClassMethods#sql_set_for_flag
+DataClump:
+  exclude:
+  - FlagShihTzu
+  - FlagShihTzu::ClassMethods
+LongParameterList:
+  exclude:
+  - FlagShihTzu::ClassMethods#set_flag_sql
+  - FlagShihTzu::ClassMethods#sql_condition_for_flag
+  - FlagShihTzu::ClassMethods#sql_set_for_flag
+NilCheck:
+  exclude:
+  - FlagShihTzu#disable_flag
+  - FlagShihTzu#enable_flag
+  - FlagShihTzu#flag_disabled?
+  - FlagShihTzu#flag_enabled?
+  - FlagShihTzu::ClassMethods#check_flag
+  - FlagShihTzu::ClassMethods#check_flag_column
+  - FlagShihTzu::ClassMethods#determine_flag_colmn_for
+  - FlagShihTzu::ClassMethods#has_flags
+  - FlagShihTzu::ClassMethods#set_flag_sql

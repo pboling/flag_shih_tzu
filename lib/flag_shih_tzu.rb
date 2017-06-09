@@ -155,16 +155,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
           # Define the named scopes if the user wants them and AR supports it
           if flag_options[colmn][:named_scopes]
-            if ActiveRecord::VERSION::MAJOR == 2 && respond_to?(:named_scope)
-              class_eval <<-EVAL, __FILE__, __LINE__ + 1
-                named_scope :#{flag_name}, lambda {
-                  { conditions: #{flag_name}_condition }
-                }
-                named_scope :not_#{flag_name}, lambda {
-                  { conditions: not_#{flag_name}_condition }
-                }
-              EVAL
-            elsif respond_to?(:scope)
+            if respond_to?(:scope)
               # Prevent deprecation notices on Rails 3
               #   when using +named_scope+ instead of +scope+.
               # Prevent deprecation notices on Rails 4
@@ -358,8 +349,6 @@ To turn off this warning set check_for_column: false in has_flags definition her
       # If you are using ActiveRecord then you only want to check for the
       #   table if the table exists so it won't fail pre-migration
       has_ar = (!!defined?(ActiveRecord) && respond_to?(:descends_from_active_record?))
-      # Supposedly Rails 2.3 takes care of this, but this precaution
-      #   is needed for backwards compatibility
       has_table = if has_ar
                     if ::ActiveRecord::VERSION::MAJOR >= 5
                       connection.data_sources.include?(custom_table_name)
@@ -438,15 +427,6 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
     def valid_flag_column_name?(colmn)
       colmn.is_a?(String)
-    end
-
-    # Returns the correct method to create a named scope.
-    # Use to prevent deprecation notices on Rails 3
-    #   when using +named_scope+ instead of +scope+.
-    def named_scope_method
-      # Can't use respond_to because both AR 2 and 3
-      #   respond to both +scope+ and +named_scope+.
-      ActiveRecord::VERSION::MAJOR == 2 ? :named_scope : :scope
     end
 
     def active_record_class?

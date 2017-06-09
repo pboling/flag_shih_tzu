@@ -12,7 +12,6 @@ rvm:
   - jruby-1.7.26
   - jruby-9.1.5.0
 gemfile:
-  - gemfiles/Gemfile.activerecord-2.3.x
   - gemfiles/Gemfile.activerecord-3.0.x
   - gemfiles/Gemfile.activerecord-3.1.x
   - gemfiles/Gemfile.activerecord-3.2.x
@@ -26,8 +25,6 @@ matrix:
     - rvm: ruby-head
   exclude:
     - rvm: ruby-head
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: ruby-head
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
     - rvm: ruby-head
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
@@ -39,14 +36,10 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-4.1.x
 
     - rvm: jruby-9.1.5.0
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: jruby-9.1.5.0
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
     - rvm: jruby-9.1.5.0
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
 
-    - rvm: 2.4.1
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
     - rvm: 2.4.1
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
     - rvm: 2.4.1
@@ -59,8 +52,6 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-4.1.x
 
     - rvm: 2.3.4
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
     - rvm: 2.3.4
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
@@ -70,8 +61,6 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
 
     - rvm: 2.2.7
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
-    - rvm: 2.2.7
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
     - rvm: 2.2.7
       gemfile: gemfiles/Gemfile.activerecord-3.1.x
@@ -80,8 +69,6 @@ matrix:
     - rvm: 2.2.7
       gemfile: gemfiles/Gemfile.activerecord-4.0.x
 
-    - rvm: 2.1.10
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
     - rvm: 2.1.10
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
     - rvm: 2.1.10
@@ -97,8 +84,6 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-5.0.x
     - rvm: 2.0.0-p648
       gemfile: gemfiles/Gemfile.activerecord-4.2.x
-    - rvm: 2.0.0-p648
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x
 
     - rvm: 1.9.3-p551
       gemfile: gemfiles/Gemfile.activerecord-5.1.x
@@ -117,5 +102,3 @@ matrix:
       gemfile: gemfiles/Gemfile.activerecord-5.0.x
     - rvm: jruby-1.7.26
       gemfile: gemfiles/Gemfile.activerecord-3.0.x
-    - rvm: jruby-1.7.26
-      gemfile: gemfiles/Gemfile.activerecord-2.3.x

@@ -5,7 +5,7 @@ unless defined?(::ActiveRecord)
     require "active_record"
   rescue LoadError
     # If it fails to load, then assume the user is try to use flag_shih_tzu with some other database adapter
-    warn "FlagShihTzu probably won't work unless you have some version of Active Record loaded. Versions >= 2.3 are supported."
+    warn "FlagShihTzu probably won't work unless you have some version of Active Record loaded."
   end
 end
 
