@@ -180,7 +180,8 @@ To turn off this warning set check_for_column: false in has_flags definition her
             end
           end
 
-          if ActiveRecord::VERSION::MAJOR >= 5 && ActiveRecord::VERSION::MINOR >= 1
+          if ActiveRecord::VERSION::MAJOR >= 5 &&
+              ActiveRecord::VERSION::MINOR >= 1
             class_eval <<-EVAL, __FILE__, __LINE__ + 1
               def #{flag_name}_saved_changed?
                 if colmn_changes = saved_changes["#{colmn}"]
