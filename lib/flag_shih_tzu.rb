@@ -182,7 +182,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
           if method_defined?(:saved_changes)
             class_eval <<-EVAL, __FILE__, __LINE__ + 1
-              def #{flag_name}_saved_changed?
+              def saved_change_to_#{flag_name}?
                 if colmn_changes = saved_changes["#{colmn}"]
                   flag_bit = self.class.flag_mapping["#{colmn}"][:#{flag_name}]
                   (colmn_changes[0] & flag_bit) != (colmn_changes[1] & flag_bit)
