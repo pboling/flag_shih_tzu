@@ -213,6 +213,12 @@ has_flags 1 => :spock,
 Calling `has_flags`, as shown above on the 'features' column, creates the following instance methods
 on Spaceship:
 
+    Spaceship#all_features # [:warpdrive, :shields, :electrolytes]
+    Spaceship#selected_features
+    Spaceship#select_all_features
+    Spaceship#unselect_all_features
+    Spaceship#selected_features=
+
     Spaceship#warpdrive
     Spaceship#warpdrive?
     Spaceship#warpdrive=
@@ -220,11 +226,6 @@ on Spaceship:
     Spaceship#not_warpdrive?
     Spaceship#not_warpdrive=
     Spaceship#warpdrive_changed?
-    Spaceship#all_warpdrives
-    Spaceship#selected_warpdrives
-    Spaceship#select_all_warpdrives
-    Spaceship#unselect_all_warpdrives
-    Spaceship#selected_warpdrives=
     Spaceship#has_warpdrive?
 
     Spaceship#shields
@@ -234,11 +235,6 @@ on Spaceship:
     Spaceship#not_shields?
     Spaceship#not_shields=
     Spaceship#shields_changed?
-    Spaceship#all_shields
-    Spaceship#selected_shields
-    Spaceship#select_all_shields
-    Spaceship#unselect_all_shields
-    Spaceship#selected_shields=
     Spaceship#has_shield?
 
     Spaceship#electrolytes
@@ -248,11 +244,6 @@ on Spaceship:
     Spaceship#not_electrolytes?
     Spaceship#not_electrolytes=
     Spaceship#electrolytes_changed?
-    Spaceship#all_electrolytes
-    Spaceship#selected_electrolytes
-    Spaceship#select_all_electrolytes
-    Spaceship#unselect_all_electrolytes
-    Spaceship#selected_electrolytes=
     Spaceship#has_electrolyte?
 
 
