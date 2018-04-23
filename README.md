@@ -5,7 +5,8 @@ Bit fields for ActiveRecord
 | Project                 |  FlagShihTzu      |
 |------------------------ | ----------------- |
 | gem name                |  flag_shih_tzu    |
-| license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) |
+| license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpboling%2Fflag_shih_tzu.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpboling%2Fflag_shih_tzu?ref=badge_shield)
+|
 | expert support          |  [![Get help on Codementor](https://cdn.codementor.io/badges/get_help_github.svg)](https://www.codementor.io/peterboling?utm_source=github&utm_medium=button&utm_term=peterboling&utm_campaign=github) |
 | download rank               |  [![Total Downloads](https://img.shields.io/gem/rt/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
@@ -566,3 +567,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [homepage]: https://github.com/pboling/flag_shih_tzu
 [bit_field]: http://en.wikipedia.org/wiki/Bit_field
 [bitwise_operation]: http://en.wikipedia.org/wiki/Bitwise_operation
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpboling%2Fflag_shih_tzu.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpboling%2Fflag_shih_tzu?ref=badge_large)
