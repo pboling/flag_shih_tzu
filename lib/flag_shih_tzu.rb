@@ -22,6 +22,12 @@ module FlagShihTzu
 
   module ClassMethods
     def has_flags(*args)
+      begin
+        connection
+      rescue ActiveRecord::NoDatabaseError
+        return
+      end
+
       flag_hash, opts = parse_flag_options(*args)
       opts =
         {
