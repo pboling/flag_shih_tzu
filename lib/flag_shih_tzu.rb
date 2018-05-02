@@ -224,6 +224,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
             # useful for a form builder
             def selected_#{colmn}=(chosen_flags)
               unselect_all_flags("#{colmn}")
+              return if chosen_flags.nil?
               chosen_flags.each do |selected_flag|
                 enable_flag(selected_flag.to_sym, "#{colmn}") if selected_flag.present?
               end
@@ -514,6 +515,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
   # use selected_#{column}= for custom column names.
   def selected_flags=(chosen_flags)
     unselect_all_flags
+    return if chosen_flags.nil?
     chosen_flags.each do |selected_flag|
       if selected_flag.present?
         enable_flag(selected_flag.to_sym, DEFAULT_COLUMN_NAME)
