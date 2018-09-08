@@ -7,9 +7,9 @@ Bit fields for ActiveRecord
 | gem name                |  flag_shih_tzu    |
 | license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) |
 | expert support          |  [![Get help on Codementor](https://cdn.codementor.io/badges/get_help_github.svg)](https://www.codementor.io/peterboling?utm_source=github&utm_medium=button&utm_term=peterboling&utm_campaign=github) |
-| download rank               |  [![Total Downloads](https://img.shields.io/gem/rt/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) |
+| download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
-| dependencies            |  [![Dependency Status](https://gemnasium.com/pboling/flag_shih_tzu.png)](https://gemnasium.com/pboling/flag_shih_tzu) |
+| dependencies            |  [![Depfu](https://badges.depfu.com/badges/f011a69cf2426f91483aaade580823ac/count.svg)](https://depfu.com/github/pboling/flag_shih_tzu?project_id=2685) |
 | code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) |
 | inline documenation     |  [![Inline docs](http://inch-ci.org/github/pboling/flag_shih_tzu.png)](http://inch-ci.org/github/pboling/flag_shih_tzu) |
 | continuous integration  |  [![Build Status](https://secure.travis-ci.org/pboling/flag_shih_tzu.png?branch=master)](https://travis-ci.org/pboling/flag_shih_tzu) |
@@ -17,7 +17,7 @@ Bit fields for ActiveRecord
 | homepage                |  [https://github.com/pboling/flag_shih_tzu][homepage] |
 | documentation           |  [http://rdoc.info/github/pboling/flag_shih_tzu/frames][documentation] |
 | live chat               |  [![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
-| Spread ~♡ⓛⓞⓥⓔ♡~      |  [on AngelList](https://angel.co/peter-boling), [on Coderwall](http://coderwall.com/pboling) |
+| Spread ~♡ⓛⓞⓥⓔ♡~      |  [🌍 🌎 🌏](https://about.me/peter.boling), [🍚](https://www.crowdrise.com/helprefugeeswithhopefortomorrowliberia/fundraiser/peterboling), [➕](https://plus.google.com/+PeterBoling/posts), [👼](https://angel.co/peter-boling), [🐛](https://www.topcoder.com/members/pboling/), [:shipit:](http://coderwall.com/pboling), [![Tweet Peter](https://img.shields.io/twitter/follow/galtzo.svg?style=social&label=Follow)](http://twitter.com/galtzo) |
 
 ## Summary
 
@@ -525,7 +525,7 @@ More information on the changes for 0.3.X: [pboling/flag_shih_tzu/wiki/Changes-f
 
 ## Alternatives
 
-I recently (October 2015) discovered that Michael Grosser had created a competing tool, `bitfields`, way back in 2010, exactly a year after this tool was created.  It was a very surreal moment, as I had thought this was the only game in town and it was when I began using and hacking on it.  Once I got over that moment I became excited, because competition makes things better, right?  So, now I am looking forward to a shootout some lazy Saturday.  Until then there's this: http://www.railsbling.com/posts/why-use-flag_shih_tzu/
+I discovered in October 2015 that Michael Grosser had created a competing tool, `bitfields`, way back in 2010, exactly a year after this tool was created.  It was a very surreal moment, as I had thought this was the only game in town and it was when I began using and hacking on it.  Once I got over that moment I became excited, because competition makes things better, right?  So, now I am looking forward to a shootout some lazy Saturday.  Until then there's this: http://www.railsbling.com/posts/why-use-flag_shih_tzu/
 
 There is little that `bitfields` does better.  The code is [less efficient](https://github.com/grosser/bitfields/blob/master/lib/bitfields.rb#L186 "recalculating and throwing away much of the result in many places"), albeit more readable, not as well tested, has almost zero inline documentation, and simply can't do many of the things I've built into `flag_shih_tzu`.  If you are still on legacy Ruby or legacy Rails, or using jRuby, then use `flag_shih_tzu`. If you need multiple flag columns on a single model, use `flag_shih_tzu`.
 
