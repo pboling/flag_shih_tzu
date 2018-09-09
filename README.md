@@ -46,32 +46,37 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 
 ## Prerequisites
 
-The gem is actively being tested with:
+The gem is actively being tested against:
 
 * MySQL, PostgreSQL and SQLite3 databases (Both Ruby and JRuby adapters)
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x
-* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.x, jruby-9.1.x, and ruby-head
-* Travis tests the supportedt builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
-* All of the supported builds can also be run locally.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x, 5.1.x, 5.2.x
+* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.10, 2.3.7, 2.4.4, 2.5.1, jruby-1.7.x, jruby-9.1.x
+* Travis tests the supported builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
+* All of the supported builds can also be run locally using the `wwtd` gem.
+* Forthcoming flag_shih_tzu v1.0 will only support Ruby 2.2+, JRuby-9.1+ and Rails 4.2+
 
 ### Compatibility Matrix
 
-| Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x |
-|:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |       |
-| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| 2.1.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
-| 2.2.0-2.2.1           |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
-| 2.2.2+                |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
-| 2.3.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
-| 2.4.x                 |       |       |       |       |       |       | ✓     | ✓     |
-| jruby-1.7.x           | ?     | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| jruby-9.x             |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x | 5.1.x | 5.2.x |
+|:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |       |       |       |
+| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.1.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.2.0-2.2.1           |       |       |       | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.2.2+                |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |
+| 2.3.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |
+| 2.4.x                 |       |       |       |       |       |       | ✓     | ✓     | ✓     | ✓     |
+| 2.5.x                 |       |       |       |       |       |       | ✓     | ✓     | ✓     | ✓     |
+| jruby-1.7.x           | ?     | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| jruby-9.1             |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |
+| jruby-9.2             |       |       |       |       |       |       | ✓     | ✓     | ✓     | ✓     |
 
 * Notes
   - JRuby 1.7.x aims for MRI 1.9.3 compatibility
     - `?` indicates incompatible due to 2 failures in the test suite.
-  - JRuby 9.x aims for MRI 2.x compatibility
+  - JRuby 9.1 aims for MRI 2.2 compatibility
+  - JRuby 9.2 aims for MRI 2.5 compatibility
+  - Forthcoming flag_shih_tzu v1.0 will only support Ruby 2.2+, JRuby-9.1+ and Rails 4.2+
 
 **Legacy**
 
@@ -509,7 +514,7 @@ dependency on this gem using the [Pessimistic Version Constraint](http://docs.ru
 For example:
 
 ```ruby
-spec.add_dependency 'flag_shih_tzu', '~> 4.0'
+spec.add_dependency 'flag_shih_tzu', '~> 0.0'
 ```
 
 ## 2012 Change of Ownership and 0.3.X Release Notes
