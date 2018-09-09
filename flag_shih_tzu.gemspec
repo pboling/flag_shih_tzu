@@ -23,6 +23,8 @@ ActiveRecord object.
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.require_paths = ["lib"]
 
+  gem.required_ruby_version = '>= 1.9.3'
+
   gem.add_development_dependency('activerecord', '>= 2.3.0')
 
   gem.add_development_dependency('bundler', '~> 1')
