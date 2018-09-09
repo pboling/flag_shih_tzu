@@ -4,6 +4,7 @@
 
 # Version 0.3.21 - SEP.09.2018
 
+* Make required minimum Ruby version explicit: 1.9.3 and up
 * Support Rails 5.2 by Peter Boling
 * Add Ruby 2.5 to build, and update/fix build
 
