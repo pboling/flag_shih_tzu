@@ -35,9 +35,13 @@ class Test::Unit::TestCase
 end
 
 # For code coverage, must be required before all application / gem / library code.
-unless ENV["NOCOVER"]
-  require "coveralls"
-  Coveralls.wear!
+begin
+  unless ENV["NOCOVER"]
+    require "coveralls"
+    Coveralls.wear!
+  end
+rescue LoadError
+  # Some builds do not support coveralls
 end
 
 require "flag_shih_tzu"
