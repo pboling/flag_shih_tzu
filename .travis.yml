@@ -26,20 +26,20 @@ language: ruby
 sudo: false
 
 rvm:
-#  - ruby-1.9.3-p551
+  - ruby-1.9.3-p551
   - ruby-2.0.0-p648
   - ruby-2.1.10
-#  - ruby-2.2.10
-#  - ruby-2.3.7
-#  - ruby-2.4.4
-#  - ruby-2.5.1
+  - ruby-2.2.10
+  - ruby-2.3.7
+  - ruby-2.4.4
+  - ruby-2.5.1
   - jruby-1.7.26
   - jruby-9.1.9.0
 gemfile:
-#  - gemfiles/ar-2.3.x
-#  - gemfiles/ar-3.0.x
-#  - gemfiles/ar-3.1.x
-#  - gemfiles/ar-3.2.x
+  - gemfiles/ar-2.3.x
+  - gemfiles/ar-3.0.x
+  - gemfiles/ar-3.1.x
+  - gemfiles/ar-3.2.x
   - gemfiles/ar-4.0.x
   - gemfiles/ar-4.1.x
   - gemfiles/ar-4.2.x

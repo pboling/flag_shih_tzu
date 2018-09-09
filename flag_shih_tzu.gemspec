@@ -27,7 +27,7 @@ ActiveRecord object.
 
   gem.add_development_dependency('bundler', '~> 1')
   gem.add_development_dependency('rake', '>= 0.9')
-  gem.add_development_dependency('rdoc', '>= 2.4.2')
+  gem.add_development_dependency('rdoc', '~> 5.1') # v6 requires Ruby 2.2+
   gem.add_development_dependency('coveralls', '~> 0')
   gem.add_development_dependency('test-unit', '~> 3')
   gem.add_development_dependency('wwtd', '~> 1')
