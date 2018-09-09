@@ -48,12 +48,10 @@ gemfile:
   - gemfiles/ar-5.2.x
 matrix:
   exclude:
-    - rvm: jruby-9.1.5.0
+    - rvm: jruby-9.1.9.0
       gemfile: gemfiles/ar-2.3.x
-    - rvm: jruby-9.1.5.0
+    - rvm: jruby-9.1.9.0
       gemfile: gemfiles/ar-3.0.x
-    - rvm: jruby-9.1.5.0
-      gemfile: gemfiles/ar-3.1.x
 
     - rvm: ruby-2.5.1
       gemfile: gemfiles/ar-2.3.x
