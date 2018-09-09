@@ -16,6 +16,6 @@ gem "term-ansicolor", "~> 1.3.2", platforms: [:ruby_19, :jruby] # released June 
 gem "unparser", "0.2.4", platforms: [:ruby_19, :ruby_20, :jruby] # released May 30, 2015
 
 gem "rake", "~> 11"
-gem "reek", "~> 2.2.1", platforms: [:mri]
-gem "roodi", "~> 5", platforms: [:mri]
+gem "reek", "~> 2.2.1", platforms: [:mri_20, :mri_21, :mri_22, :mri_23, :mri_24, :mri_25]
+gem "roodi", "~> 5", platforms: [:mri_20, :mri_21, :mri_22, :mri_23, :mri_24, :mri_25]
 gem "coveralls", platforms: [:mri_20, :mri_21, :mri_22, :mri_23, :mri_24, :mri_25]
