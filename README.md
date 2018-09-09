@@ -535,9 +535,9 @@ Will there ever be a merb/rails-like love fest between the projects?  It would b
 
 MIT License
 
-Copyright (c) 2012-3 [Peter Boling][peterboling] of [RailsBling.com][railsbling]
-
 Copyright (c) 2011 [XING AG](http://www.xing.com/)
+
+Copyright (c) 2012 - 2018 [Peter Boling][peterboling] of [RailsBling.com][railsbling]
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

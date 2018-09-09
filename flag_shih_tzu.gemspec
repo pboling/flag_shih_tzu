@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 require File.expand_path('../lib/flag_shih_tzu/version', __FILE__)
 
-Gem::Specification.new do |s|
-  s.name        = "flag_shih_tzu"
-  s.version     = FlagShihTzu::VERSION
-  s.licenses    = ['MIT']
-  s.email       = 'peter.boling@gmail.com'
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Peter Boling", "Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
-  s.homepage    = "https://github.com/pboling/flag_shih_tzu"
-  s.summary     = %q{Bit fields for ActiveRecord}
-  s.description = <<-EODOC
+Gem::Specification.new do |gem|
+  gem.name        = "flag_shih_tzu"
+  gem.version     = FlagShihTzu::VERSION
+  gem.licenses    = ['MIT']
+  gem.email       = 'peter.boling@gmail.com'
+  gem.platform    = Gem::Platform::RUBY
+  gem.authors     = ["Peter Boling", "Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
+  gem.homepage    = "https://github.com/pboling/flag_shih_tzu"
+  gem.summary     = %q{Bit fields for ActiveRecord}
+  gem.description = <<-EODOC
 Bit fields for ActiveRecord:
 This gem lets you use a single integer column in an ActiveRecord model
 to store a collection of boolean attributes (flags). Each flag can be used
@@ -18,16 +18,19 @@ almost in the same way you would use any boolean attribute on an
 ActiveRecord object.
   EODOC
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  gem.files         = `git ls-files`.split("\n")
+  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  gem.require_paths = ["lib"]
 
-  s.add_development_dependency "activerecord", ">= 2.3.0"
+  gem.add_development_dependency('activerecord', '>= 2.3.0')
 
-  s.add_development_dependency "bundler"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rdoc", ">= 2.4.2"
-  s.add_development_dependency "coveralls"
-  s.add_development_dependency "test-unit"
+  gem.add_development_dependency('bundler', '~> 1')
+  gem.add_development_dependency('rake', '>= 0.9')
+  gem.add_development_dependency('rdoc', '>= 2.4.2')
+  gem.add_development_dependency('coveralls', '~> 0')
+  gem.add_development_dependency('test-unit', '~> 3')
+  gem.add_development_dependency('wwtd', '~> 1')
+  # latest gem-release does not support back to the versions of Ruby still supported here
+  # gem.add_development_dependency('gem-release', '~> 2')
 end
