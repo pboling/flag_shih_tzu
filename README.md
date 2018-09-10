@@ -82,7 +82,7 @@ The gem is actively being tested against:
 
 * Ruby 1.8.7 compatibility is in the [0.2.X branch](https://github.com/pboling/flag_shih_tzu/tree/0.2.X) and no further releases are expected.  If you need a patch submit a pull request.
 
-* Ruby 1.9.3, 2.0.0, and 2.1.0 compatibility is still current on master, and the 0.3.x series releases, but those EOL'd Rubies, and any others that become EOL'd in the meantime, will not be supported in the next major release, version 1.0.
+* Ruby 1.9.3, 2.0.0, 2.1.x, and 2.2.x compatibility is still current on master, and the 0.3.x series releases, but those EOL'd Rubies, and any others that become EOL'd in the meantime, will not be supported in the next major release, version 1.0.
 
 ## Installation
 
