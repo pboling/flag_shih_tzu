@@ -22,6 +22,14 @@ module FlagShihTzu
 
   module ClassMethods
     def has_flags(*args)
+      if ActiveRecord::VERSION::STRING >= "4.1."
+        begin
+          connection
+        rescue ActiveRecord::NoDatabaseError
+          return
+        end
+      end
+
       flag_hash, opts = parse_flag_options(*args)
       opts =
         {

@@ -2,6 +2,17 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.21 - SEP.09.2018
+
+* Make required minimum Ruby version explicit: 1.9.3 and up
+* Support Rails 5.2 by Peter Boling
+* Add Ruby 2.5 to build, and update/fix build
+
+# Version 0.3.20 - SEP.08.2018
+
+* Fix generated instance methods. by xpol
+* Support Rails 5.1 saved_change by shiro16
+
 # Version 0.3.19 - MAY.15.2017
 
 * Fixed a bug in Rails 5 support.

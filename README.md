@@ -7,9 +7,9 @@ Bit fields for ActiveRecord
 | gem name                |  flag_shih_tzu    |
 | license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) |
 | expert support          |  [![Get help on Codementor](https://cdn.codementor.io/badges/get_help_github.svg)](https://www.codementor.io/peterboling?utm_source=github&utm_medium=button&utm_term=peterboling&utm_campaign=github) |
-| download rank               |  [![Total Downloads](https://img.shields.io/gem/rt/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) |
+| download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
-| dependencies            |  [![Dependency Status](https://gemnasium.com/pboling/flag_shih_tzu.png)](https://gemnasium.com/pboling/flag_shih_tzu) |
+| dependencies            |  [![Depfu](https://badges.depfu.com/badges/f011a69cf2426f91483aaade580823ac/count.svg)](https://depfu.com/github/pboling/flag_shih_tzu?project_id=2685) |
 | code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) |
 | inline documenation     |  [![Inline docs](http://inch-ci.org/github/pboling/flag_shih_tzu.png)](http://inch-ci.org/github/pboling/flag_shih_tzu) |
 | continuous integration  |  [![Build Status](https://secure.travis-ci.org/pboling/flag_shih_tzu.png?branch=master)](https://travis-ci.org/pboling/flag_shih_tzu) |
@@ -17,7 +17,7 @@ Bit fields for ActiveRecord
 | homepage                |  [https://github.com/pboling/flag_shih_tzu][homepage] |
 | documentation           |  [http://rdoc.info/github/pboling/flag_shih_tzu/frames][documentation] |
 | live chat               |  [![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
-| Spread ~♡ⓛⓞⓥⓔ♡~      |  [on AngelList](https://angel.co/peter-boling), [on Coderwall](http://coderwall.com/pboling) |
+| Spread ~♡ⓛⓞⓥⓔ♡~      |  [🌍 🌎 🌏](https://about.me/peter.boling), [🍚](https://www.crowdrise.com/helprefugeeswithhopefortomorrowliberia/fundraiser/peterboling), [➕](https://plus.google.com/+PeterBoling/posts), [👼](https://angel.co/peter-boling), [🐛](https://www.topcoder.com/members/pboling/), [:shipit:](http://coderwall.com/pboling), [![Tweet Peter](https://img.shields.io/twitter/follow/galtzo.svg?style=social&label=Follow)](http://twitter.com/galtzo) |
 
 ## Summary
 
@@ -46,38 +46,43 @@ What is a ["Shih Tzu"](http://en.wikipedia.org/wiki/Shih_Tzu)?
 
 ## Prerequisites
 
-The gem is actively being tested with:
+The gem is actively being tested against:
 
 * MySQL, PostgreSQL and SQLite3 databases (Both Ruby and JRuby adapters)
-* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x
-* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.7, 2.3.4, 2.4.1, jruby-1.7.x, jruby-9.1.x, and ruby-head
-* Travis tests the supportedt builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
-* All of the supported builds can also be run locally.  See [bin/test.bash](https://github.com/pboling/flag_shih_tzu/blob/master/bin/test.bash)
+* ActiveRecord versions 2.3.x, 3.0.x, 3.1.x, 3.2.x, 4.0.x, 4.1.x, 4.2.x, 5.0.x, 5.1.x, 5.2.x
+* Ruby 1.9.3, 2.0.0, 2.1.10, 2.2.10, 2.3.7, 2.4.4, 2.5.1, jruby-1.7.x, jruby-9.1.x
+* Travis tests the supported builds. See [.travis.yml](https://github.com/pboling/flag_shih_tzu/blob/master/.travis.yml) for the matrix.
+* All of the supported builds can also be run locally using the `wwtd` gem.
+* Forthcoming flag_shih_tzu v1.0 will only support Ruby 2.2+, JRuby-9.1+ and Rails 4.2+
 
 ### Compatibility Matrix
 
-| Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x |
-|:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |       |
-| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| 2.1.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
-| 2.2.0-2.2.1           |       |       |       | ✓     | ✓     | ✓     | ✓     |       |
-| 2.2.2+                |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
-| 2.3.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
-| 2.4.x                 |       |       |       |       |       |       | ✓     | ✓     |
-| jruby-1.7.x           | ?     | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |
-| jruby-9.x             |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     |
+| Ruby / Active Record  | 2.3.x | 3.0.x | 3.1.x | 3.2.x | 4.0.x | 4.1.x | 4.2.x | 5.0.x | 5.1.x | 5.2.x |
+|:---------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| 1.9.3                 | ✓     | ✓     | ✓     | ✓     |       |       |       |       |       |       |
+| 2.0.0                 |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.1.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.2.0-2.2.1           |       |       |       | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| 2.2.2+                |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |
+| 2.3.x                 |       |       |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |
+| 2.4.x                 |       |       |       |       |       |       | ✓     | ✓     | ✓     | ✓     |
+| 2.5.x                 |       |       |       |       |       |       | ✓     | ✓     | ✓     | ✓     |
+| jruby-1.7.x           | ?     | ?     | ✓     | ✓     | ✓     | ✓     | ✓     |       |       |       |
+| jruby-9.1             |       | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     | ✓     |
+| jruby-9.2             |       |       |       |       |       |       | ✓     | ✓     | ✓     | ✓     |
 
 * Notes
   - JRuby 1.7.x aims for MRI 1.9.3 compatibility
     - `?` indicates incompatible due to 2 failures in the test suite.
-  - JRuby 9.x aims for MRI 2.x compatibility
+  - JRuby 9.1 aims for MRI 2.2 compatibility
+  - JRuby 9.2 aims for MRI 2.5 compatibility
+  - Forthcoming flag_shih_tzu v1.0 will only support Ruby 2.2+, JRuby-9.1+ and Rails 4.2+
 
 **Legacy**
 
 * Ruby 1.8.7 compatibility is in the [0.2.X branch](https://github.com/pboling/flag_shih_tzu/tree/0.2.X) and no further releases are expected.  If you need a patch submit a pull request.
 
-* Ruby 1.9.3, 2.0.0, and 2.1.0 compatibility is still current on master, and the 0.3.x series releases, but those EOL'd Rubies, and any others that become EOL'd in the meantime, will not be supported in the next major release, version 1.0.
+* Ruby 1.9.3, 2.0.0, 2.1.x, and 2.2.x compatibility is still current on master, and the 0.3.x series releases, but those EOL'd Rubies, and any others that become EOL'd in the meantime, will not be supported in the next major release, version 1.0.
 
 ## Installation
 
@@ -509,7 +514,7 @@ dependency on this gem using the [Pessimistic Version Constraint](http://docs.ru
 For example:
 
 ```ruby
-spec.add_dependency 'flag_shih_tzu', '~> 4.0'
+spec.add_dependency 'flag_shih_tzu', '~> 0.0'
 ```
 
 ## 2012 Change of Ownership and 0.3.X Release Notes
@@ -525,7 +530,7 @@ More information on the changes for 0.3.X: [pboling/flag_shih_tzu/wiki/Changes-f
 
 ## Alternatives
 
-I recently (October 2015) discovered that Michael Grosser had created a competing tool, `bitfields`, way back in 2010, exactly a year after this tool was created.  It was a very surreal moment, as I had thought this was the only game in town and it was when I began using and hacking on it.  Once I got over that moment I became excited, because competition makes things better, right?  So, now I am looking forward to a shootout some lazy Saturday.  Until then there's this: http://www.railsbling.com/posts/why-use-flag_shih_tzu/
+I discovered in October 2015 that Michael Grosser had created a competing tool, `bitfields`, way back in 2010, exactly a year after this tool was created.  It was a very surreal moment, as I had thought this was the only game in town and it was when I began using and hacking on it.  Once I got over that moment I became excited, because competition makes things better, right?  So, now I am looking forward to a shootout some lazy Saturday.  Until then there's this: http://www.railsbling.com/posts/why-use-flag_shih_tzu/
 
 There is little that `bitfields` does better.  The code is [less efficient](https://github.com/grosser/bitfields/blob/master/lib/bitfields.rb#L186 "recalculating and throwing away much of the result in many places"), albeit more readable, not as well tested, has almost zero inline documentation, and simply can't do many of the things I've built into `flag_shih_tzu`.  If you are still on legacy Ruby or legacy Rails, or using jRuby, then use `flag_shih_tzu`. If you need multiple flag columns on a single model, use `flag_shih_tzu`.
 
@@ -535,9 +540,9 @@ Will there ever be a merb/rails-like love fest between the projects?  It would b
 
 MIT License
 
-Copyright (c) 2012-3 [Peter Boling][peterboling] of [RailsBling.com][railsbling]
-
 Copyright (c) 2011 [XING AG](http://www.xing.com/)
+
+Copyright (c) 2012 - 2018 [Peter Boling][peterboling] of [RailsBling.com][railsbling]
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
