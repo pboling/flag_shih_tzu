@@ -2,11 +2,16 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.22 - SEP.18.2018
+
+* When #selected_flags= passed with nil it clears flag bits, by xpol
+  - This makes flag_shih_tzu behave like Rails: converts empty array to nil.
+
 # Version 0.3.21 - SEP.09.2018
 
-* Make required minimum Ruby version explicit: 1.9.3 and up
+* Make required minimum Ruby version explicit: 1.9.3 and up by Peter Boling
 * Support Rails 5.2 by Peter Boling
-* Add Ruby 2.5 to build, and update/fix build
+* Add Ruby 2.5 to build, and update/fix build by Peter Boling
 
 # Version 0.3.20 - SEP.08.2018
 
@@ -32,7 +37,7 @@
 # Version 0.3.16 - JAN.16.2017
 
 * Fix complex custom sql queries with multiple references to the column by vegetaras
-* Improved documentation and compatibility matrix by pboling
+* Improved documentation and compatibility matrix  by Peter Boling
 
 # Version 0.3.15 - OCT.11.2015
 
