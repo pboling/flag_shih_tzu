@@ -846,6 +846,29 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert !@spaceship.has_flag?
   end
 
+  def test_should_define_a_selected_flags_writer_method
+    @spaceship.selected_flags = [:warpdrive]
+    assert @spaceship.warpdrive
+    assert !@spaceship.shields
+    assert !@spaceship.electrolytes
+
+    @spaceship.selected_flags = [:warpdrive, :shields, :electrolytes]
+    assert @spaceship.warpdrive
+    assert @spaceship.shields
+    assert @spaceship.electrolytes
+
+    @spaceship.selected_flags = []
+    assert !@spaceship.warpdrive
+    assert !@spaceship.shields
+    assert !@spaceship.electrolytes
+
+    @spaceship.selected_flags = [:warpdrive, :shields, :electrolytes]
+    @spaceship.selected_flags = nil
+    assert !@spaceship.warpdrive
+    assert !@spaceship.shields
+    assert !@spaceship.electrolytes
+  end
+
   # --------------------------------------------------
 
   def test_should_define_a_customized_all_flags_reader_method
@@ -899,6 +922,10 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert @small_spaceship.hyperspace
 
     @small_spaceship.selected_bits = []
+    assert !@small_spaceship.warpdrive
+    assert !@small_spaceship.hyperspace
+
+    @small_spaceship.selected_bits = nil
     assert !@small_spaceship.warpdrive
     assert !@small_spaceship.hyperspace
   end
@@ -1003,6 +1030,13 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
 
     @big_spaceship.selected_bits = []
     @big_spaceship.selected_commanders = []
+    assert !@big_spaceship.warpdrive
+    assert !@big_spaceship.hyperspace
+    assert !@big_spaceship.jeanlucpicard
+    assert !@big_spaceship.dajanatroj
+
+    @big_spaceship.selected_bits = nil
+    @big_spaceship.selected_commanders = nil
     assert !@big_spaceship.warpdrive
     assert !@big_spaceship.hyperspace
     assert !@big_spaceship.jeanlucpicard
