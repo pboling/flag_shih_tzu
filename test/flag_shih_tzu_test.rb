@@ -1226,24 +1226,26 @@ class FlagShihTzuInstanceMethodsTest < Test::Unit::TestCase
     assert SpaceshipWithNonIntegerColumn3.method_defined?(:warpdrive)
   end
 
-  def test_should_ignore_database_missing_errors
-    assert_nothing_raised do
-      eval(<<-EOF
-        class SpaceshipWithoutDatabaseConnection < ActiveRecord::Base
-          def self.connection
-            raise ActiveRecord::NoDatabaseError.new("Unknown database")
-          end
-          self.table_name ="spaceships"
-          include FlagShihTzu
+  if ActiveRecord::VERSION::STRING >= "4.1."
+    def test_should_ignore_database_missing_errors
+      assert_nothing_raised do
+        eval(<<-EOF
+          class SpaceshipWithoutDatabaseConnection < ActiveRecord::Base
+            def self.connection
+              raise ActiveRecord::NoDatabaseError.new("Unknown database")
+            end
+            self.table_name ="spaceships"
+            include FlagShihTzu
 
-          has_flags 1 => :warpdrive,
-                    2 => :shields,
-                    3 => :electrolytes
-        end
-      EOF
-      )
+            has_flags 1 => :warpdrive,
+                      2 => :shields,
+                      3 => :electrolytes
+          end
+        EOF
+        )
+      end
+      assert SpaceshipWithoutDatabaseConnection.method_defined?(:warpdrive)
     end
-    assert SpaceshipWithoutDatabaseConnection.method_defined?(:warpdrive)
   end
 
   def test_shouldnt_establish_a_connection_if_check_for_column_is_false
