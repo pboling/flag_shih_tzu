@@ -22,14 +22,6 @@ module FlagShihTzu
 
   module ClassMethods
     def has_flags(*args)
-      if ActiveRecord::VERSION::STRING >= "4.1."
-        begin
-          connection
-        rescue ActiveRecord::NoDatabaseError
-          return
-        end
-      end
-
       flag_hash, opts = parse_flag_options(*args)
       opts =
         {
@@ -404,6 +396,15 @@ To turn off this warning set check_for_column: false in has_flags definition her
       end
 
       true
+
+      # Quietly ignore NoDatabaseErrors - presumably we're being run during, eg, `rails db:create`.
+      # NoDatabaseError was only introduced in Rails 4.1, which is why this error-handling is a bit convoluted.
+    rescue StandardError => e
+      if defined?(ActiveRecord::NoDatabaseError) && e.is_a?(ActiveRecord::NoDatabaseError)
+        true
+      else
+        raise
+      end
     end
 
     def sql_condition_for_flag(flag, colmn, enabled = true, custom_table_name = table_name)
