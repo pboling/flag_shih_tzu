@@ -2,6 +2,10 @@
 
 * Work merged into master branch goes here until it is released.
 
+# Version 0.3.23 - NOV.30.2018
+
+* Avoid establishing a database connection unless necessary by Jonathan del Strother
+
 # Version 0.3.22 - SEP.18.2018
 
 * When #selected_flags= passed with nil it clears flag bits, by xpol
