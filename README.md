@@ -10,7 +10,7 @@ Bit fields for ActiveRecord
 | download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) [![Daily Downloads](https://img.shields.io/gem/rd/flag_shih_tzu.svg)](https://rubygems.org/gems/flag_shih_tzu) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/flag_shih_tzu.png)](http://badge.fury.io/rb/flag_shih_tzu) |
 | dependencies            |  [![Depfu](https://badges.depfu.com/badges/f011a69cf2426f91483aaade580823ac/count.svg)](https://depfu.com/github/pboling/flag_shih_tzu?project_id=2685) |
-| code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) |
+| code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/flag_shih_tzu.png)](https://codeclimate.com/github/pboling/flag_shih_tzu) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) |
 | inline documenation     |  [![Inline docs](http://inch-ci.org/github/pboling/flag_shih_tzu.png)](http://inch-ci.org/github/pboling/flag_shih_tzu) |
 | continuous integration  |  [![Build Status](https://secure.travis-ci.org/pboling/flag_shih_tzu.png?branch=master)](https://travis-ci.org/pboling/flag_shih_tzu) |
 | test coverage           |  [![Coverage Status](https://coveralls.io/repos/pboling/flag_shih_tzu/badge.png)](https://coveralls.io/r/pboling/flag_shih_tzu) |
