@@ -124,8 +124,13 @@ To turn off this warning set check_for_column: false in has_flags definition her
               )
             end
 
-            def self.not_#{flag_name}_condition
-              sql_condition_for_flag(:#{flag_name}, "#{colmn}", false)
+            def self.not_#{flag_name}_condition(options = {})
+              sql_condition_for_flag(
+                :#{flag_name},
+                "#{colmn}",
+                false,
+                options[:table_alias] || table_name
+              )
             end
 
             def self.set_#{flag_name}_sql
