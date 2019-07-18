@@ -27,11 +27,12 @@ ActiveRecord object.
 
   gem.add_development_dependency('activerecord', '>= 2.3.0')
 
-  gem.add_development_dependency('bundler', '~> 1')
+  gem.add_development_dependency('bundler')
   gem.add_development_dependency('rake', '>= 0.9')
   gem.add_development_dependency('rdoc', '~> 5.1') # v6 requires Ruby 2.2+
-  gem.add_development_dependency('test-unit', '~> 3')
-  gem.add_development_dependency('wwtd', '~> 1')
+  gem.add_development_dependency('test-unit', '>= 3')
+  gem.add_development_dependency('wwtd', '>= 1')
+  gem.add_development_dependency("appraisal")
   # latest gem-release does not support back to the versions of Ruby still supported here
   # gem.add_development_dependency('gem-release', '~> 2')
 end
