@@ -29,7 +29,7 @@ ActiveRecord object.
 
   gem.add_development_dependency('bundler')
   gem.add_development_dependency('rake', '>= 0.9')
-  gem.add_development_dependency('rdoc', '~> 5.1') # v6 requires Ruby 2.2+
+  gem.add_development_dependency('rdoc', '~> 6.2') # v6 requires Ruby 2.2+
   gem.add_development_dependency('test-unit', '>= 3')
   gem.add_development_dependency('wwtd', '>= 1')
   gem.add_development_dependency("appraisal")
