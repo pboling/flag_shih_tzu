@@ -19,6 +19,40 @@ Bit fields for ActiveRecord
 | live chat               |  [![Join the chat at https://gitter.im/pboling/flag_shih_tzu](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pboling/flag_shih_tzu?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
 | Spread ~♡ⓛⓞⓥⓔ♡~      |  [🌍 🌎 🌏](https://about.me/peter.boling), [🍚](https://www.crowdrise.com/helprefugeeswithhopefortomorrowliberia/fundraiser/peterboling), [➕](https://plus.google.com/+PeterBoling/posts), [👼](https://angel.co/peter-boling), [🐛](https://www.topcoder.com/members/pboling/), [:shipit:](http://coderwall.com/pboling), [![Tweet Peter](https://img.shields.io/twitter/follow/galtzo.svg?style=social&label=Follow)](http://twitter.com/galtzo) |
 
+Table of Contents
+=================
+
+   * [FlagShihTzu](#flagshihtzu)
+      * [Summary](#summary)
+      * [Prerequisites](#prerequisites)
+         * [Compatibility Matrix](#compatibility-matrix)
+      * [Installation](#installation)
+         * [Rails 2.x](#rails-2x)
+         * [Rails 3](#rails-3)
+      * [Usage](#usage)
+         * [Defaults (Important)](#defaults-important)
+         * [Database Migration](#database-migration)
+         * [Adding to the Model](#adding-to-the-model)
+         * [Bit Fields: How it stores the values](#bit-fields-how-it-stores-the-values)
+         * [Using a custom column name](#using-a-custom-column-name)
+         * [Generated boolean patterned instance methods](#generated-boolean-patterned-instance-methods)
+         * [Callbacks and Validations](#callbacks-and-validations)
+         * [Generated class methods](#generated-class-methods)
+         * [Generated named scopes](#generated-named-scopes)
+         * [Examples for using the generated methods](#examples-for-using-the-generated-methods)
+         * [Support for manually building conditions](#support-for-manually-building-conditions)
+         * [Choosing a query mode](#choosing-a-query-mode)
+         * [Updating flag column by raw sql](#updating-flag-column-by-raw-sql)
+         * [Skipping flag column check](#skipping-flag-column-check)
+      * [Running the gem tests](#running-the-gem-tests)
+      * [Authors](#authors)
+      * [How you can help!](#how-you-can-help)
+      * [Contributing](#contributing)
+      * [Versioning](#versioning)
+      * [2012 Change of Ownership and 0.3.X Release Notes](#2012-change-of-ownership-and-03x-release-notes)
+      * [Alternatives](#alternatives)
+      * [License](#license)
+
 ## Summary
 
 An extension for [ActiveRecord](https://rubygems.org/gems/activerecord)
