@@ -92,7 +92,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
           end
 
           def not_#{flag_name}
-            !#{flag_name}
+            !self.#{flag_name}
           end
           alias :not_#{flag_name}? :not_#{flag_name}
 
