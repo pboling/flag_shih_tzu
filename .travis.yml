@@ -26,8 +26,6 @@ language: ruby
 sudo: false
 
 rbenv:
-  - ruby-2.1.10
-  - ruby-2.2.10
   - ruby-2.3.8
   - ruby-2.4.6
   - ruby-2.5.5
