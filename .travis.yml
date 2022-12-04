@@ -34,6 +34,9 @@ rbenv:
   - ruby-2.4.6
   - ruby-2.5.5
   - ruby-2.6.3
+  - ruby-2.7.7
+  - ruby-3.0.5
+  - ruby-3.1.3
   - jruby-1.7.26
   - jruby-9.1.9.0
 gemfile:
@@ -47,8 +50,50 @@ gemfile:
   - gemfiles/ar-5.0.x
   - gemfiles/ar-5.1.x
   - gemfiles/ar-5.2.x
+  - gemfiles/ar-6.0.x
+  - gemfiles/ar-6.1.x
+  - gemfiles/ar-7.0.x
 matrix:
   exclude:
+    - rbenv: ruby-3.1.3
+      gemfile: gemfiles/ar-2.3.x
+    - rbenv: ruby-3.1.3
+      gemfile: gemfiles/ar-3.0.x
+    - rbenv: ruby-3.1.3
+      gemfile: gemfiles/ar-3.1.x
+    - rbenv: ruby-3.1.3
+      gemfile: gemfiles/ar-3.2.x
+    - rbenv: ruby-3.1.3
+      gemfile: gemfiles/ar-4.0.x
+    - rbenv: ruby-3.1.3
+      gemfile: gemfiles/ar-4.1.x
+
+    - rbenv: ruby-3.0.5
+      gemfile: gemfiles/ar-2.3.x
+    - rbenv: ruby-3.0.5
+      gemfile: gemfiles/ar-3.0.x
+    - rbenv: ruby-3.0.5
+      gemfile: gemfiles/ar-3.1.x
+    - rbenv: ruby-3.0.5
+      gemfile: gemfiles/ar-3.2.x
+    - rbenv: ruby-3.0.5
+      gemfile: gemfiles/ar-4.0.x
+    - rbenv: ruby-3.0.5
+      gemfile: gemfiles/ar-4.1.x
+
+    - rbenv: ruby-2.7.7
+      gemfile: gemfiles/ar-2.3.x
+    - rbenv: ruby-2.7.7
+      gemfile: gemfiles/ar-3.0.x
+    - rbenv: ruby-2.7.7
+      gemfile: gemfiles/ar-3.1.x
+    - rbenv: ruby-2.7.7
+      gemfile: gemfiles/ar-3.2.x
+    - rbenv: ruby-2.7.7
+      gemfile: gemfiles/ar-4.0.x
+    - rbenv: ruby-2.7.7
+      gemfile: gemfiles/ar-4.1.x
+
     - rbenv: jruby-9.1.9.0
       gemfile: gemfiles/ar-2.3.x
     - rbenv: jruby-9.1.9.0
