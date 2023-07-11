@@ -20,7 +20,10 @@ if defined?(::ActiveRecord) && ::ActiveRecord::VERSION::MAJOR >= 3
         def validate_each(record, attribute, value)
           value = record.send(:read_attribute_for_validation, attribute)
           check_flag(record, attribute)
-          record.errors.add(attribute, :blank, options) if value.blank? || value == 0
+
+          if value.blank? || value.zero?
+            record.errors.add(attribute, :blank, **options)
+          end
         end
 
         private
