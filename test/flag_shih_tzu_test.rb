@@ -316,6 +316,11 @@ class FlagShihTzuClassMethodsTest < Test::Unit::TestCase
                  SpaceshipWithMissingFlags.not_electrolytes_condition
   end
 
+  def test_should_accept_a_table_alias_option_for_not_sql_condition_method
+    assert_equal '("old_spaceships"."flags" not in (1,3,5,7))',
+                 Spaceship.not_warpdrive_condition(table_alias: "old_spaceships")
+  end
+
   def test_sql_condition_for_flag_with_custom_table_name_and_default_query_mode
     assert_equal '("custom_spaceships"."flags" in (1,3,5,7))',
                  Spaceship.send(:sql_condition_for_flag,
