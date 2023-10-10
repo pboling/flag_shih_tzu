@@ -1,5 +1,6 @@
 # Would like to support other database adapters so no more hard dependency on Active Record.
 require "flag_shih_tzu/validators"
+require "pry"
 
 module FlagShihTzu
   # taken from ActiveRecord::ConnectionAdapters::Column
@@ -29,7 +30,8 @@ module FlagShihTzu
           column: DEFAULT_COLUMN_NAME,
           flag_query_mode: :in_list, # or :bit_operator
           strict: false,
-          check_for_column: true
+          check_for_column: true,
+          allow_overwrite: false
         }.update(opts)
       if !valid_flag_column_name?(opts[:column])
         warn %[FlagShihTzu says: Please use a String to designate column names! I see you here: #{caller.first}]
@@ -72,7 +74,7 @@ To turn off this warning set check_for_column: false in has_flags definition her
         end
         # next if method already defined by flag_shih_tzu
         next if flag_mapping[colmn][flag_name] & (1 << (flag_key - 1))
-        if method_defined?(flag_name)
+        if method_defined?(flag_name) && !opts[:allow_overwrite]
           raise ArgumentError,
                 %[has_flags: flag name #{flag_name} already defined, please choose different name]
         end
