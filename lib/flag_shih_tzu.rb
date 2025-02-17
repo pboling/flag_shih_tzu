@@ -140,22 +140,6 @@ To turn off this warning set check_for_column: false in has_flags definition her
             def self.unset_#{flag_name}_sql
               sql_set_for_flag(:#{flag_name}, "#{colmn}", false)
             end
-
-            def self.#{colmn.singularize}_values_for(*flag_names)
-              values = []
-              flag_names.each do |flag_name|
-                if respond_to?(flag_name)
-                  values_for_flag = send(:sql_in_for_flag, flag_name, "#{colmn}")
-                  values = if values.present?
-                    values & values_for_flag
-                  else
-                    values_for_flag
-                  end
-                end
-              end
-
-              values.sort
-            end
           EVAL
 
           # Define the named scopes if the user wants them and AR supports it
@@ -199,49 +183,6 @@ To turn off this warning set check_for_column: false in has_flags definition her
           end
         end
 
-        if colmn != DEFAULT_COLUMN_NAME
-          class_eval <<-EVAL, __FILE__, __LINE__ + 1
-
-            def all_#{colmn}
-              all_flags("#{colmn}")
-            end
-
-            def selected_#{colmn}
-              selected_flags("#{colmn}")
-            end
-
-            def select_all_#{colmn}
-              select_all_flags("#{colmn}")
-            end
-
-            def unselect_all_#{colmn}
-              unselect_all_flags("#{colmn}")
-            end
-
-            # useful for a form builder
-            def selected_#{colmn}=(chosen_flags)
-              unselect_all_flags("#{colmn}")
-              return if chosen_flags.nil?
-              chosen_flags.each do |selected_flag|
-                enable_flag(selected_flag.to_sym, "#{colmn}") if selected_flag.present?
-              end
-            end
-
-            def has_#{colmn.singularize}?
-              not selected_#{colmn}.empty?
-            end
-
-            def chained_#{colmn}_with_signature(*args)
-              chained_flags_with_signature("#{colmn}", *args)
-            end
-
-            def as_#{colmn.singularize}_collection(*args)
-              as_flag_collection("#{colmn}", *args)
-            end
-
-          EVAL
-        end
-
         # Define bang methods when requested
         if flag_options[colmn][:bang_methods]
           class_eval <<-EVAL, __FILE__, __LINE__ + 1
@@ -257,6 +198,68 @@ To turn off this warning set check_for_column: false in has_flags definition her
 
       end
 
+      if colmn != DEFAULT_COLUMN_NAME
+        class_eval <<-EVAL, __FILE__, __LINE__ + 1
+
+          def all_#{colmn}
+            all_flags("#{colmn}")
+          end
+
+          def selected_#{colmn}
+            selected_flags("#{colmn}")
+          end
+
+          def select_all_#{colmn}
+            select_all_flags("#{colmn}")
+          end
+
+          def unselect_all_#{colmn}
+            unselect_all_flags("#{colmn}")
+          end
+
+          # useful for a form builder
+          def selected_#{colmn}=(chosen_flags)
+            unselect_all_flags("#{colmn}")
+            return if chosen_flags.nil?
+            chosen_flags.each do |selected_flag|
+              enable_flag(selected_flag.to_sym, "#{colmn}") if selected_flag.present?
+            end
+          end
+
+          def has_#{colmn.singularize}?
+            not selected_#{colmn}.empty?
+          end
+
+          def chained_#{colmn}_with_signature(*args)
+            chained_flags_with_signature("#{colmn}", *args)
+          end
+
+          def as_#{colmn.singularize}_collection(*args)
+            as_flag_collection("#{colmn}", *args)
+          end
+
+        EVAL
+      end
+
+      if active_record_class?
+        class_eval <<-EVAL, __FILE__, __LINE__ + 1
+          def self.#{colmn.singularize}_values_for(*flag_names)
+            values = []
+            flag_names.each do |flag_name|
+              if respond_to?(flag_name)
+                values_for_flag = send(:sql_in_for_flag, flag_name, "#{colmn}")
+                values = if values.present?
+                  values & values_for_flag
+                else
+                  values_for_flag
+                end
+              end
+            end
+
+            values.sort
+          end
+        EVAL
+      end
     end
 
     def check_flag(flag, colmn)
