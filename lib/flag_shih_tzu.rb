@@ -80,19 +80,19 @@ To turn off this warning set check_for_column: false in has_flags definition her
         flag_mapping[colmn][flag_name] = 1 << (flag_key - 1)
 
         class_eval <<-EVAL, __FILE__, __LINE__ + 1
-          def #{flag_name}
+          define_method(:#{flag_name}) do
             flag_enabled?(:#{flag_name}, "#{colmn}")
           end
           alias :#{flag_name}? :#{flag_name}
 
-          def #{flag_name}=(value)
+          define_method(:#{flag_name}=) do |value|
             FlagShihTzu::TRUE_VALUES.include?(value) ?
               enable_flag(:#{flag_name}, "#{colmn}") :
               disable_flag(:#{flag_name}, "#{colmn}")
           end
 
           def not_#{flag_name}
-            !#{flag_name}
+            !self.#{flag_name}
           end
           alias :not_#{flag_name}? :not_#{flag_name}
 
