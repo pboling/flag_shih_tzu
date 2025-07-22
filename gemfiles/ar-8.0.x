@@ -1,0 +1,21 @@
+source "http://rubygems.org"
+
+gemspec :path => ".."
+
+gem "activerecord", "~> 8.0.0"
+gem "sqlite3", "~> 1.3", platforms: [:ruby]
+gem "mysql2", platforms: [:ruby]
+
+platform :jruby do
+  gem "jdbc-sqlite3",                         github: "jruby/activerecord-jdbc-adapter", branch: "master"
+  gem "jdbc-mysql",                           github: "jruby/activerecord-jdbc-adapter", branch: "master"
+  gem "jdbc-postgres",                        github: "jruby/activerecord-jdbc-adapter", branch: "master"
+  gem "activerecord-jdbc-adapter",            github: "jruby/activerecord-jdbc-adapter", branch: "master"
+  gem "activerecord-jdbcsqlite3-adapter",     github: "jruby/activerecord-jdbc-adapter", branch: "master"
+  gem "activerecord-jdbcmysql-adapter",       github: "jruby/activerecord-jdbc-adapter", branch: "master"
+  gem "activerecord-jdbcpostgresql-adapter",  github: "jruby/activerecord-jdbc-adapter", branch: "master"
+end
+
+gem "reek", "~> 3", platforms: [:mri]
+gem "roodi", "~> 5", platforms: [:mri]
+gem "coveralls_reborn", platforms: [:mri]
