@@ -18,4 +18,4 @@ end
 
 gem "reek", "~> 3", platforms: [:mri]
 gem "roodi", "~> 5", platforms: [:mri]
-gem "coveralls", platforms: [:mri_20, :mri_21, :mri_22, :mri_23, :mri_24, :mri_25, :mri_26, :mri_27m :mri_30, :mri_31]
+gem "coveralls", platforms: [:mri_20, :mri_21, :mri_22, :mri_23, :mri_24, :mri_25, :mri_26, :mri_27, :mri_30, :mri_31]
