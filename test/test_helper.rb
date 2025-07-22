@@ -1,7 +1,7 @@
+require "logger"
 require "active_record"
 require "test/unit"
 require "yaml"
-require "logger"
 
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
 ActiveRecord::Migration.verbose = false
