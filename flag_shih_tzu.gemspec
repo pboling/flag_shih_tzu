@@ -9,9 +9,9 @@ Gem::Specification.new do |gem|
   gem.platform    = Gem::Platform::RUBY
   gem.authors     = ["Peter Boling", "Patryk Peszko", "Sebastian Roebke", "David Anderson", "Tim Payton"]
   gem.homepage    = "https://github.com/pboling/flag_shih_tzu"
-  gem.summary     = %q{Bit fields for ActiveRecord}
+  gem.summary     = %q{🏁 Bit fields for ActiveRecord}
   gem.description = <<-EODOC
-Bit fields for ActiveRecord:
+🏁 Bit fields for ActiveRecord:
 This gem lets you use a single integer column in an ActiveRecord model
 to store a collection of boolean attributes (flags). Each flag can be used
 almost in the same way you would use any boolean attribute on an
